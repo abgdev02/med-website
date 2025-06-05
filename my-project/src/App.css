@@ -1,0 +1,174 @@
+/* ====================  GLOBAL  ==================== */
+html,
+body{
+  margin:0;
+  padding:0;
+  height:100%;
+  width:100%;
+  overflow:hidden;
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+/* ====================  HERO WRAPPER  ==================== */
+.heroWrapper{
+  position:relative;
+  width:100vw;
+  height:100dvh;
+  overflow:hidden;
+
+  /* —— wellness palette (calming, soft colors) —— */
+  --sky-pink:#E8D5E5;    /* Soft lavender pink */
+  --sky-indigo:#C5D1E8;  /* Gentle periwinkle */
+  --sky-blue:#D1E2F0;    /* Calm sky blue */
+  --sky-gold:#F0EDE0;    /* Warm cream */
+  --sky-coral:#F0E5E0;   /* Soft peach */
+
+  /* static wash behind the moving blobs (v-soft) */
+  background:linear-gradient(
+    180deg,
+    var(--sky-indigo) 0%,
+    var(--sky-pink) 22%,
+    var(--sky-coral) 44%,
+    var(--sky-gold) 66%,
+    var(--sky-blue) 100%
+  );
+  isolation:isolate;                     /* keep pseudo blurs inside */
+}
+
+/* ------------ blurred "mesh-gradient" blobs ------------ */
+
+/* master blob swirl */
+.heroWrapper::before{
+  content:"";
+  position:absolute;
+  inset:-35%;
+  background:conic-gradient(
+    from 0deg,
+    var(--sky-pink),
+    var(--sky-coral),
+    var(--sky-gold),
+    var(--sky-blue),
+    var(--sky-indigo),
+    var(--sky-pink)
+  );
+  border-radius:50%;
+  filter:blur(200px);
+  opacity:.25;
+  animation:spinCW 50s linear infinite;
+  z-index:-2;
+}
+
+/* counter-swirl for richer "mesh" feel */
+.heroWrapper::after{
+  content:"";
+  position:absolute;
+  inset:-45%;
+  background:conic-gradient(
+    from 0deg,
+    var(--sky-gold),
+    var(--sky-blue),
+    var(--sky-indigo),
+    var(--sky-pink),
+    var(--sky-coral),
+    var(--sky-gold)
+  );
+  border-radius:50%;
+  filter:blur(220px);
+  opacity:.2;
+  animation:spinCCW 70s linear infinite;
+  mix-blend-mode:overlay;               /* makes colours fuse softly */
+  z-index:-3;
+}
+
+@keyframes spinCW{to{transform:rotate(360deg);} }
+@keyframes spinCCW{to{transform:rotate(-360deg);}}
+
+/* ====================  THREE CANVAS  ==================== */
+.heroCanvas{position:absolute;inset:0;pointer-events:none;z-index:0;}
+
+/* ====================  HERO TEXT BLOCK  ==================== */
+.heroContent{
+  position:absolute;
+  top:72%;
+  left:50%;
+  transform:translate(-50%,-55%);
+  text-align:center;
+  color:#003b5e;
+  max-width:680px;
+  z-index:1;
+}
+.heroContent h1{margin:0 0 1rem;font:700 4rem/1.05 "Inter",sans-serif;}
+.heroContent p{margin:0 0 1.8rem;font:400 1.05rem/1.6 "Inter",sans-serif;opacity:.86;}
+.heroContent button{
+  padding:.9rem 2.6rem;
+  font-size:1rem;
+  background:#003b5e;
+  color:#fff;
+  border:0;
+  border-radius:9999px;
+  font-weight:600;
+  cursor:pointer;
+  transition:transform .2s;
+}
+.heroContent button:hover{transform:translateY(-2px);}
+
+/* ====================  NAVBAR  ==================== */
+.nav{
+  position:fixed;
+  inset:0 0 auto 0;
+  height:64px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 1.5rem;
+  backdrop-filter:blur(12px) saturate(130%);
+  background:rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  z-index:2;
+}
+.nav .logo{font-size:1.2rem;font-weight:600;color:#003b5e;}
+.nav .links{display:flex;gap:2rem;}
+.nav .links a{
+  color:#003b5e;
+  padding:.75rem 1rem;
+  font-weight:500;
+  border-radius:9999px;
+  text-decoration:none;
+  transition:background .2s;
+}
+.nav .links a:hover{background:rgba(255,255,255,.12);}
+
+/* ====================  SCROLL CUE  ==================== */
+.scrollCue{
+  position:absolute;
+  bottom:4vh;
+  left:50%;
+  transform:translateX(-50%);
+  width:22px;
+  height:34px;
+  stroke:#003b5e;
+  stroke-width:2;
+  fill:none;
+  opacity:.55;
+  animation:upDown 2s ease-in-out infinite;
+  z-index:1;
+}
+@keyframes upDown{
+  0%,100%{transform:translate(-50%,0);}
+  50%{transform:translate(-50%,6px);}
+}
+
+/* ====================  RESPONSIVE  ==================== */
+@media(max-width:767px){
+  .nav{height:56px;padding:0 1rem;}
+  .nav .links{gap:1rem;font-size:.9rem;}
+  .heroContent h1{font-size:2.2rem;}
+  .heroContent p{font-size:.95rem;}
+  .heroContent button{padding:.7rem 1.8rem;}
+}
+@media(max-width:480px){
+  .heroContent{max-width:88%;}
+  .heroContent h1{font-size:1.8rem;}
+  .heroContent button{width:100%;}
+  .nav .links{display:none;}
+}
