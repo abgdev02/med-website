@@ -7,7 +7,7 @@ body{
   width:100%;
   overflow-x:hidden;
   overflow-y:auto;
-  font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+  font-family:"Source Sans Pro",-apple-system,BlinkMacSystemFont,sans-serif;
 }
 
 #root {
@@ -270,8 +270,8 @@ body{
   max-width:680px;
   z-index:1;
 }
-.heroContent h1{margin:0 0 1rem;font:700 4rem/1.05 "Inter",sans-serif;}
-.heroContent p{margin:0 0 1.8rem;font:400 1.05rem/1.6 "Inter",sans-serif;opacity:.86;}
+.heroContent h1{margin:0 0 1rem;font:700 4rem/1.05 "Source Sans Pro",sans-serif;}
+.heroContent p{margin:0 0 1.8rem;font:400 1.05rem/1.6 "Source Sans Pro",sans-serif;opacity:.86;}
 .heroContent button{
   padding:.9rem 2.6rem;
   font-size:1rem;
