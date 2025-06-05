@@ -32,9 +32,7 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
             <ProceduralPebble />
           </group>
         </Float>
-      </Canvas>
-
-      {/* ROOT text positioned behind everything */}
+      </Canvas>      {/* ROOT text positioned behind everything */}
       <div style={{
         position: 'absolute',
         top: '50%',
@@ -60,6 +58,9 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
           backgroundClip: 'text'
         }}>ROOT</h1>
       </div>
+
+      {/* ASMR Breathing Visual Guide */}
+      <div className="breathingCue"></div>
 
       {/* Main Content with pebble and text */}
       <div style={{

@@ -45,38 +45,57 @@ const BokehBubbles: React.FC<BokehBubblesProps> = ({ count = 3500 }) => {
     }
     return [positions, colors, baseScales]
   }, [count])
-
-  // Breathing/pulsing logic
+  // Breathing/pulsing logic with 4-7-8 pattern
   useFrame((state) => {
     if (!ref.current) return
 
     // 4-7-8 breathing rhythm (19s total: 4 inhale, 7 hold, 8 exhale)
     const t = state.clock.elapsedTime % 19
-    let breath = 1
-    if (t < 4)       breath = 1 + 0.1 * (t / 4)          // inhale: expand
-    else if (t < 11) breath = 1.1                        // hold: max
-    else             breath = 1.1 - 0.15 * ((t - 11) / 8) // exhale: contract
+    let breathIntensity = 1
+    let breathScale = 1
+    
+    if (t < 4) {
+      // Inhale phase: Gentle expansion
+      const progress = t / 4
+      breathIntensity = 1 + 0.15 * progress
+      breathScale = 1 + 0.08 * progress
+    } else if (t < 11) {
+      // Hold phase: Gentle shimmer at peak
+      const holdProgress = (t - 4) / 7
+      breathIntensity = 1.15 + 0.05 * Math.sin(holdProgress * Math.PI * 4)
+      breathScale = 1.08 + 0.02 * Math.sin(holdProgress * Math.PI * 3)
+    } else {
+      // Exhale phase: Gradual release
+      const progress = (t - 11) / 8
+      breathIntensity = 1.15 - 0.2 * progress
+      breathScale = 1.08 - 0.12 * progress
+    }
 
-    // Subtle, wavy "asynchronous" shimmering
+    // Apply breathing effect to particle system
+    ref.current.scale.setScalar(breathScale)
+
+    // Update individual particle sizes with ASMR-like shimmer
     const geometry = ref.current.geometry as THREE.BufferGeometry
     if (geometry.attributes.size === undefined) {
-      // Create a size attribute for custom sizes
       const sizes = new Float32Array(count)
       for (let i = 0; i < count; i++) sizes[i] = baseScales[i]
       geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1))
     }
+    
     const sizes = geometry.attributes.size.array as Float32Array
     for (let i = 0; i < count; i++) {
-      // Each point pulses gently, not in sync, so it's not "breathing" robotically
-      const local = Math.sin(state.clock.elapsedTime * 0.6 + i)
-      sizes[i] = baseScales[i] * breath * (0.8 + 0.3 * local)
+      // Each particle has its own gentle shimmer
+      const localShimmer = Math.sin(state.clock.elapsedTime * 0.4 + i * 0.1)
+      const breathingPulse = Math.sin(t * 0.33 + i * 0.05) // Sync with breath
+      sizes[i] = baseScales[i] * breathIntensity * (0.7 + 0.4 * localShimmer + 0.2 * breathingPulse)
     }
     geometry.attributes.size.needsUpdate = true
 
-    // Gentle, slow rotation
-    ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.05) * 0.05
-    ref.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.08) * 0.08
-    ref.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.03) * 0.02
+    // Gentle, organic rotation that follows breathing
+    const breathingRotation = Math.sin(t * 0.33) * 0.02
+    ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.03) * 0.03 + breathingRotation
+    ref.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.05) * 0.05 + breathingRotation * 0.5
+    ref.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.02) * 0.01 + breathingRotation * 0.3
   })
 
   // Drei's PointMaterial does not use custom per-point sizes,
