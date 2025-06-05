@@ -111,7 +111,7 @@ export function TabContentDisplay({ content, isMobile }: TabContentDisplayProps)
             justifyContent: 'center', 
             display: 'flex', 
             flexDirection: 'column', 
-            color: '#4A4A4A', 
+            color: '#8a8a8a', 
             fontSize: 14, 
             fontFamily: '"Source Sans Pro", sans-serif', 
             fontWeight: '400', 

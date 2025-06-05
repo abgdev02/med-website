@@ -44,9 +44,8 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
         zIndex: 1,
         width: '100%',
         pointerEvents: 'none'
-      }}>
-        <h1 style={{
-          fontFamily: '"Source Sans Pro", "Inter", -apple-system, BlinkMacSystemFont, sans-serif',
+      }}>        <h1 style={{
+          fontFamily: '"Source Sans Pro", sans-serif',
           fontSize: 'clamp(8rem, 12vw, 16rem)',
           fontWeight: '900',
           opacity: '0.08',
@@ -78,22 +77,22 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
         
         <div style={{ height: '12rem', position: 'relative', zIndex: '15' }}>
           {/* Pebble space */}
-        </div>
-        
-        <p style={{ 
+        </div>        <p style={{ 
           position: 'relative', 
           zIndex: '15',
           marginTop: '2rem',
           color: '#003b5e',
-          fontSize: isMobile ? '0.75rem' : '0.85rem',
-          fontWeight: '200',
+          fontSize: isMobile ? '0.75rem' : '0.9rem',
+          fontWeight: '100',
           textTransform: 'uppercase',
-          letterSpacing: '0.15em',
-          maxWidth: '400px',
+          letterSpacing: '0.2em',
+          maxWidth: '600px',
           margin: '2rem auto 0',
           lineHeight: 1.6,
           opacity: 0.9,
-          fontFamily: '"Source Sans Pro", sans-serif'
+          fontFamily: '"Source Sans Pro", sans-serif',
+          textAlign: 'center',
+          wordSpacing: '0.1em'
         }}>COMPANION FOR EMOTIONAL EMBRACING</p>
         
         <button

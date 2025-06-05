@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { TabKey, TabContentData } from '../../types'
 import { TabButton } from '../ui/TabButton'
-import { TabContentDisplay } from '../ui/TabContentDisplay'
+import mindfulnessIcon from '../../assets/icons/mindfulness 1.svg'
+import rippleIcon from '../../assets/icons/ripple.svg'
+import sineIcon from '../../assets/icons/sine.svg'
 
 interface TabSectionProps {
   isMobile: boolean
@@ -18,11 +20,91 @@ const TAB_CONFIG = [
 
 export function TabSection({ isMobile, tabContent }: TabSectionProps) {
   const [activeTab, setActiveTab] = useState<TabKey>('anchor-focus')
+  const [expandedItem, setExpandedItem] = useState<string | null>(null)
+
+  // Reset expanded item when tab changes
+  useEffect(() => {
+    setExpandedItem(null)
+  }, [activeTab])
 
   const handleTabClick = (tabKey: TabKey) => {
     setActiveTab(tabKey)
+    // Remove the immediate setExpandedItem(null) since useEffect handles it
+  }
+  
+  const toggleExpanded = (itemKey: string) => {
+    setExpandedItem(prev => prev === itemKey ? null : itemKey)
   }
 
+  const renderExpandableItem = (
+    iconSrc: string,
+    title: string,
+    description: string,
+    itemKey: string
+  ) => {
+    const isExpanded = expandedItem === itemKey
+    
+    return (
+      <div key={itemKey} style={{ width: '100%' }}>
+        <div 
+          onClick={() => toggleExpanded(itemKey)}
+          style={{
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            gap: 24,
+            display: 'flex',
+            cursor: 'pointer',
+            padding: '12px 0',
+            transition: 'all 0.3s ease'
+          }}
+        >
+          <img src={iconSrc} alt="" style={{ width: 24, height: 24 }} />
+          <div style={{
+            justifyContent: 'flex-start',
+            display: 'flex',
+            flexDirection: 'column',
+            color: isExpanded ? '#4A4A4A' : '#6A6A6A',
+            fontSize: 14,
+            fontFamily: '"Source Sans Pro", sans-serif',
+            fontWeight: isExpanded ? '700' : '400',
+            wordWrap: 'break-word',
+            flex: 1,
+            textAlign: 'left'
+          }}>
+            {title}
+          </div>
+        </div>
+        
+        <div style={{
+          maxHeight: isExpanded ? '200px' : '0',
+          overflow: 'hidden',
+          transition: 'max-height 0.3s ease-out',
+          paddingLeft: 48
+        }}>
+          <div style={{
+            padding: '12px 0 24px 0',
+            color: '#8a8a8a',
+            fontSize: 14,
+            fontFamily: '"Source Sans Pro", sans-serif',
+            fontWeight: '400',
+            wordWrap: 'break-word',
+            lineHeight: 1.5,
+            textAlign: 'left'
+          }}>
+            {description}
+          </div>
+        </div>
+        
+        <div style={{
+          width: '100%',
+          height: 0,
+          outline: '0.50px #f2f2f2 solid',
+          outlineOffset: '-0.25px',
+          margin: '12px 0'
+        }}></div>
+      </div>
+    )
+  }
   return (
     <div className="section" style={{
       width: '100%', 
@@ -40,6 +122,7 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
       display: 'flex',
       boxSizing: 'border-box'
     }}>
+      {/* Header Section */}
       <div style={{
         flexDirection: 'column', 
         justifyContent: 'flex-start', 
@@ -80,10 +163,11 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
         </div>
       </div>
       
+      {/* Tab and Content Section */}
       <div style={{
         flexDirection: 'column', 
         justifyContent: 'flex-start', 
-        alignItems: 'center', 
+        alignItems: 'flex-start', 
         gap: 64, 
         display: 'flex',
         width: '100%'
@@ -111,11 +195,65 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
           ))}
         </div>
 
-        {/* Tab Content */}
-        <TabContentDisplay 
-          content={tabContent[activeTab]} 
-          isMobile={isMobile} 
-        />
+        {/* Content section with accordion */}
+        <div style={{
+          width: '100%',
+          maxWidth: 1212,
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          gap: isMobile ? 40 : 128,
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row'
+        }}>
+          {/* Left content with expandable items */}
+          <div style={{
+            width: isMobile ? '100%' : 484,
+            alignSelf: 'stretch',
+            paddingTop: 24,
+            paddingBottom: 24,
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            gap: 24,
+            display: 'flex'
+          }}>            {/* Dynamic expandable content */}
+            {renderExpandableItem(
+              mindfulnessIcon,
+              (tabContent as any)[activeTab].features[0],
+              "Let rhythmic sensations and guided breath redirect racing thoughts—helping your mind slow down and return to calm, one pulse at a time.",
+              `${activeTab}-feature-1`
+            )}
+
+            {renderExpandableItem(
+              rippleIcon,
+              (tabContent as any)[activeTab].features[1],
+              "Experience deeper states of mindfulness through synchronized breathing patterns and gentle haptic feedback that guide your nervous system into relaxation.",
+              `${activeTab}-feature-2`
+            )}
+
+            {renderExpandableItem(
+              sineIcon,
+              (tabContent as any)[activeTab].description,
+              "Advanced biometric sensors track your heart rate variability and breathing patterns to provide real-time feedback on your meditation depth and emotional state.",
+              `${activeTab}-feature-3`
+            )}
+          </div>
+
+          {/* Right image placeholder */}
+          <div style={{
+            width: isMobile ? '100%' : 600,
+            height: isMobile ? 250 : 400,
+            borderRadius: 16,
+            backgroundColor: '#f5f5f5',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',            color: '#999',
+            fontSize: '14px',
+            fontFamily: '"Source Sans Pro", sans-serif'
+          }}>
+            [Image Placeholder 600x400]
+          </div>
+        </div>
       </div>
     </div>
   )
