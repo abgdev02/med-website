@@ -206,7 +206,7 @@ function App() {
           marginTop: '2rem',
           color: '#003b5e',
           fontSize: isMobile ? '0.75rem' : '0.85rem',
-          fontWeight: '100',
+          fontWeight: '200',
           textTransform: 'uppercase',
           letterSpacing: '0.15em',
           maxWidth: '400px',
