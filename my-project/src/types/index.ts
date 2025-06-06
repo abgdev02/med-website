@@ -7,7 +7,8 @@ export interface TabContent {
   description: string
 }
 
-export interface TabContentData {
+// ✅ Change this from interface to type
+export type TabContentData = {
   [K in TabKey]: TabContent
 }
 
