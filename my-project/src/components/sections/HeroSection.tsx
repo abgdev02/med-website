@@ -18,10 +18,9 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
       >
         <ambientLight intensity={0.6} />
         <directionalLight position={[3, 5, 4]} intensity={0.5} />
-        <directionalLight position={[-2, 3, 3]} color="#e1d6ff" intensity={0.3} />
-        
-        {/* Bokeh background particles */}
-        <BokehBubbles count={3000} />
+        <directionalLight position={[-2, 3, 3]} color="#e1d6ff" intensity={0.3} />        
+        {/* Bokeh background particles - reduced count for better performance */}
+        <BokehBubbles count={isMobile ? 1500 : 2500} />
           {/* Main pebble with gentle float */}
         <Float floatIntensity={0.8}>
           <group 

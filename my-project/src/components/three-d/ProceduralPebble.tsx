@@ -1,4 +1,4 @@
-import { useRef, useEffect, useMemo, useCallback } from 'react'
+import { useRef, useEffect, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise.js'
@@ -6,15 +6,17 @@ import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise.js'
 // Cache noise instance globally to avoid recreation
 const globalSimplex = new SimplexNoise()
 
+// Pre-computed geometry cache for better performance
+const geometryCache = new Map<string, THREE.BufferGeometry>()
+
 // Create optimized textures once and cache them
 const createOptimizedTextures = () => {
-  // Optimized color texture - smaller canvas for better performance
+  // Much smaller texture for better performance
   const canvas = document.createElement('canvas')
-  canvas.width = 256
-  canvas.height = 256
-  const context = canvas.getContext('2d')!
-  
-  const imageData = context.createImageData(256, 256)
+  canvas.width = 128 // Reduced from 256
+  canvas.height = 128
+  const context = canvas.getContext('2d')!  
+  const imageData = context.createImageData(128, 128) // Reduced from 256
   for (let i = 0; i < imageData.data.length; i += 4) {
     const noise = Math.random()
     const value = Math.floor(220 + noise * 10) // Reduced variation for better performance
@@ -29,18 +31,17 @@ const createOptimizedTextures = () => {
   colorTexture.wrapS = THREE.RepeatWrapping
   colorTexture.wrapT = THREE.RepeatWrapping
   colorTexture.repeat.set(1.2, 1.2)
-  
-  // Simplified normal map
+    // Simplified normal map - much smaller for better performance
   const normalCanvas = document.createElement('canvas')
-  normalCanvas.width = 128
-  normalCanvas.height = 128
+  normalCanvas.width = 64 // Reduced from 128
+  normalCanvas.height = 64
   const normalContext = normalCanvas.getContext('2d')!
   
-  const normalImageData = normalContext.createImageData(128, 128)
+  const normalImageData = normalContext.createImageData(64, 64)
   for (let i = 0; i < normalImageData.data.length; i += 4) {
-    normalImageData.data[i] = Math.floor(128 + (Math.random() - 0.5) * 10)
-    normalImageData.data[i + 1] = Math.floor(128 + (Math.random() - 0.5) * 10)
-    normalImageData.data[i + 2] = Math.floor(215 + Math.random() * 25)
+    normalImageData.data[i] = Math.floor(128 + (Math.random() - 0.5) * 8) // Reduced variation
+    normalImageData.data[i + 1] = Math.floor(128 + (Math.random() - 0.5) * 8)
+    normalImageData.data[i + 2] = Math.floor(220 + Math.random() * 20) // Reduced range
     normalImageData.data[i + 3] = 255
   }
   normalContext.putImageData(normalImageData, 0, 0)
@@ -60,24 +61,81 @@ interface ProceduralPebbleProps {
   animate?: boolean
   quality?: 'low' | 'medium' | 'high'
   enableTextures?: boolean
+  isStatic?: boolean // New prop for static pebbles
 }
 
 export function ProceduralPebble({ 
   distance = 10, 
   animate = true,
   quality = 'medium',
-  enableTextures = true
+  enableTextures = true,
+  isStatic = false
 }: ProceduralPebbleProps = {}) {
-  const mesh = useRef<THREE.Mesh>(null!)  // Dynamic geometry based on distance and quality - LOD (Level of Detail)
+  const mesh = useRef<THREE.Mesh>(null!)
+  const frameSkip = useRef(0) // For frame skipping optimization
+  
+  // Dynamic geometry based on distance and quality - LOD (Level of Detail)
   const geometryArgs = useMemo((): [number, number, number] => {
     const qualityMap = {
-      low: distance > 30 ? [1, 12, 8] : [1, 16, 12],
-      medium: distance > 30 ? [1, 24, 16] : [1, 48, 32], 
-      high: distance > 30 ? [1, 48, 32] : [1, 96, 64]
+      low: distance > 30 ? [0.8, 12, 8] : [0.8, 16, 12],
+      medium: distance > 30 ? [0.8, 20, 14] : [0.8, 32, 24], // Reduced from 48,32
+      high: distance > 30 ? [0.8, 32, 24] : [0.8, 48, 32] // Reduced from 96,64
     }
     return qualityMap[quality] as [number, number, number]
   }, [distance, quality])
 
+  // Cached geometry with pre-computed modifications
+  const processedGeometry = useMemo(() => {
+    const cacheKey = `${geometryArgs.join('-')}-${distance}-${isStatic}`
+    
+    if (geometryCache.has(cacheKey)) {
+      return geometryCache.get(cacheKey)!.clone()
+    }
+
+    const geo = new THREE.SphereGeometry(...geometryArgs)
+    
+    // Only modify geometry if not static
+    if (!isStatic) {
+      const pos = geo.attributes.position as THREE.BufferAttribute
+      const bump = distance > 25 ? 0.008 : 0.015
+      const noiseScale1 = distance > 25 ? 0.3 : 0.4
+      const noiseScale2 = distance > 25 ? 0.8 : 1.2
+      const flattenFactor = 0.92
+
+      // Use single loop with optimized calculations
+      for (let i = 0; i < pos.count; i++) {
+        const x = pos.getX(i)
+        const y = pos.getY(i)
+        const z = pos.getZ(i)
+
+        // Simplified noise calculation - fewer layers for better performance
+        let totalNoise: number
+        if (distance > 25) {
+          // Single noise layer for distant objects
+          totalNoise = globalSimplex.noise3d(x * noiseScale1, y * noiseScale1, z * noiseScale1)
+        } else {
+          // Dual layer noise for close objects
+          const n1 = globalSimplex.noise3d(x * noiseScale1, y * noiseScale1, z * noiseScale1) * 0.8
+          const n2 = globalSimplex.noise3d(x * noiseScale2, y * noiseScale2, z * noiseScale2) * 0.2
+          totalNoise = n1 + n2
+        }
+
+        pos.setXYZ(
+          i,
+          x + totalNoise * bump * Math.abs(x),
+          y * flattenFactor + totalNoise * bump * 0.1,
+          z + totalNoise * bump * Math.abs(z)
+        )
+      }
+      
+      pos.needsUpdate = true
+      geo.computeVertexNormals()
+    }
+
+    // Cache the geometry
+    geometryCache.set(cacheKey, geo)
+    return geo.clone()
+  }, [geometryArgs, distance, isStatic])
   // Optimized material with conditional texture loading
   const material = useMemo(() => {
     const baseProps = {
@@ -101,60 +159,26 @@ export function ProceduralPebble({
     return new THREE.MeshStandardMaterial(baseProps)
   }, [distance, enableTextures])
 
-  // Optimized geometry modification with memoized callback
-  const modifyGeometry = useCallback(() => {
-    if (!mesh.current) return
-    
-    const g = mesh.current.geometry as THREE.BufferGeometry
-    const pos = g.attributes.position as THREE.BufferAttribute
-
-    // Adaptive noise complexity based on distance
-    const bump = distance > 25 ? 0.008 : 0.015
-    const noiseScale1 = distance > 25 ? 0.3 : 0.4
-    const noiseScale2 = distance > 25 ? 0.8 : 1.2
-    const flattenFactor = 0.92
-
-    // Use single loop with optimized calculations
-    for (let i = 0; i < pos.count; i++) {
-      const x = pos.getX(i)
-      const y = pos.getY(i)
-      const z = pos.getZ(i)
-
-      // Simplified noise calculation - fewer layers for better performance
-      let totalNoise: number
-      if (distance > 25) {
-        // Single noise layer for distant objects
-        totalNoise = globalSimplex.noise3d(x * noiseScale1, y * noiseScale1, z * noiseScale1)
-      } else {
-        // Dual layer noise for close objects
-        const n1 = globalSimplex.noise3d(x * noiseScale1, y * noiseScale1, z * noiseScale1) * 0.8
-        const n2 = globalSimplex.noise3d(x * noiseScale2, y * noiseScale2, z * noiseScale2) * 0.2
-        totalNoise = n1 + n2
-      }
-
-      pos.setXYZ(
-        i,
-        x + totalNoise * bump * Math.abs(x),
-        y * flattenFactor + totalNoise * bump * 0.1,
-        z + totalNoise * bump * Math.abs(z)
-      )
-    }
-    
-    pos.needsUpdate = true
-    g.computeVertexNormals()
-  }, [distance])
-
-  // Apply geometry modifications
+  // Apply processed geometry to mesh when it mounts
   useEffect(() => {
-    modifyGeometry()
-  }, [modifyGeometry])
+    if (mesh.current && processedGeometry) {
+      mesh.current.geometry = processedGeometry
+    }
+  }, [processedGeometry])
 
-  // Conditional animation with performance throttling
+  // Conditional animation with frame skipping for better performance
   useFrame((_s, dt) => {
     if (animate && mesh.current) {
-      // Slower rotation for distant objects to save performance
-      const rotationSpeed = distance > 25 ? 0.15 : 0.25
-      mesh.current.rotation.y += dt * rotationSpeed
+      // Frame skipping for distant objects to save performance
+      const skipFrames = distance > 25 ? 2 : 0
+      
+      if (skipFrames === 0 || frameSkip.current % (skipFrames + 1) === 0) {
+        // Slower rotation for distant objects to save performance
+        const rotationSpeed = distance > 25 ? 0.15 : 0.25
+        mesh.current.rotation.y += dt * rotationSpeed
+      }
+      
+      frameSkip.current++
     }
   })
   

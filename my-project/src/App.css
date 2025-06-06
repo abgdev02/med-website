@@ -8,6 +8,13 @@ body{
   overflow-x:hidden;
   overflow-y:auto;
   font-family:"Source Sans Pro",-apple-system,BlinkMacSystemFont,sans-serif;
+  
+  /* Performance optimizations for smooth scrolling */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 #root {
@@ -15,6 +22,10 @@ body{
   overflow-x: hidden;
   overflow-y: auto;
   width: 100%;
+  
+  /* Additional performance optimizations */
+  will-change: scroll-position;
+  contain: layout style paint;
 }
 
 /* ====================  HERO WRAPPER  ==================== */
@@ -42,6 +53,12 @@ body{
     var(--sky-blue) 100%
   );
   isolation:isolate;                     /* keep pseudo blurs inside */
+  
+  /* Performance optimizations */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+  contain: layout style paint;
 }
 
 /* ------------ blurred "mesh-gradient" blobs ------------ */
@@ -93,7 +110,18 @@ body{
 @keyframes spinCCW{to{transform:rotate(-360deg);}}
 
 /* ====================  THREE CANVAS  ==================== */
-.heroCanvas{position:absolute;inset:0;pointer-events:none;z-index:0;}
+.heroCanvas{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  
+  /* Performance optimizations for 3D canvas */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+  contain: layout style paint;
+}
 
 /* ====================  HERO TEXT BLOCK  ==================== */
 .heroContent{
