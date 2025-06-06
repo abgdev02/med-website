@@ -9,6 +9,35 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true
-  }
+    sourcemap: true,
+    chunkSizeWarningLimit: 300,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split Three.js into its own chunk
+          'three': ['three'],
+          // Split React Three Fiber ecosystem
+          'react-three': ['@react-three/fiber', '@react-three/drei'],
+          // Split optimization utilities
+          'utils': [
+            './src/utils/AnimationScheduler',
+            './src/utils/LRUCache',
+            './src/utils/ObjectPool',
+            './src/utils/SpatialHashGrid',
+            './src/utils/FrustumCuller',
+            './src/utils/PerformanceMonitor'
+          ],
+          // Split 3D components
+          'three-components': [
+            './src/BokehBubbles',
+            './src/components/three-d/ProceduralPebble',
+            './src/components/three-d/SceneManager'
+          ]
+        }
+      }
+    }
+  },
+  // Service Worker configuration
+  publicDir: 'public',
+  assetsInclude: ['**/*.svg', '**/*.woff', '**/*.woff2']
 })

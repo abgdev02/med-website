@@ -1,11 +1,15 @@
-:root {
-  font-family: "Source Sans Pro", system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* Design Tokens - Lavender Theme */
+@import './tokens/tokens.css';
+@import './tokens/lavender-theme.css';
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+:root {
+  font-family: var(--typography-fontFamily-primary);
+  line-height: var(--typography-lineHeight-normal);
+  font-weight: var(--typography-fontWeight-normal);
+
+  color-scheme: light;
+  color: var(--colors-text-primary);
+  background: var(--colors-background-gradient);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -20,6 +24,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background: var(--colors-background-gradient);
 }
 
 #root {

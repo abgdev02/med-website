@@ -1,0 +1,306 @@
+/* Design Tokens CSS Custom Properties */
+/* Auto-generated from designTokens.ts - Lavender Theme */
+
+:root {
+  /* Colors - Primary - Lavender Purple Scale */
+  --colors-primary-50: #F2E4EE;
+  --colors-primary-100: #F2D8EE;
+  --colors-primary-200: #E6CAE6;
+  --colors-primary-300: #D3BDF2;
+  --colors-primary-400: #C1A8E8;
+  --colors-primary-500: #A496D9;
+  --colors-primary-600: #8B7BC7;
+  --colors-primary-700: #7669B5;
+  --colors-primary-800: #6865BF;
+  --colors-primary-900: #5A4FA3;
+  --colors-primary-950: #4A4191;
+  
+  /* Colors - Wellness - Lavender Theme */
+  --colors-wellness-lavender-light: #F2E4EE;
+  --colors-wellness-lavender-soft: #F2D8EE;
+  --colors-wellness-lavender-medium: #D3BDF2;
+  --colors-wellness-lavender-vibrant: #A496D9;
+  --colors-wellness-lavender-deep: #6865BF;
+  --colors-wellness-accent-pink: #E6CAE6;
+  --colors-wellness-accent-purple: #C1A8E8;
+  
+  /* Colors - Semantic */
+  --colors-semantic-success: #10b981;
+  --colors-semantic-warning: #f59e0b;
+  --colors-semantic-error: #ef4444;
+  --colors-semantic-info: #3b82f6;
+  
+  /* Colors - Text - Lavender Theme */
+  --colors-text-primary: #6865BF;
+  --colors-text-secondary: #8B7BC7;
+  --colors-text-tertiary: #A496D9;
+  --colors-text-inverse: #ffffff;
+  --colors-text-muted: #C1A8E8;
+  --colors-text-accent: #D3BDF2;
+  
+  /* Colors - Background - Lavender Theme */
+  --colors-background-primary: #ffffff;
+  --colors-background-secondary: #F2E4EE;
+  --colors-background-tertiary: #F2D8EE;
+  --colors-background-overlay: rgba(242, 228, 238, 0.15);
+  --colors-background-glass: rgba(242, 216, 238, 0.25);
+  --colors-background-gradient: linear-gradient(135deg, #F2E4EE 0%, #F2D8EE 50%, #D3BDF2 100%);
+  
+  /* Colors - Border - Lavender Theme */
+  --colors-border-light: #F2D8EE;
+  --colors-border-medium: #D3BDF2;
+  --colors-border-dark: #A496D9;
+  --colors-border-focus: #6865BF;
+  --colors-border-gradient: linear-gradient(135deg, #D3BDF2, #A496D9, #6865BF);
+  
+  /* Typography */
+  --typography-fontFamily-primary: "Source Sans Pro", -apple-system, BlinkMacSystemFont, sans-serif;
+  --typography-fontFamily-monospace: "Fira Code", "SF Mono", Monaco, Inconsolata, "Roboto Mono", monospace;
+  
+  /* Font Sizes */
+  --typography-fontSize-xs: 0.75rem;
+  --typography-fontSize-sm: 0.875rem;
+  --typography-fontSize-base: 1rem;
+  --typography-fontSize-lg: 1.125rem;
+  --typography-fontSize-xl: 1.25rem;
+  --typography-fontSize-2xl: 1.5rem;
+  --typography-fontSize-3xl: 1.875rem;
+  --typography-fontSize-4xl: 2.25rem;
+  --typography-fontSize-5xl: 3rem;
+  --typography-fontSize-6xl: 3.75rem;
+  --typography-fontSize-7xl: 4.5rem;
+  --typography-fontSize-8xl: 6rem;
+  --typography-fontSize-9xl: 8rem;
+  
+  /* Font Weights */
+  --typography-fontWeight-light: 300;
+  --typography-fontWeight-normal: 400;
+  --typography-fontWeight-medium: 500;
+  --typography-fontWeight-semibold: 600;
+  --typography-fontWeight-bold: 700;
+  
+  /* Line Heights */
+  --typography-lineHeight-tight: 1.25;
+  --typography-lineHeight-normal: 1.5;
+  --typography-lineHeight-relaxed: 1.625;
+  --typography-lineHeight-loose: 2;
+  
+  /* Letter Spacing */
+  --typography-letterSpacing-tight: -0.025em;
+  --typography-letterSpacing-normal: 0em;
+  --typography-letterSpacing-wide: 0.025em;
+  --typography-letterSpacing-wider: 0.05em;
+  --typography-letterSpacing-widest: 0.1em;
+  
+  /* Spacing */
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  --spacing-32: 8rem;
+  --spacing-40: 10rem;
+  --spacing-48: 12rem;
+  --spacing-56: 14rem;
+  --spacing-64: 16rem;
+  
+  /* Border Radius */
+  --borderRadius-none: 0;
+  --borderRadius-sm: 0.125rem;
+  --borderRadius-base: 0.25rem;
+  --borderRadius-md: 0.375rem;
+  --borderRadius-lg: 0.5rem;
+  --borderRadius-xl: 0.75rem;
+  --borderRadius-2xl: 1rem;
+  --borderRadius-3xl: 1.5rem;
+  --borderRadius-full: 9999px;
+  
+  /* Animation */
+  --animation-duration-fast: 150ms;
+  --animation-duration-normal: 300ms;
+  --animation-duration-slow: 500ms;
+  --animation-duration-slower: 800ms;
+  
+  /* Animation Easing */
+  --animation-easing-linear: linear;
+  --animation-easing-ease: ease;
+  --animation-easing-easeIn: cubic-bezier(0.4, 0, 1, 1);
+  --animation-easing-easeOut: cubic-bezier(0, 0, 0.2, 1);
+  --animation-easing-easeInOut: cubic-bezier(0.4, 0, 0.2, 1);
+  --animation-easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* Shadow System */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  
+  /* Z-Index */
+  --z-hide: -1;
+  --z-auto: auto;
+  --z-base: 0;
+  --z-docked: 10;
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-banner: 1200;
+  --z-overlay: 1300;
+  --z-modal: 1400;
+  --z-popover: 1500;
+  --z-skipLink: 1600;
+  --z-toast: 1700;
+  --z-tooltip: 1800;
+  
+  /* Accessibility */
+  --a11y-contrast-ratio-min: 4.5;
+  --a11y-contrast-ratio-large: 3;
+  --a11y-focus-width: 2px;
+  --a11y-focus-style: solid;
+  --a11y-focus-color: var(--colors-border-focus);
+  --a11y-focus-offset: 2px;
+}
+
+/* Component Token Classes */
+.btn-primary {
+  background-color: var(--colors-text-primary);
+  color: var(--colors-text-inverse);
+  border: 1px solid transparent;
+  padding: var(--spacing-3) var(--spacing-6);
+  border-radius: var(--borderRadius-lg);
+  font-size: var(--typography-fontSize-base);
+  font-weight: var(--typography-fontWeight-medium);
+  transition: all var(--animation-duration-normal) var(--animation-easing-easeInOut);
+}
+
+.btn-primary:hover {
+  background-color: var(--colors-primary-700);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--colors-text-primary);
+  border: 1px solid var(--colors-border-medium);
+  padding: var(--spacing-3) var(--spacing-6);
+  border-radius: var(--borderRadius-lg);
+  font-size: var(--typography-fontSize-base);
+  font-weight: var(--typography-fontWeight-medium);
+  transition: all var(--animation-duration-normal) var(--animation-easing-easeInOut);
+}
+
+.btn-secondary:hover {
+  background-color: var(--colors-background-secondary);
+  border-color: var(--colors-border-dark);
+}
+
+.card {
+  background-color: var(--colors-background-primary);
+  border: 1px solid var(--colors-border-light);
+  border-radius: var(--borderRadius-2xl);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--animation-duration-normal) var(--animation-easing-easeInOut);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.glass-card {
+  background: var(--colors-background-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--colors-background-overlay);
+  border-radius: var(--borderRadius-2xl);
+  padding: var(--spacing-6);
+}
+
+/* Typography Classes */
+.text-primary {
+  color: var(--colors-text-primary);
+}
+
+.text-secondary {
+  color: var(--colors-text-secondary);
+}
+
+.text-muted {
+  color: var(--colors-text-muted);
+}
+
+.heading-1 {
+  font-size: var(--typography-fontSize-4xl);
+  font-weight: var(--typography-fontWeight-bold);
+  line-height: var(--typography-lineHeight-tight);
+  color: var(--colors-text-primary);
+}
+
+.heading-2 {
+  font-size: var(--typography-fontSize-3xl);
+  font-weight: var(--typography-fontWeight-semibold);
+  line-height: var(--typography-lineHeight-tight);
+  color: var(--colors-text-primary);
+}
+
+.heading-3 {
+  font-size: var(--typography-fontSize-2xl);
+  font-weight: var(--typography-fontWeight-semibold);
+  line-height: var(--typography-lineHeight-normal);
+  color: var(--colors-text-primary);
+}
+
+/* Spacing Utilities */
+.m-1 { margin: var(--spacing-1); }
+.m-2 { margin: var(--spacing-2); }
+.m-3 { margin: var(--spacing-3); }
+.m-4 { margin: var(--spacing-4); }
+.m-6 { margin: var(--spacing-6); }
+.m-8 { margin: var(--spacing-8); }
+
+.p-1 { padding: var(--spacing-1); }
+.p-2 { padding: var(--spacing-2); }
+.p-3 { padding: var(--spacing-3); }
+.p-4 { padding: var(--spacing-4); }
+.p-6 { padding: var(--spacing-6); }
+.p-8 { padding: var(--spacing-8); }
+
+.mt-1 { margin-top: var(--spacing-1); }
+.mt-2 { margin-top: var(--spacing-2); }
+.mt-4 { margin-top: var(--spacing-4); }
+.mt-6 { margin-top: var(--spacing-6); }
+.mt-8 { margin-top: var(--spacing-8); }
+
+.mb-1 { margin-bottom: var(--spacing-1); }
+.mb-2 { margin-bottom: var(--spacing-2); }
+.mb-4 { margin-bottom: var(--spacing-4); }
+.mb-6 { margin-bottom: var(--spacing-6); }
+.mb-8 { margin-bottom: var(--spacing-8); }
+
+/* Responsive Design Utilities */
+@media (min-width: 640px) {
+  .sm\:text-lg { font-size: var(--typography-fontSize-lg); }
+  .sm\:text-xl { font-size: var(--typography-fontSize-xl); }
+  .sm\:p-8 { padding: var(--spacing-8); }
+}
+
+@media (min-width: 768px) {
+  .md\:text-xl { font-size: var(--typography-fontSize-xl); }
+  .md\:text-2xl { font-size: var(--typography-fontSize-2xl); }
+  .md\:p-12 { padding: var(--spacing-12); }
+}
+
+@media (min-width: 1024px) {
+  .lg\:text-2xl { font-size: var(--typography-fontSize-2xl); }
+  .lg\:text-3xl { font-size: var(--typography-fontSize-3xl); }
+}

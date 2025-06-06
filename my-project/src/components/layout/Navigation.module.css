@@ -1,0 +1,109 @@
+/* Navigation CSS Module - Lavender Theme */
+.nav {
+  font-family: var(--typography-fontFamily-primary);
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);  background: var(--colors-background-glass);
+  backdrop-filter: blur(40px) saturate(180%);
+  border-bottom: 1px solid var(--colors-border-light);
+  padding: var(--spacing-4) var(--spacing-8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all var(--animation-duration-normal) var(--animation-easing-ease);
+}
+
+.logo {
+  font-family: var(--typography-fontFamily-primary);
+  font-size: var(--typography-fontSize-xl);
+  font-weight: var(--typography-fontWeight-bold);
+  color: var(--colors-text-primary);
+  text-decoration: none;
+  letter-spacing: var(--typography-letterSpacing-tight);
+}
+
+.logo:hover {
+  color: var(--colors-primary-600);
+}
+
+.links {
+  font-family: var(--typography-fontFamily-primary);
+  display: flex;
+  gap: var(--spacing-8);
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLink {
+  font-family: var(--typography-fontFamily-primary);
+  color: var(--colors-text-primary);
+  text-decoration: none;
+  font-weight: var(--typography-fontWeight-medium);
+  font-size: var(--typography-fontSize-sm);
+  letter-spacing: var(--typography-letterSpacing-wide);
+  transition: all var(--animation-duration-normal) var(--animation-easing-ease);
+  padding: var(--spacing-2) 0;
+  border-bottom: 2px solid transparent;
+}
+
+.navLink:hover,
+.navLink:focus {
+  color: #004d77;
+  border-bottom-color: #004d77;
+  outline: none;
+}
+
+.navLink.active {
+  color: var(--colors-primary-600);
+  border-bottom-color: var(--colors-primary-600);
+  font-weight: var(--typography-fontWeight-semibold);
+}
+
+.navLink:focus-visible {
+  outline: 2px solid #004d77;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip to main content link for accessibility */
+.skipToMain {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #003b5e;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 2000;
+  border-radius: 4px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.9rem;
+  transition: top 0.3s ease;
+}
+
+.skipToMain:focus {
+  top: 6px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .nav {
+    padding: 0.8rem 1rem;
+  }
+  
+  .logo {
+    font-size: 1.3rem;
+  }
+  
+  .links {
+    gap: 1rem;
+  }
+  
+  .navLink {
+    font-size: 0.85rem;
+  }
+}

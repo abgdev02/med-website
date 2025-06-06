@@ -4,6 +4,7 @@ import { TabButton } from '../ui/TabButton'
 import mindfulnessIcon from '../../assets/icons/mindfulness 1.svg'
 import rippleIcon from '../../assets/icons/ripple.svg'
 import sineIcon from '../../assets/icons/sine.svg'
+import styles from './TabSection.module.css'
 
 interface TabSectionProps {
   isMobile: boolean
@@ -105,59 +106,26 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
       </div>
     )
   }
-  return (
-    <div className="section" style={{
-      width: '100%', 
-      maxWidth: '100%',
-      minHeight: '100vh', 
-      paddingLeft: isMobile ? 20 : 80, 
-      paddingRight: isMobile ? 20 : 80, 
-      paddingTop: 120, 
-      paddingBottom: 120, 
-      background: 'white', 
-      flexDirection: 'column', 
-      justifyContent: 'flex-start', 
-      alignItems: 'flex-start', 
-      gap: 80, 
-      display: 'flex',
-      boxSizing: 'border-box'
-    }}>
-      {/* Header Section */}
-      <div style={{
-        flexDirection: 'column', 
-        justifyContent: 'flex-start', 
-        alignItems: 'flex-start', 
-        gap: 40, 
-        display: 'flex'
-      }}>          
-        <div style={{
-          width: isMobile ? '100%' : 512, 
-          maxWidth: '100%',
-          justifyContent: 'flex-start', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          color: '#2A2A2A', 
-          fontSize: isMobile ? 32 : 48, 
-          fontFamily: '"Source Sans Pro", sans-serif', 
-          fontWeight: '100', 
-          lineHeight: isMobile ? 1.2 : 56/48, 
-          wordWrap: 'break-word',
-          textAlign: 'left'
-        }}>
+  
+  return (    <div className={`${styles.section} ${isMobile ? styles.mobile : ''}`}>      {/* Header Section */}
+      <div className={styles.headerSection} style={{ marginTop: isMobile ? 80 : 120 }}>            <div className="gradient-text-primary" style={{
+            color: '#2A2A2A',
+            fontSize: isMobile ? 32 : 48,
+            fontFamily: 'Source Sans Pro',
+            fontWeight: '300',
+            lineHeight: isMobile ? 1.2 : 1.2,
+            wordWrap: 'break-word',
+            textAlign: 'left'
+          }}>
           Measure how deeply you're grounding
-        </div>
-        <div style={{
-          width: isMobile ? '100%' : '80%', 
-          maxWidth: 818,
-          justifyContent: 'flex-start', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          color: '#8A8A8A', 
-          fontSize: 16, 
-          fontFamily: '"Source Sans Pro", sans-serif', 
-          fontWeight: '400', 
-          wordWrap: 'break-word',
-          textAlign: 'left'
+        </div>        <div className={`${styles.description} ${isMobile ? styles.mobile : ''}`} style={{
+          color: '#8a8a8a',
+          fontSize: isMobile ? 14 : 16,
+          fontFamily: '"Source Sans Pro", sans-serif',
+          fontWeight: '400',
+          lineHeight: 1.6,
+          textAlign: 'left',
+          marginTop: isMobile ? 16 : 24
         }}>
           Root captures your emotional and sensory engagement in real time combining audio, haptics, and AI-curated calm to give you a single, personalized Mental Immersion Score.
         </div>

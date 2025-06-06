@@ -11,7 +11,7 @@ export function HoldMeditateSection({ isMobile }: HoldMeditateSectionProps) {
         minHeight: '100vh',
         paddingLeft: isMobile ? 20 : 80,
         paddingRight: isMobile ? 20 : 80,
-        paddingTop: 120,
+        paddingTop: 160,
         paddingBottom: 120,
         background: 'white',
         display: 'flex',
@@ -36,9 +36,7 @@ export function HoldMeditateSection({ isMobile }: HoldMeditateSectionProps) {
           display: 'flex',
           flexDirection: 'column',
           gap: 40
-        }}>
-          <div style={{
-            color: '#2A2A2A',
+        }}>          <div className="gradient-text-primary" style={{
             fontSize: isMobile ? 32 : 48,
             fontFamily: 'Source Sans Pro',
             fontWeight: '300',

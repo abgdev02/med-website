@@ -1,13 +1,13 @@
 /* ====================  GLOBAL  ==================== */
 html,
 body{
-  margin:0;
-  padding:0;
-  min-height:100vh;
-  width:100%;
-  overflow-x:hidden;
-  overflow-y:auto;
-  font-family:"Source Sans Pro",-apple-system,BlinkMacSystemFont,sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: var(--typography-fontFamily-primary);
   
   /* Performance optimizations for smooth scrolling */
   scroll-behavior: smooth;
@@ -28,31 +28,91 @@ body{
   contain: layout style paint;
 }
 
+/* ====================  ACCESSIBILITY  ==================== */
+/* Skip link for keyboard navigation */
+.skip-link {
+  position: absolute !important;
+  top: -40px;
+  left: var(--spacing-2);
+  background: var(--colors-text-primary);
+  color: var(--colors-text-inverse);
+  padding: var(--spacing-2) var(--spacing-3);
+  text-decoration: none;
+  border-radius: 0 0 var(--borderRadius-base) var(--borderRadius-base);
+  z-index: var(--z-skipLink);
+  font-family: var(--typography-fontFamily-primary);
+  font-size: var(--typography-fontSize-sm);
+  font-weight: var(--typography-fontWeight-semibold);
+  transition: top var(--animation-duration-fast) var(--animation-easing-easeOut);
+  outline: var(--a11y-focus-width) solid transparent;
+  outline-offset: var(--a11y-focus-offset);
+}
+
+.skip-link:focus {
+  top: 0 !important;
+  outline: var(--a11y-focus-width) solid var(--colors-semantic-warning);
+  outline-offset: var(--a11y-focus-offset);
+}
+
+/* Enhanced focus indicators - Lavender Theme */
+:focus {
+  outline: var(--a11y-focus-width) solid var(--colors-border-focus);
+  outline-offset: var(--a11y-focus-offset);
+}
+
+/* Exception for custom styled elements - Lavender Theme */
+button:focus,
+.tab-button:focus {
+  outline: var(--a11y-focus-width) solid var(--colors-border-focus);
+  outline-offset: var(--a11y-focus-offset);
+  box-shadow: 0 0 0 var(--spacing-1) rgba(104, 101, 191, 0.2);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .skip-link {
+    border: var(--a11y-focus-width) solid currentColor;
+  }
+  
+  :focus {
+    outline-width: 3px;
+  }
+}
+
+/* Reduced motion support - already implemented but enhanced */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Keep skip link transition for usability */
+  .skip-link {
+    transition: none;
+  }
+}
+
 /* ====================  HERO WRAPPER  ==================== */
 .heroWrapper{
-  position:relative;
-  width:100%;
+  position: relative;
+  width: 100%;
   max-width: 100vw;
-  height:100vh;
+  height: 100vh;
   flex-shrink: 0;
-
-  /* —— wellness palette (calming, soft colors) —— */
-  --sky-pink:#E8D5E5;    /* Soft lavender pink */
-  --sky-indigo:#C5D1E8;  /* Gentle periwinkle */
-  --sky-blue:#D1E2F0;    /* Calm sky blue */
-  --sky-gold:#F0EDE0;    /* Warm cream */
-  --sky-coral:#F0E5E0;   /* Soft peach */
-
-  /* static wash behind the moving blobs (v-soft) */
-  background:linear-gradient(
+  /* static wash behind the moving blobs - Lavender Theme */
+  background: linear-gradient(
     180deg,
-    var(--sky-indigo) 0%,
-    var(--sky-pink) 22%,
-    var(--sky-coral) 44%,
-    var(--sky-gold) 66%,
-    var(--sky-blue) 100%
+    var(--colors-wellness-lavender-light) 0%,
+    var(--colors-wellness-lavender-soft) 22%,
+    var(--colors-wellness-accent-pink) 44%,
+    var(--colors-wellness-lavender-medium) 66%,
+    var(--colors-wellness-lavender-vibrant) 100%
   );
-  isolation:isolate;                     /* keep pseudo blurs inside */
+  isolation: isolate;                     /* keep pseudo blurs inside */
   
   /* Performance optimizations */
   transform: translateZ(0);
@@ -63,40 +123,40 @@ body{
 
 /* ------------ blurred "mesh-gradient" blobs ------------ */
 
-/* master blob swirl */
+/* master blob swirl - Lavender Theme */
 .heroWrapper::before{
-  content:"";
-  position:absolute;
-  inset:-35%;
-  background:conic-gradient(
+  content: "";
+  position: absolute;
+  inset: -35%;
+  background: conic-gradient(
     from 0deg,
-    var(--sky-pink),
-    var(--sky-coral),
-    var(--sky-gold),
-    var(--sky-blue),
-    var(--sky-indigo),
-    var(--sky-pink)
+    var(--colors-wellness-lavender-soft),
+    var(--colors-wellness-accent-pink),
+    var(--colors-wellness-lavender-medium),
+    var(--colors-wellness-lavender-vibrant),
+    var(--colors-wellness-lavender-deep),
+    var(--colors-wellness-lavender-soft)
   );
-  border-radius:50%;
-  filter:blur(200px);
-  opacity:.25;
-  animation:spinCW 50s linear infinite;
+  border-radius: var(--borderRadius-full);
+  filter: blur(200px);
+  opacity: .25;
+  animation: spinCW var(--animation-duration-slower) linear infinite;
   z-index:-2;
 }
 
-/* counter-swirl for richer "mesh" feel */
+/* counter-swirl for richer "mesh" feel - Lavender Theme */
 .heroWrapper::after{
   content:"";
   position:absolute;
   inset:-45%;
   background:conic-gradient(
     from 0deg,
-    var(--sky-gold),
-    var(--sky-blue),
-    var(--sky-indigo),
-    var(--sky-pink),
-    var(--sky-coral),
-    var(--sky-gold)
+    var(--colors-wellness-lavender-medium),
+    var(--colors-wellness-lavender-vibrant),
+    var(--colors-wellness-lavender-deep),
+    var(--colors-wellness-accent-purple),
+    var(--colors-wellness-accent-pink),
+    var(--colors-wellness-lavender-medium)
   );
   border-radius:50%;
   filter:blur(220px);
@@ -123,14 +183,14 @@ body{
   contain: layout style paint;
 }
 
-/* ====================  HERO TEXT BLOCK  ==================== */
+/* ====================  HERO TEXT BLOCK - Lavender Theme ==================== */
 .heroContent{
   position:absolute;
   top:72%;
   left:50%;
   transform:translate(-50%,-55%);
   text-align:center;
-  color:#003b5e;
+  color: var(--colors-text-primary);
   max-width:680px;
   z-index:1;
 }
@@ -281,6 +341,47 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* ====================  LOADING ANIMATIONS  ==================== */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Loading fallback styles */
+.component-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 200px;
+  color: #003b5e;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #e0e7ff;
+  border-top: 2px solid #003b5e;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.three-d-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  color: #003b5e;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.8rem;
+  opacity: 0.6;
+  text-align: center;
 }
 
 /* Smooth scrolling */

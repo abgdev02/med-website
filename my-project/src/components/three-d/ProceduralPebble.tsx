@@ -1,25 +1,36 @@
 import { useRef, useEffect, useMemo } from 'react'
-import { useFrame } from '@react-three/fiber'
-import * as THREE from 'three'
+import { 
+  SphereGeometry,
+  BufferGeometry,
+  BufferAttribute,
+  Mesh,
+  MeshStandardMaterial,
+  Color,
+  Vector2,
+  CanvasTexture,
+  RepeatWrapping
+} from 'three'
 import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise.js'
+import { LRUCache } from '../../utils/LRUCache'
+import { usePreferredMotion } from '../../hooks/usePreferredMotion'
 
 // Cache noise instance globally to avoid recreation
 const globalSimplex = new SimplexNoise()
 
-// Pre-computed geometry cache for better performance
-const geometryCache = new Map<string, THREE.BufferGeometry>()
+// Replace Map with LRU Cache for better memory management
+const geometryCache = new LRUCache<string, BufferGeometry>(50)
 
 // Create optimized textures once and cache them
 const createOptimizedTextures = () => {
   // Much smaller texture for better performance
   const canvas = document.createElement('canvas')
-  canvas.width = 128 // Reduced from 256
+  canvas.width = 128
   canvas.height = 128
   const context = canvas.getContext('2d')!  
-  const imageData = context.createImageData(128, 128) // Reduced from 256
+  const imageData = context.createImageData(128, 128)
   for (let i = 0; i < imageData.data.length; i += 4) {
     const noise = Math.random()
-    const value = Math.floor(220 + noise * 10) // Reduced variation for better performance
+    const value = Math.floor(220 + noise * 10)
     imageData.data[i] = value - 1
     imageData.data[i + 1] = value
     imageData.data[i + 2] = value + 1
@@ -27,28 +38,28 @@ const createOptimizedTextures = () => {
   }
   context.putImageData(imageData, 0, 0)
   
-  const colorTexture = new THREE.CanvasTexture(canvas)
-  colorTexture.wrapS = THREE.RepeatWrapping
-  colorTexture.wrapT = THREE.RepeatWrapping
+  const colorTexture = new CanvasTexture(canvas)
+  colorTexture.wrapS = RepeatWrapping
+  colorTexture.wrapT = RepeatWrapping
   colorTexture.repeat.set(1.2, 1.2)
-    // Simplified normal map - much smaller for better performance
+    
+  // Simplified normal map
   const normalCanvas = document.createElement('canvas')
-  normalCanvas.width = 64 // Reduced from 128
+  normalCanvas.width = 64
   normalCanvas.height = 64
   const normalContext = normalCanvas.getContext('2d')!
-  
   const normalImageData = normalContext.createImageData(64, 64)
   for (let i = 0; i < normalImageData.data.length; i += 4) {
-    normalImageData.data[i] = Math.floor(128 + (Math.random() - 0.5) * 8) // Reduced variation
+    normalImageData.data[i] = Math.floor(128 + (Math.random() - 0.5) * 8)
     normalImageData.data[i + 1] = Math.floor(128 + (Math.random() - 0.5) * 8)
-    normalImageData.data[i + 2] = Math.floor(220 + Math.random() * 20) // Reduced range
+    normalImageData.data[i + 2] = Math.floor(220 + Math.random() * 20)
     normalImageData.data[i + 3] = 255
   }
   normalContext.putImageData(normalImageData, 0, 0)
   
-  const normalTexture = new THREE.CanvasTexture(normalCanvas)
-  normalTexture.wrapS = THREE.RepeatWrapping
-  normalTexture.wrapT = THREE.RepeatWrapping
+  const normalTexture = new CanvasTexture(normalCanvas)
+  normalTexture.wrapS = RepeatWrapping
+  normalTexture.wrapT = RepeatWrapping
   
   return { colorTexture, normalTexture }
 }
@@ -61,7 +72,7 @@ interface ProceduralPebbleProps {
   animate?: boolean
   quality?: 'low' | 'medium' | 'high'
   enableTextures?: boolean
-  isStatic?: boolean // New prop for static pebbles
+  isStatic?: boolean
 }
 
 export function ProceduralPebble({ 
@@ -70,16 +81,18 @@ export function ProceduralPebble({
   quality = 'medium',
   enableTextures = true,
   isStatic = false
-}: ProceduralPebbleProps = {}) {
-  const mesh = useRef<THREE.Mesh>(null!)
-  const frameSkip = useRef(0) // For frame skipping optimization
+}: ProceduralPebbleProps = {}) {  const mesh = useRef<Mesh>(null!)
+  const { shouldAnimate } = usePreferredMotion()
+  
+  // Respect user's motion preferences - currently unused but kept for future use
+  // const shouldAnimateNow = animate && shouldAnimate
   
   // Dynamic geometry based on distance and quality - LOD (Level of Detail)
   const geometryArgs = useMemo((): [number, number, number] => {
     const qualityMap = {
       low: distance > 30 ? [0.8, 12, 8] : [0.8, 16, 12],
-      medium: distance > 30 ? [0.8, 20, 14] : [0.8, 32, 24], // Reduced from 48,32
-      high: distance > 30 ? [0.8, 32, 24] : [0.8, 48, 32] // Reduced from 96,64
+      medium: distance > 30 ? [0.8, 20, 14] : [0.8, 32, 24],
+      high: distance > 30 ? [0.8, 32, 24] : [0.8, 48, 32]
     }
     return qualityMap[quality] as [number, number, number]
   }, [distance, quality])
@@ -92,11 +105,11 @@ export function ProceduralPebble({
       return geometryCache.get(cacheKey)!.clone()
     }
 
-    const geo = new THREE.SphereGeometry(...geometryArgs)
+    const geo = new SphereGeometry(...geometryArgs)
     
     // Only modify geometry if not static
     if (!isStatic) {
-      const pos = geo.attributes.position as THREE.BufferAttribute
+      const pos = geo.attributes.position as BufferAttribute
       const bump = distance > 25 ? 0.008 : 0.015
       const noiseScale1 = distance > 25 ? 0.3 : 0.4
       const noiseScale2 = distance > 25 ? 0.8 : 1.2
@@ -136,10 +149,11 @@ export function ProceduralPebble({
     geometryCache.set(cacheKey, geo)
     return geo.clone()
   }, [geometryArgs, distance, isStatic])
+  
   // Optimized material with conditional texture loading
   const material = useMemo(() => {
     const baseProps = {
-      color: new THREE.Color(0.98, 0.98, 0.98),
+      color: new Color(0.98, 0.98, 0.98),
       roughness: 0.8,
       metalness: 0.02,
       envMapIntensity: 0.12,
@@ -147,16 +161,16 @@ export function ProceduralPebble({
 
     // Only add textures if close enough and enabled
     if (enableTextures && distance < 25) {
-      return new THREE.MeshStandardMaterial({
+      return new MeshStandardMaterial({
         ...baseProps,
         map: cachedTextures.colorTexture,
         normalMap: cachedTextures.normalTexture,
-        normalScale: new THREE.Vector2(0.3, 0.3),
+        normalScale: new Vector2(0.3, 0.3),
       })
     }
 
     // Simplified material for distant objects
-    return new THREE.MeshStandardMaterial(baseProps)
+    return new MeshStandardMaterial(baseProps)
   }, [distance, enableTextures])
 
   // Apply processed geometry to mesh when it mounts
@@ -165,22 +179,8 @@ export function ProceduralPebble({
       mesh.current.geometry = processedGeometry
     }
   }, [processedGeometry])
-
-  // Conditional animation with frame skipping for better performance
-  useFrame((_s, dt) => {
-    if (animate && mesh.current) {
-      // Frame skipping for distant objects to save performance
-      const skipFrames = distance > 25 ? 2 : 0
-      
-      if (skipFrames === 0 || frameSkip.current % (skipFrames + 1) === 0) {
-        // Slower rotation for distant objects to save performance
-        const rotationSpeed = distance > 25 ? 0.15 : 0.25
-        mesh.current.rotation.y += dt * rotationSpeed
-      }
-      
-      frameSkip.current++
-    }
-  })
+  
+  // No internal animation - relying on Float component wrapper for movement
   
   return (
     <mesh ref={mesh} material={material} castShadow receiveShadow>

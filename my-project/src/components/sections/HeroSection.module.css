@@ -1,0 +1,385 @@
+/* HeroSection CSS Module with Glassmorphism & ASMR Effects */
+.heroWrapper {
+  position: relative;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for better mobile support */
+  min-height: 100vh; /* Fallback for older browsers */
+  background: linear-gradient(135deg, var(--colors-wellness-sky-gold) 0%, var(--colors-wellness-sky-blue) 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroCanvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  
+  /* Performance optimizations for 3D canvas */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+  contain: layout style paint;
+}
+
+.rootTextBackground {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% - 160px));
+  text-align: center;
+  z-index: 1;
+  width: 100%;
+  pointer-events: none;
+}
+
+.rootText {
+  font-family: var(--typography-fontFamily-primary);
+  font-size: clamp(8rem, 12vw, 16rem);
+  font-weight: 900;
+  opacity: 0.15;
+  margin: 0;
+  position: relative;
+  line-height: var(--typography-lineHeight-tight);
+  color: var(--colors-text-secondary);
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--colors-text-tertiary) 0%, var(--colors-text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.rootText:hover {
+  opacity: 0.25;
+  transform: scale(1.01);
+  filter: blur(0.5px);
+}
+
+.pebbleSpace {
+  height: 8rem;
+  position: relative;
+  margin-bottom: 4rem;
+}
+
+.pebbleSpaceLarge {
+  height: 12rem;
+  position: relative;
+  z-index: 6;
+}
+
+/* Main Content Container */
+.mainContent {
+  position: absolute;
+  top: 40%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  width: 100%;
+  max-width: 800px;
+  padding: 1.5rem;
+  
+  /* Clean design without glassmorphism */
+  background: transparent;
+  border-radius: 32px;
+  
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.mainContent:hover {
+  transform: translate(-50%, -50%);
+}
+
+/* Enhanced Subtitle - clean design */
+.subtitle {
+  position: relative;
+  z-index: 15;
+  margin-top: 2rem;
+  color: #003b5e;
+  font-size: 0.9rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Source Sans Pro", sans-serif;
+  padding: 1rem 2rem;
+  
+  /* Removed glassmorphism background */
+  background: transparent;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Removed hover effect as subtitle should be static */
+
+.subtitle.mobile {
+  font-size: 0.75rem;
+  padding: 0.8rem 1.5rem;
+}
+
+/* Enhanced CTA Button with Wellness Theme */
+.ctaButton {
+  position: relative;
+  z-index: 15;
+  margin-top: 1rem;
+  padding: 1rem 3rem;
+  background: rgba(255, 255, 255, 0.4);
+  color: #6865BF;
+  border: 4px solid rgba(104, 101, 191, 0.2);
+  border-radius: 100px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-family: "Source Sans Pro", sans-serif;
+  overflow: hidden;
+  opacity: 0.4;
+  
+  /* Glassmorphism with wellness theme */
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 
+    0 8px 32px rgba(104, 101, 191, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Gradient border animation */
+.ctaButton::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, 
+    rgba(104, 101, 191, 0.6),
+    rgba(164, 150, 217, 0.4),
+    rgba(211, 189, 242, 0.6),
+    rgba(104, 101, 191, 0.6)
+  );
+  background-size: 300% 300%;
+  border-radius: 52px;
+  z-index: -1;
+  opacity: 0;
+  animation: borderGlow 3s ease-in-out infinite;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Subtle sparkle effect */
+.ctaButton::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  opacity: 0;
+  transform: translateY(-50%);
+  animation: sparkle 2s infinite;
+}
+
+.ctaButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #4B4891;
+  border-color: rgba(104, 101, 191, 0.4);
+  backdrop-filter: blur(25px) saturate(200%);
+  -webkit-backdrop-filter: blur(25px) saturate(200%);
+  box-shadow: 
+    0 12px 40px rgba(104, 101, 191, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  
+  transform: translateY(-2px) scale(1.02);
+  letter-spacing: 0.2em;
+}
+
+.ctaButton:hover::before {
+  opacity: 1;
+  animation-duration: 1.5s;
+}
+
+.ctaButton:hover::after {
+  opacity: 1;
+  animation-duration: 1s;
+}
+
+/* Keyframe animations */
+@keyframes borderGlow {
+  0%, 100% { 
+    background-position: 0% 50%;
+    opacity: 0.3;
+  }
+  50% { 
+    background-position: 100% 50%;
+    opacity: 0.6;
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 0;
+    transform: translateY(-50%) scale(0);
+  }
+  20% { 
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  80% { 
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+.ctaButton:active {
+  transform: scale(0.98) translateY(-1px);
+  transition: all 0.08s ease;
+}
+
+.ctaButton:active {
+  transform: scale(0.98) translateY(-1px);
+  transition: all 0.08s ease;
+}
+
+/* Enhanced Scroll Cue with ASMR Effect */
+.scrollCue {
+  position: absolute;
+  bottom: max(2.5rem, env(safe-area-inset-bottom, 2.5rem));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 64px;
+  opacity: 0.7;
+  z-index: 15;
+  stroke: #003b5e;
+  stroke-width: 2;
+  fill: none;
+  
+  /* Glassmorphism background */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 8px;
+  
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: scrollBounce 3s infinite ease-in-out;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { 
+    transform: translateX(-50%) translateY(0);
+    opacity: 0.7;
+  }
+  50% { 
+    transform: translateX(-50%) translateY(-12px);
+    opacity: 1;
+  }
+}
+
+/* Floating Elements Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Subtitle and CTA button are now static, removed animations */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .heroWrapper {
+    height: 100vh;
+    height: 100dvh; /* Better mobile viewport handling */
+    min-height: 100vh;
+  }
+  
+  .mainContent {
+    padding: 1.5rem 1rem;
+    border-radius: 24px;
+    max-width: 95%;
+    top: 50%; /* Ensure centered positioning on mobile */
+  }
+  
+  .subtitle {
+    font-size: 0.75rem;
+    padding: 0.8rem 1.5rem;
+    letter-spacing: 0.25em;
+  }
+    /* Removed subtitle hover effect */  .ctaButton {
+    padding: 1.2rem 2rem; /* Adjusted mobile padding */
+    font-size: 0.9rem;
+  }
+  
+  .pebbleSpace {
+    height: 4rem;
+    margin-bottom: 2rem;
+  }
+  
+  .pebbleSpaceLarge {
+    height: 6rem;
+  }
+    .scrollCue {
+    width: 24px;
+    height: 36px;
+    padding: 6px;
+    bottom: max(2rem, env(safe-area-inset-bottom, 2rem)); /* Ensure it stays within mobile viewport */
+  }
+}
+
+/* Additional responsive breakpoints for better viewport handling */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .mainContent {
+    padding: 2rem 1.5rem;
+    max-width: 85%;
+  }
+  
+  .scrollCue {
+    bottom: max(1.2rem, env(safe-area-inset-bottom, 1.2rem));
+  }
+}
+
+@media (max-height: 600px) {
+  .mainContent {
+    padding: 1rem;
+    top: 50%;
+  }
+  
+  .pebbleSpace {
+    height: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .pebbleSpaceLarge {
+    height: 3rem;
+  }
+  
+  .scrollCue {
+    width: 20px;
+    height: 30px;
+    padding: 4px;
+    bottom: max(0.5rem, env(safe-area-inset-bottom, 0.5rem));
+  }
+}
+
+/* Ultra-smooth micro-interactions */
+@media (prefers-reduced-motion: no-preference) {
+  .mainContent,
+  .subtitle,
+  .ctaButton,
+  .scrollCue {
+    will-change: transform, background, box-shadow;
+  }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  .ctaButton {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    background: rgba(0, 59, 94, 1); /* Solid color for better contrast */
+  }
+}
