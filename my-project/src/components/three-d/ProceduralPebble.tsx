@@ -1,85 +1,136 @@
-import { useRef, useEffect, useMemo } from 'react'
+import { useRef, useEffect, useMemo, useCallback } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise.js'
 
-export function ProceduralPebble() {
-  const mesh = useRef<THREE.Mesh>(null!)
-  const simplex = useRef(new SimplexNoise())
+// Cache noise instance globally to avoid recreation
+const globalSimplex = new SimplexNoise()
 
-  // Create realistic pebble material with textures
+// Create optimized textures once and cache them
+const createOptimizedTextures = () => {
+  // Optimized color texture - smaller canvas for better performance
+  const canvas = document.createElement('canvas')
+  canvas.width = 256
+  canvas.height = 256
+  const context = canvas.getContext('2d')!
+  
+  const imageData = context.createImageData(256, 256)
+  for (let i = 0; i < imageData.data.length; i += 4) {
+    const noise = Math.random()
+    const value = Math.floor(220 + noise * 10) // Reduced variation for better performance
+    imageData.data[i] = value - 1
+    imageData.data[i + 1] = value
+    imageData.data[i + 2] = value + 1
+    imageData.data[i + 3] = 255
+  }
+  context.putImageData(imageData, 0, 0)
+  
+  const colorTexture = new THREE.CanvasTexture(canvas)
+  colorTexture.wrapS = THREE.RepeatWrapping
+  colorTexture.wrapT = THREE.RepeatWrapping
+  colorTexture.repeat.set(1.2, 1.2)
+  
+  // Simplified normal map
+  const normalCanvas = document.createElement('canvas')
+  normalCanvas.width = 128
+  normalCanvas.height = 128
+  const normalContext = normalCanvas.getContext('2d')!
+  
+  const normalImageData = normalContext.createImageData(128, 128)
+  for (let i = 0; i < normalImageData.data.length; i += 4) {
+    normalImageData.data[i] = Math.floor(128 + (Math.random() - 0.5) * 10)
+    normalImageData.data[i + 1] = Math.floor(128 + (Math.random() - 0.5) * 10)
+    normalImageData.data[i + 2] = Math.floor(215 + Math.random() * 25)
+    normalImageData.data[i + 3] = 255
+  }
+  normalContext.putImageData(normalImageData, 0, 0)
+  
+  const normalTexture = new THREE.CanvasTexture(normalCanvas)
+  normalTexture.wrapS = THREE.RepeatWrapping
+  normalTexture.wrapT = THREE.RepeatWrapping
+  
+  return { colorTexture, normalTexture }
+}
+
+// Cache textures globally to avoid recreation on every component mount
+const cachedTextures = createOptimizedTextures()
+
+interface ProceduralPebbleProps {
+  distance?: number
+  animate?: boolean
+  quality?: 'low' | 'medium' | 'high'
+  enableTextures?: boolean
+}
+
+export function ProceduralPebble({ 
+  distance = 10, 
+  animate = true,
+  quality = 'medium',
+  enableTextures = true
+}: ProceduralPebbleProps = {}) {
+  const mesh = useRef<THREE.Mesh>(null!)  // Dynamic geometry based on distance and quality - LOD (Level of Detail)
+  const geometryArgs = useMemo((): [number, number, number] => {
+    const qualityMap = {
+      low: distance > 30 ? [1, 12, 8] : [1, 16, 12],
+      medium: distance > 30 ? [1, 24, 16] : [1, 48, 32], 
+      high: distance > 30 ? [1, 48, 32] : [1, 96, 64]
+    }
+    return qualityMap[quality] as [number, number, number]
+  }, [distance, quality])
+
+  // Optimized material with conditional texture loading
   const material = useMemo(() => {
-    // Create subtle noise texture for surface variation
-    const canvas = document.createElement('canvas')
-    canvas.width = 512
-    canvas.height = 512
-    const context = canvas.getContext('2d')!
-    
-    const imageData = context.createImageData(512, 512)
-    for (let i = 0; i < imageData.data.length; i += 4) {
-      const noise = Math.random()
-      const value = Math.floor(220 + noise * 15) // Very light grey with minimal variation
-      imageData.data[i] = value - 1     // R
-      imageData.data[i + 1] = value     // G  
-      imageData.data[i + 2] = value + 1 // B
-      imageData.data[i + 3] = 255       // A
-    }
-    context.putImageData(imageData, 0, 0)
-    
-    const colorTexture = new THREE.CanvasTexture(canvas)
-    colorTexture.wrapS = THREE.RepeatWrapping
-    colorTexture.wrapT = THREE.RepeatWrapping
-    colorTexture.repeat.set(1.5, 1.5)
-    
-    // Create normal map for surface bumps
-    const normalCanvas = document.createElement('canvas')
-    normalCanvas.width = 256
-    normalCanvas.height = 256
-    const normalContext = normalCanvas.getContext('2d')!
-    
-    const normalImageData = normalContext.createImageData(256, 256)
-    for (let i = 0; i < normalImageData.data.length; i += 4) {
-      normalImageData.data[i] = Math.floor(128 + (Math.random() - 0.5) * 15)     // R - subtle
-      normalImageData.data[i + 1] = Math.floor(128 + (Math.random() - 0.5) * 15) // G - subtle
-      normalImageData.data[i + 2] = Math.floor(220 + Math.random() * 35)         // B - smooth surface
-      normalImageData.data[i + 3] = 255   // A
-    }
-    normalContext.putImageData(normalImageData, 0, 0)
-    
-    const normalTexture = new THREE.CanvasTexture(normalCanvas)
-    normalTexture.wrapS = THREE.RepeatWrapping
-    normalTexture.wrapT = THREE.RepeatWrapping
-    normalTexture.repeat.set(1, 1)
-    
-    return new THREE.MeshStandardMaterial({
-      color: new THREE.Color(1,1,1), // Bright white color
+    const baseProps = {
+      color: new THREE.Color(0.98, 0.98, 0.98),
       roughness: 0.8,
       metalness: 0.02,
-      envMapIntensity: 0.15,
-      map: colorTexture,
-      normalMap: normalTexture,
-      normalScale: new THREE.Vector2(0.4, 0.4),
-    })
-  }, [])
+      envMapIntensity: 0.12,
+    }
 
-  useEffect(() => {
+    // Only add textures if close enough and enabled
+    if (enableTextures && distance < 25) {
+      return new THREE.MeshStandardMaterial({
+        ...baseProps,
+        map: cachedTextures.colorTexture,
+        normalMap: cachedTextures.normalTexture,
+        normalScale: new THREE.Vector2(0.3, 0.3),
+      })
+    }
+
+    // Simplified material for distant objects
+    return new THREE.MeshStandardMaterial(baseProps)
+  }, [distance, enableTextures])
+
+  // Optimized geometry modification with memoized callback
+  const modifyGeometry = useCallback(() => {
+    if (!mesh.current) return
+    
     const g = mesh.current.geometry as THREE.BufferGeometry
     const pos = g.attributes.position as THREE.BufferAttribute
 
+    // Adaptive noise complexity based on distance
+    const bump = distance > 25 ? 0.008 : 0.015
+    const noiseScale1 = distance > 25 ? 0.3 : 0.4
+    const noiseScale2 = distance > 25 ? 0.8 : 1.2
+    const flattenFactor = 0.92
+
+    // Use single loop with optimized calculations
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i)
       const y = pos.getY(i)
       const z = pos.getZ(i)
 
-      // Very subtle noise for natural river stone
-      const bump = 0.015
-      const n1 = simplex.current.noise3d(x * 0.4, y * 0.4, z * 0.4) * 0.8
-      const n2 = simplex.current.noise3d(x * 1.2, y * 1.2, z * 1.2) * 0.2
-      
-      const totalNoise = n1 + n2
-      
-      // Natural river stone shape - more rounded
-      const flattenFactor = 0.92 // Much more rounded
+      // Simplified noise calculation - fewer layers for better performance
+      let totalNoise: number
+      if (distance > 25) {
+        // Single noise layer for distant objects
+        totalNoise = globalSimplex.noise3d(x * noiseScale1, y * noiseScale1, z * noiseScale1)
+      } else {
+        // Dual layer noise for close objects
+        const n1 = globalSimplex.noise3d(x * noiseScale1, y * noiseScale1, z * noiseScale1) * 0.8
+        const n2 = globalSimplex.noise3d(x * noiseScale2, y * noiseScale2, z * noiseScale2) * 0.2
+        totalNoise = n1 + n2
+      }
 
       pos.setXYZ(
         i,
@@ -88,17 +139,28 @@ export function ProceduralPebble() {
         z + totalNoise * bump * Math.abs(z)
       )
     }
+    
     pos.needsUpdate = true
     g.computeVertexNormals()
-  }, [])
+  }, [distance])
 
+  // Apply geometry modifications
+  useEffect(() => {
+    modifyGeometry()
+  }, [modifyGeometry])
+
+  // Conditional animation with performance throttling
   useFrame((_s, dt) => {
-    mesh.current.rotation.y += dt * 0.25
+    if (animate && mesh.current) {
+      // Slower rotation for distant objects to save performance
+      const rotationSpeed = distance > 25 ? 0.15 : 0.25
+      mesh.current.rotation.y += dt * rotationSpeed
+    }
   })
   
   return (
     <mesh ref={mesh} material={material} castShadow receiveShadow>
-      <sphereGeometry args={[1, 128, 128]} />
+      <sphereGeometry args={geometryArgs} />
     </mesh>
   )
 }

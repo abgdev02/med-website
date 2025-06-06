@@ -22,14 +22,18 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
         
         {/* Bokeh background particles */}
         <BokehBubbles count={3000} />
-        
-        {/* Main pebble with gentle float */}
+          {/* Main pebble with gentle float */}
         <Float floatIntensity={0.8}>
           <group 
             scale={isMobile ? [0.5, 0.25, 0.5] : [0.85, 0.425, 0.85]} 
             position={[0, 0.05, 0]}
           >
-            <ProceduralPebble />
+            <ProceduralPebble 
+              distance={5} 
+              quality="high" 
+              animate={true}
+              enableTextures={true}
+            />
           </group>
         </Float>
       </Canvas>
