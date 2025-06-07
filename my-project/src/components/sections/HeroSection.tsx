@@ -48,10 +48,86 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
             </Float>
           </Suspense>
         </ThreeDErrorBoundary>
-      </Canvas>      {/* ROOT text positioned above the pebble */}
+      </Canvas>      {/* Sliding ROOT text with meditation icons positioned above the pebble */}
       <div className={styles.rootTextBackground}>
-        <h1 className={styles.rootText} aria-hidden="true">ROOT</h1>
-      </div>      {/* Main Content with CTA button */}
+        <div className={styles.slidingRootContainer}>
+          <div className={styles.slidingRootTrack}>            {/* First set of ROOT + icons */}
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </div>
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            </div>
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.06 7 9.54 0 4.48-2.94 8.27-7 9.54.95.3 1.95.46 3 .46 5.52 0 10-4.48 10-10S14.52 2 9 2z"/>
+              </svg>
+            </div>
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17c0 .5.4 1 1 1h6c.6 0 1-.5 1-1v-2.3c1.8-1.3 3-3.4 3-5.7 0-3.9-3.1-7-7-7z"/>
+              </svg>
+            </div>
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+              </svg>
+            </div>
+            {/* Duplicate set for seamless loop */}
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </div>
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            </div>
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.06 7 9.54 0 4.48-2.94 8.27-7 9.54.95.3 1.95.46 3 .46 5.52 0 10-4.48 10-10S14.52 2 9 2z"/>
+              </svg>
+            </div>
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17c0 .5.4 1 1 1h6c.6 0 1-.5 1-1v-2.3c1.8-1.3 3-3.4 3-5.7 0-3.9-3.1-7-7-7z"/>
+              </svg>
+            </div>
+            <div className={styles.rootWithIcon}>
+              <span className={styles.rootText}>ROOT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
+                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>{/* Main Content with CTA button */}
       <div className={styles.mainContent}>
         <button 
           className={`${styles.ctaButton} btn-futuristic focus-ring`}

@@ -6,25 +6,29 @@
   height: 100dvh;
   min-height: 100vh;
   max-height: 100vh; /* Ensure no overflow beyond viewport */
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to allow button shadow to display */
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: 1fr;
   align-items: center;
-    /* Beautiful bright lilac gradient background */
-  background:    /* Soft bright lilac overlay */
+  
+  /* Beautiful bright lilac gradient background */
+  background:
+    /* Soft bright lilac overlay */
     radial-gradient(
       ellipse 120% 80% at 50% -10%,
       rgba(250, 248, 255, 0.3) 0%,
       rgba(245, 242, 255, 0.2) 30%,
       transparent 60%
-    ),/* Central soft lilac glow */
+    ),
+    /* Central soft lilac glow */
     radial-gradient(
       circle at 50% 40%,
       rgba(240, 235, 255, 0.2) 0%,
       rgba(245, 242, 255, 0.12) 30%,
       transparent 70%
-    ),/* Ambient floating soft lilac particles */
+    ),
+    /* Ambient floating soft lilac particles */
     radial-gradient(
       circle at 20% 20%,
       rgba(225, 214, 255, 0.15) 0%,
@@ -44,7 +48,8 @@
       circle at 70% 75%,
       rgba(230, 221, 255, 0.08) 0%,
       transparent 30%
-    ),/* Main soft, light lilac gradient */
+    ),
+    /* Main soft, light lilac gradient */
     linear-gradient(
       135deg,
       #faf8ff 0%,      /* Ultra light lilac */
@@ -52,7 +57,8 @@
       #f0ebff 40%,     /* Soft light lilac */
       #ebe4ff 60%,     /* Light lilac */
       #e6ddff 80%,     /* Gentle lilac */
-      #e1d6ff 100%     /* Soft lilac */);
+      #e1d6ff 100%     /* Soft lilac */
+    );
   
   /* Animated floating particles overlay */
   background-size: 
@@ -71,7 +77,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 20; /* Lower z-index so buttons appear above pebble */
+  z-index: 10; /* Higher z-index so pebble appears above ROOT text but below CTA button */
   
   /* Performance optimizations for 3D canvas */
   transform: translateZ(0);
@@ -87,84 +93,80 @@
 /* ROOT text moved back to center-top position above the pebble */
 .rootTextBackground {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, calc(-50% - 160px));
   text-align: center;
-  z-index: 10;
+  z-index: 5; /* Lower z-index so ROOT text appears behind pebble */
   width: 100%;
   pointer-events: auto; /* Allow text selection */
+  overflow: hidden; /* Hide the sliding text that goes outside the container */
+}
+
+/* Sliding container for ROOT text with icons */
+.slidingRootContainer {
+  width: 100%;
+  height: auto;
+  position: relative;
+  overflow: hidden;
+  mask: linear-gradient(90deg, transparent 0%, white 10%, white 90%, transparent 100%);
+  -webkit-mask: linear-gradient(90deg, transparent 0%, white 10%, white 90%, transparent 100%);
+}
+
+.slidingRootTrack {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: slideRoot 20s linear infinite;
+  width: fit-content;
+}
+
+.rootWithIcon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6rem;
+  margin-left: 6rem; /* Increased spacing between ROOT+icon pairs */
+}
+
+/* Sliding animation */
+@keyframes slideRoot {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); /* Move exactly half the width (6 items) */
+  }
 }
 
 .rootText {
   font-family: var(--typography-fontFamily-primary);
-  font-size: clamp(5rem, 12vw, 10rem); /* Increased from clamp(3rem, 8vw, 6rem) */
-  font-weight: 900;
+  font-size: clamp(1.5rem, 6vw, 2.5rem); /* Reduced from clamp(2rem, 8vw, 4rem) */
+  font-weight: 100;
   margin: 0;
-  position: relative;
   line-height: var(--typography-lineHeight-tight);
-  color: rgba(0, 0, 0, 0.24);
+  color: rgba(59, 3, 116, 0.7);
   text-transform: uppercase;
   cursor: text; /* Allow text selection */
   user-select: text; /* Explicitly allow text selection */
   
-  /* Very subtle glassmorphism effect */
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 1rem 2rem;
-  box-shadow: 
-    0 4px 16px rgba(0, 0, 0, 0.02),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  
-  /* Very subtle breathing animation */
-  animation: breatheGlass 8s ease-in-out infinite;
-  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Simplified styling for sliding text */
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
   
   /* Minimal text shadow */
   text-shadow: 
     0 1px 5px rgba(0, 0, 0, 0.02),
     0 0 10px rgba(240, 230, 255, 0.1);
+  
+  /* Remove individual animations since we're sliding the container */
+  transition: all 0.3s ease;
 }
 
-/* Breathing animation with glassmorphism effect for grey text */
-@keyframes breatheGlass {
-  0%, 100% { 
-    opacity: 0.4;
-    transform: scale(1);
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 
-      0 4px 16px rgba(0, 0, 0, 0.02),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  }
-  50% { 
-    opacity: 0.5;
-    transform: scale(1.002);
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 
-      0 6px 20px rgba(0, 0, 0, 0.03),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  }
-}
-
-.rootText:hover {
-  opacity: 0.6;
-  transform: scale(1.005);
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  text-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.03),
-    0 0 15px rgba(120, 120, 120, 0.2);
+/* Pause animation on hover for better interaction */
+.slidingRootContainer:hover .slidingRootTrack {
+  animation-play-state: paused;
 }
 
 /* Main Content Container - Transparent, no glass effect */
@@ -277,7 +279,7 @@
 /* New CTA Button with Rubbery Matte Purple and Glassmorphism */
 .ctaButton {
   position: relative;
-  z-index: 10;
+  z-index: 25; /* Highest z-index to appear above everything including canvas and pebble */
   margin-top: 8rem;
   padding: 1.2rem 3rem;
   
@@ -285,19 +287,16 @@
   background: rgba(147, 51, 234, 0.12);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(147, 51, 234, 0.25);
   
   /* Rubbery matte purple finish */
   background-image: 
     linear-gradient(
       135deg, 
-      rgba(147, 51, 234, 0.15) 0%,
-      rgba(124, 58, 237, 0.18) 35%,
       rgba(147, 51, 234, 0.12) 100%
     );
   
   border-radius: 20px;
-  color: rgba(147, 51, 234, 0.95);
+  color: rgba(74, 58, 90, 0.9);
   font-size: 1rem;
   font-weight: 600;
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -310,37 +309,16 @@
   
   /* Soft rubbery shadows */
   box-shadow: 
-    0 4px 15px rgba(147, 51, 234, 0.08),
+    0 2px 4px rgba(147, 51, 234, 0.08),
     0 2px 8px rgba(147, 51, 234, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  
-  /* Rubbery transition with bounce */
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Rubbery transition with bounce */
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform: translateY(0) scale(1);
-  overflow: hidden;
 }
+
 
 /* Futuristic hover microinteractions */
-.ctaButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    linear-gradient(
-      135deg,
-      rgba(147, 51, 234, 0.4) 0%,
-      rgba(124, 58, 237, 0.5) 50%,
-      rgba(139, 92, 246, 0.3) 100%
-    );
-  opacity: 0;
-  border-radius: inherit;
-  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  z-index: -1;
-}
-
 .ctaButton::after {
   content: '';
   position: absolute;
@@ -362,30 +340,27 @@
   pointer-events: none;
 }
 
-/* Hover state with futuristic effects */
+/* Hover state with solid rubbery matte purple */
 .ctaButton:hover {
   transform: translateY(-4px) scale(1.02);
-  color: rgba(255, 255, 255, 0.95);
-  border-color: rgba(147, 51, 234, 0.4);
+  
+  /* Direct solid purple background using the text color */
+  background: rgba(74, 58, 90, 0.95) !important; /* Same purple as "Companion for Emotional Embracing" */
+  background-image: none !important;
+  backdrop-filter: none !important;
+  
+  /* Force white text */
+  color: #ffffff !important;
+  border-color: rgba(74, 58, 90, 1) !important; /* Solid text purple border */
   letter-spacing: 0.035em;
   
-  /* Enhanced rubbery matte shadows */
+  /* Enhanced rubbery matte shadows using text purple */
   box-shadow: 
-    0 8px 25px rgba(147, 51, 234, 0.15),
-    0 4px 15px rgba(147, 51, 234, 0.2),
-    0 2px 8px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -1px 0 rgba(147, 51, 234, 0.1);
-}
-
-.ctaButton:hover::before {
-  opacity: 1;
-}
-
-.ctaButton:hover::after {
-  width: 120px;
-  height: 120px;
-  opacity: 0.4;
+    0 8px 25px rgba(74, 58, 90, 0.4),
+    0 4px 15px rgba(74, 58, 90, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* Focus state for accessibility */
@@ -570,7 +545,7 @@
   .ctaButton {
     background: rgba(147, 51, 234, 0.25);
     border: 2px solid rgba(147, 51, 234, 0.6);
-    color: rgba(147, 51, 234, 1);
+    color: rgba(74, 58, 90, 0.9);
     backdrop-filter: blur(15px);
     box-shadow: 
       0 4px 15px rgba(147, 51, 234, 0.2),
@@ -579,7 +554,7 @@
   
   .ctaButton:hover {
     background: rgba(147, 51, 234, 0.4);
-    border-color: rgba(147, 51, 234, 0.8);
+    color: rgba(74, 58, 90, 0.9);
     color: rgba(255, 255, 255, 1);
   }
   
@@ -620,7 +595,7 @@
   position: absolute;
   top: calc(50% + 40px); /* Position below the subtitle */
   right: 3.8rem;
-  z-index: 15;
+  z-index: 25; /* Higher z-index to appear above canvas */
   display: flex;
   flex-direction: row;
   gap: 0.75rem;
@@ -833,4 +808,27 @@
       90% 70%,
       0% 0%;
   }
+}
+
+/* Icon styling for meditation icons */
+.rootWithIcon svg {
+  width: 1.8rem; /* Increased icon size to better match smaller text */
+  height: 1.8rem;
+  color: rgba(74, 58, 90, 0.6);
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 1px 3px rgba(74, 58, 90, 0.1));
+  margin: 0 2rem; /* Increased margin around icons for better spacing */
+  flex-shrink: 0;
+}
+
+.rootWithIcon:hover svg {
+  opacity: 1;
+  color: rgba(74, 58, 90, 0.8);
+  transform: scale(1.1);
+}
+
+/* Pause animation on hover for better interaction */
+.slidingRootContainer:hover .slidingRootTrack {
+  animation-play-state: paused;
 }
