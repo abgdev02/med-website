@@ -12,7 +12,6 @@ import {
 } from 'three'
 import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise.js'
 import { LRUCache } from '../../utils/LRUCache'
-import { usePreferredMotion } from '../../hooks/usePreferredMotion'
 
 // Cache noise instance globally to avoid recreation
 const globalSimplex = new SimplexNoise()
@@ -69,7 +68,6 @@ const cachedTextures = createOptimizedTextures()
 
 interface ProceduralPebbleProps {
   distance?: number
-  animate?: boolean
   quality?: 'low' | 'medium' | 'high'
   enableTextures?: boolean
   isStatic?: boolean
@@ -77,15 +75,10 @@ interface ProceduralPebbleProps {
 
 export function ProceduralPebble({ 
   distance = 10, 
-  animate = true,
   quality = 'medium',
   enableTextures = true,
   isStatic = false
 }: ProceduralPebbleProps = {}) {  const mesh = useRef<Mesh>(null!)
-  const { shouldAnimate } = usePreferredMotion()
-  
-  // Respect user's motion preferences - currently unused but kept for future use
-  // const shouldAnimateNow = animate && shouldAnimate
   
   // Dynamic geometry based on distance and quality - LOD (Level of Detail)
   const geometryArgs = useMemo((): [number, number, number] => {

@@ -38,11 +38,9 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
           <Suspense fallback={null}>            <Float floatIntensity={1.0} rotationIntensity={0.4} speed={0.6}>              <RotatingPebble speed={0.6}>                <group 
                   scale={isMobile ? [0.496, 0.248, 0.496] : [0.868, 0.434, 0.868]} /* Increased by 24% */
                   position={[0, 0.1, 0]} /* Moved up and centered */
-                >
-                  <ProceduralPebble 
+                >                  <ProceduralPebble 
                     distance={5} 
                     quality="high" 
-                    animate={false}
                     enableTextures={true}
                   />
                 </group>
@@ -50,9 +48,7 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
             </Float>
           </Suspense>
         </ThreeDErrorBoundary>
-      </Canvas>
-
-      {/* ROOT text positioned behind everything */}
+      </Canvas>      {/* ROOT text positioned above the pebble */}
       <div className={styles.rootTextBackground}>
         <h1 className={styles.rootText} aria-hidden="true">ROOT</h1>
       </div>      {/* Main Content with CTA button */}
@@ -63,9 +59,14 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
         >
           Buy Me :)
         </button>
-      </div>{/* Bottom-left positioned subtitle */}
+      </div>      {/* Bottom-left positioned text where ROOT was */}
       <p className={`${styles.subtitleBottomLeft} ${isMobile ? styles.mobile : ''}`}>
-        Companion for Emotional Embracing
+        Companion for Emotional Embracing: ROOT
+      </p>
+
+      {/* Right side subtitle - updated text */}
+      <p className={`${styles.subtitleRightSide} ${isMobile ? styles.mobile : ''}`}>
+        The Stone Elf offers a quiet space to welcome, understand, and grow with every feeling.
       </p>
 
       {/* Scroll indicator */}

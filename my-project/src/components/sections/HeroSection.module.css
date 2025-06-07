@@ -5,6 +5,7 @@
   height: 100vh;
   height: 100dvh;
   min-height: 100vh;
+  max-height: 100vh; /* Ensure no overflow beyond viewport */
   overflow: hidden;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -70,7 +71,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 5;
+  z-index: 20; /* Higher z-index so pebble appears above text and button */
   
   /* Performance optimizations for 3D canvas */
   transform: translateZ(0);
@@ -83,13 +84,15 @@
   grid-row: 1;
 }
 
-/* ROOT text moved to bottom-left position */
+/* ROOT text moved back to center-top position above the pebble */
 .rootTextBackground {
   position: absolute;
-  bottom: 8rem;
-  left: 3rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% - 160px));
+  text-align: center;
   z-index: 15;
-  width: auto;
+  width: 100%;
   pointer-events: none;
 }
 
@@ -208,15 +211,40 @@
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Right side subtitle - moved to columns 8-10, vertically centered */
+/* Bottom-left subtitle - positioned in columns 1-4, bottom corner */
 .subtitleBottomLeft {
+  position: absolute;
+  bottom: max(1.5rem, env(safe-area-inset-bottom, 1.5rem)); /* Ensure visibility above safe area */
+  left: 2rem;
+  z-index: 15;
+  color: rgba(74, 58, 90, 0.9);
+  font-size: clamp(0.8rem, 2vw, 1.2rem); /* Much smaller text */
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  max-width: calc(33.33% - 2rem); /* Roughly columns 1-4 width */
+  line-height: 1.3;
+  text-align: left;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: default;
+  
+  /* Subtle bright lilac glow */
+  text-shadow: 0 0 15px rgba(186, 148, 255, 0.1);
+}
+
+/* Right side subtitle - for the longer descriptive text */
+.subtitleRightSide {
   position: absolute;
   top: 50%;
   right: 3rem;
   transform: translateY(-50%);
   z-index: 15;
   color: rgba(74, 58, 90, 0.9);
-  font-size: clamp(0.9rem, 2.5vw, 1.4rem); /* Reduced from clamp(1.6rem, 4vw, 2.8rem) */
+  font-size: clamp(0.75rem, 2vw, 1.1rem); /* Reduced from clamp(0.9rem, 2.5vw, 1.4rem) */
   font-weight: 100;
   text-transform: none;
   letter-spacing: -0.02em;
@@ -241,9 +269,18 @@
   padding: 0.8rem 1.5rem;
 }
 
-/* Mobile styles for right side subtitle */
+/* Mobile styles for bottom-left subtitle */
 .subtitleBottomLeft.mobile {
-  font-size: clamp(0.8rem, 4vw, 1.2rem); /* Reduced from clamp(1.4rem, 6vw, 2.4rem) */
+  font-size: clamp(0.7rem, 3vw, 1rem); /* Smaller on mobile */
+  bottom: max(1rem, env(safe-area-inset-bottom, 1rem)); /* Ensure visibility above safe area on mobile */
+  left: 1.5rem;
+  max-width: calc(60% - 1.5rem);
+  line-height: 1.2;
+}
+
+/* Mobile styles for right side subtitle */
+.subtitleRightSide.mobile {
+  font-size: clamp(0.65rem, 3vw, 0.9rem); /* Smaller to match the reduced desktop size */
   top: 60%;
   right: 2rem;
   max-width: calc(50% - 2rem);
@@ -269,7 +306,8 @@
     #8b5cf6 75%,     /* Violet-500 */
     #a855f7 100%     /* Purple-500 */
   );
-    color: white;
+  color: #ffffff !important; /* Force white color with !important */
+  border: none;
   border-radius: 24px;
   font-size: 1rem;
   font-weight: 600;
@@ -348,6 +386,7 @@
     #7c3aed 75%,     /* Violet-600 */
     #9333ea 100%     /* Purple-600 */
   );
+  color: #ffffff !important; /* Force white text on hover with !important */
   border-color: rgba(255, 255, 255, 0.2);
   letter-spacing: 0.035em;
   
