@@ -71,7 +71,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 20; /* Higher z-index so pebble appears above text and button */
+  z-index: 20; /* Lower z-index so buttons appear above pebble */
   
   /* Performance optimizations for 3D canvas */
   transform: translateZ(0);
@@ -91,9 +91,9 @@
   left: 50%;
   transform: translate(-50%, calc(-50% - 160px));
   text-align: center;
-  z-index: 15;
+  z-index: 10;
   width: 100%;
-  pointer-events: none;
+  pointer-events: auto; /* Allow text selection */
 }
 
 .rootText {
@@ -105,6 +105,8 @@
   line-height: var(--typography-lineHeight-tight);
   color: rgba(0, 0, 0, 0.24);
   text-transform: uppercase;
+  cursor: text; /* Allow text selection */
+  user-select: text; /* Explicitly allow text selection */
   
   /* Very subtle glassmorphism effect */
   background: rgba(255, 255, 255, 0.03);
@@ -189,27 +191,7 @@
   transform: translate(-50%, -50%);
 }
 
-/* Enhanced Subtitle - typography that works with bright lilac background */
-.subtitle {
-  position: relative;
-  z-index: 15;
-  margin-top: 2rem;
-  color: rgba(74, 58, 90, 0.8); /* Dark purple-gray for contrast */
-  font-size: 1.125rem;
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: 0.02em;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  padding: 0;
-  line-height: 1.6;
-  opacity: 0.9;
-  
-  background: transparent;
-  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
+
 
 /* Bottom-left subtitle - positioned in columns 1-4, bottom corner */
 .subtitleBottomLeft {
@@ -218,19 +200,20 @@
   left: 2rem;
   z-index: 15;
   color: rgba(74, 58, 90, 0.9);
-  font-size: clamp(0.8rem, 2vw, 1.2rem); /* Much smaller text */
-  font-weight: 400;
+  font-size: clamp(1.8rem, 3vw, 2.8rem); /* Increased from clamp(0.8rem, 2vw, 1.2rem) */
+  font-weight: 400; /* Increased from 400 to be between ROOT (900) and Stone Elf (100) */
   text-transform: none;
-  letter-spacing: 0.02em;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  letter-spacing: -0.02em;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, sans-serif;
   background: transparent;
   margin: 0;
-  padding: 0;
+  padding: 4rem 1.5rem; /* Added padding for better visual presence */
   max-width: calc(33.33% - 2rem); /* Roughly columns 1-4 width */
-  line-height: 1.3;
+  line-height: 1.1;
   text-align: left;
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  cursor: default;
+  cursor: text; /* Allow text selection */
+  user-select: text; /* Explicitly allow text selection */
   
   /* Subtle bright lilac glow */
   text-shadow: 0 0 15px rgba(186, 148, 255, 0.1);
@@ -243,20 +226,21 @@
   right: 3rem;
   transform: translateY(-50%);
   z-index: 15;
-  color: rgba(74, 58, 90, 0.9);
+  color: rgba(74, 58, 90, 0.8);
   font-size: clamp(0.75rem, 2vw, 1.1rem); /* Reduced from clamp(0.9rem, 2.5vw, 1.4rem) */
-  font-weight: 100;
+  font-weight: 300;
   text-transform: none;
   letter-spacing: -0.02em;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, sans-serif;
   background: transparent;
   margin: 0;
   padding: 0;
-  max-width: 300px;
+  max-width: 320px;
   line-height: 1.1;
   text-align: left;
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  cursor: default;
+  cursor: text; /* Allow text selection */
+  user-select: text; /* Explicitly allow text selection */
   
   /* Subtle bright lilac glow */
   text-shadow: 0 0 20px rgba(186, 148, 255, 0.15);
@@ -271,9 +255,11 @@
 
 /* Mobile styles for bottom-left subtitle */
 .subtitleBottomLeft.mobile {
-  font-size: clamp(0.7rem, 3vw, 1rem); /* Smaller on mobile */
+  font-size: clamp(1rem, 4vw, 1.4rem); /* Increased proportionally from clamp(0.7rem, 3vw, 1rem) */
+  font-weight: 600; /* Maintain increased font weight on mobile */
   bottom: max(1rem, env(safe-area-inset-bottom, 1rem)); /* Ensure visibility above safe area on mobile */
   left: 1.5rem;
+  padding: 0.8rem 1.2rem; /* Adjusted padding for mobile */
   max-width: calc(60% - 1.5rem);
   line-height: 1.2;
 }
@@ -288,169 +274,169 @@
   line-height: 1.1;
 }
 
-/* Enhanced CTA Button with rubbery futuristic design */
+/* New CTA Button with Rubbery Matte Purple and Glassmorphism */
 .ctaButton {
   position: relative;
-  z-index: 15;
-  margin-top: 2rem;
+  z-index: 10;
+  margin-top: 8rem;
   padding: 1.2rem 3rem;
-  display: inline-block;
-  overflow: hidden;
   
-  /* High contrast futuristic gradient with excellent accessibility */
-  background: linear-gradient(
-    145deg,
-    #4f46e5 0%,      /* Indigo-600 - darker for better contrast */
-    #6366f1 25%,     /* Indigo-500 */
-    #7c3aed 50%,     /* Violet-600 */
-    #8b5cf6 75%,     /* Violet-500 */
-    #a855f7 100%     /* Purple-500 */
-  );
-  color: #ffffff !important; /* Force white color with !important */
-  border: none;
-  border-radius: 24px;
+  /* Glassmorphism default state */
+  background: rgba(147, 51, 234, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(147, 51, 234, 0.25);
+  
+  /* Rubbery matte purple finish */
+  background-image: 
+    linear-gradient(
+      135deg, 
+      rgba(147, 51, 234, 0.15) 0%,
+      rgba(124, 58, 237, 0.18) 35%,
+      rgba(147, 51, 234, 0.12) 100%
+    );
+  
+  border-radius: 20px;
+  color: rgba(147, 51, 234, 0.95);
   font-size: 1rem;
   font-weight: 600;
-  cursor: pointer;
-  text-transform: none;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, sans-serif;
   letter-spacing: 0.025em;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  cursor: pointer;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   
-  /* Small, precise shadows for futuristic feel */
+  /* Soft rubbery shadows */
   box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 2px 6px rgba(79, 70, 229, 0.25),
-    0 1px 2px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    0 4px 15px rgba(147, 51, 234, 0.08),
+    0 2px 8px rgba(147, 51, 234, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   
-  /* Rubbery bounce transition */
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* Rubbery transition with bounce */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform: translateY(0) scale(1);
-  
-  /* Subtle pulse effect */
-  animation: buttonPulse 4s ease-in-out infinite;
+  overflow: hidden;
 }
 
+/* Futuristic hover microinteractions */
 .ctaButton::before {
   content: '';
   position: absolute;
   top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(
+      135deg,
+      rgba(147, 51, 234, 0.4) 0%,
+      rgba(124, 58, 237, 0.5) 50%,
+      rgba(139, 92, 246, 0.3) 100%
+    );
+  opacity: 0;
   border-radius: inherit;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: -1;
+}
+
+.ctaButton::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0.2) 30%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Hover state with futuristic effects */
+.ctaButton:hover {
+  transform: translateY(-4px) scale(1.02);
+  color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(147, 51, 234, 0.4);
+  letter-spacing: 0.035em;
+  
+  /* Enhanced rubbery matte shadows */
+  box-shadow: 
+    0 8px 25px rgba(147, 51, 234, 0.15),
+    0 4px 15px rgba(147, 51, 234, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(147, 51, 234, 0.1);
 }
 
 .ctaButton:hover::before {
-  left: 100%;
+  opacity: 1;
 }
 
-/* Rubbery bounce and futuristic pulse animations */
-@keyframes buttonPulse {
+.ctaButton:hover::after {
+  width: 120px;
+  height: 120px;
+  opacity: 0.4;
+}
+
+/* Focus state for accessibility */
+.ctaButton:focus {
+  outline: none;
+  transform: translateY(-2px) scale(1.01);
+  
+  /* Accessible focus ring */
+  box-shadow: 
+    0 6px 20px rgba(147, 51, 234, 0.12),
+    0 3px 12px rgba(147, 51, 234, 0.16),
+    0 0 0 3px rgba(147, 51, 234, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Active/pressed state */
+.ctaButton:active {
+  transform: translateY(-1px) scale(0.98);
+  transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Pressed rubbery feel */
+  box-shadow: 
+    0 2px 8px rgba(147, 51, 234, 0.2),
+    0 1px 4px rgba(147, 51, 234, 0.25),
+    inset 0 2px 4px rgba(147, 51, 234, 0.15);
+}
+
+.ctaButton:active::before {
+  opacity: 0.8;
+}
+
+/* Subtle idle animation */
+@keyframes buttonBreath {
   0%, 100% { 
     transform: translateY(0) scale(1);
     box-shadow: 
-      0 1px 3px rgba(0, 0, 0, 0.12),
-      0 2px 6px rgba(79, 70, 229, 0.25),
-      0 1px 2px rgba(0, 0, 0, 0.24),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+      0 4px 15px rgba(147, 51, 234, 0.08),
+      0 2px 8px rgba(147, 51, 234, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   50% { 
-    transform: translateY(-1px) scale(1.005);
+    transform: translateY(-1px) scale(1.002);
     box-shadow: 
-      0 2px 4px rgba(0, 0, 0, 0.15),
-      0 3px 8px rgba(79, 70, 229, 0.3),
-      0 1px 3px rgba(0, 0, 0, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+      0 5px 18px rgba(147, 51, 234, 0.1),
+      0 3px 10px rgba(147, 51, 234, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
   }
 }
 
-.ctaButton:hover {
-  transform: translateY(-3px) scale(1.03);
-  background: linear-gradient(
-    145deg,
-    #3730a3 0%,      /* Indigo-800 */
-    #4f46e5 25%,     /* Indigo-600 */
-    #6d28d9 50%,     /* Violet-700 */
-    #7c3aed 75%,     /* Violet-600 */
-    #9333ea 100%     /* Purple-600 */
-  );
-  color: #ffffff !important; /* Force white text on hover with !important */
-  border-color: rgba(255, 255, 255, 0.2);
-  letter-spacing: 0.035em;
-  
-  /* Enhanced rubbery shadows on hover */
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    0 6px 20px rgba(79, 70, 229, 0.4),
-    0 2px 8px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-}
-
-.ctaButton:focus {
-  outline: none;
-  transform: translateY(-2px) scale(1.02);
-  
-  /* Focus ring for accessibility */
-  box-shadow: 
-    0 3px 10px rgba(0, 0, 0, 0.15),
-    0 4px 16px rgba(79, 70, 229, 0.35),
-    0 0 0 3px rgba(99, 102, 241, 0.4),
-    0 1px 6px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.12);
-}
-
-.ctaButton:active {
-  transform: translateY(-1px) scale(0.98);
-  transition: all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  
-  /* Pressed state with rubbery feel */
-  box-shadow: 
-    0 1px 4px rgba(0, 0, 0, 0.2),
-    0 2px 8px rgba(79, 70, 229, 0.3),
-    0 1px 3px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-}
-
-/* Keyframe animations */
-@keyframes borderGlow {
-  0%, 100% { 
-    background-position: 0% 50%;
-    opacity: 0.3;
-  }
-  50% { 
-    background-position: 100% 50%;
-    opacity: 0.6;
-  }
-}
-
-@keyframes sparkle {
-  0%, 100% { 
-    opacity: 0;
-    transform: translateY(-50%) scale(0);
-  }
-  20% { 
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
-  }
-  80% { 
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
-  }
+.ctaButton {
+  animation: buttonBreath 4s ease-in-out infinite;
 }
 
 /* Enhanced Scroll Cue with Bright Lilac Theme */
@@ -508,7 +494,7 @@
 
 /* Enhanced Typography inspired by provided code */
 .heroTitle {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 600;
   line-height: 1.1;
@@ -565,6 +551,9 @@
   .scrollCue {
     animation: none;
   }
+    .ctaButton {
+    animation: none;
+  }
   
   .ctaButton:hover {
     transform: none;
@@ -577,19 +566,21 @@
 }
 
 /* High contrast mode adjustments for bright lilac theme */
-@media (prefers-contrast: high) {  .ctaButton {
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    background: linear-gradient(145deg, #3730a3 0%, #4f46e5 50%, #6d28d9 100%);
-    color: rgba(255, 255, 255, 1);
+@media (prefers-contrast: high) {
+  .ctaButton {
+    background: rgba(147, 51, 234, 0.25);
+    border: 2px solid rgba(147, 51, 234, 0.6);
+    color: rgba(147, 51, 234, 1);
+    backdrop-filter: blur(15px);
     box-shadow: 
-      0 2px 6px rgba(0, 0, 0, 0.4),
-      0 1px 3px rgba(0, 0, 0, 0.6),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      0 4px 15px rgba(147, 51, 234, 0.2),
+      0 2px 8px rgba(0, 0, 0, 0.3);
   }
   
   .ctaButton:hover {
-    background: linear-gradient(145deg, #1e1b4b 0%, #3730a3 50%, #581c87 100%);
-    border-color: rgba(255, 255, 255, 0.7);
+    background: rgba(147, 51, 234, 0.4);
+    border-color: rgba(147, 51, 234, 0.8);
+    color: rgba(255, 255, 255, 1);
   }
   
   .rootText {
@@ -621,5 +612,225 @@
   
   .heroSubtitle {
     font-size: 1rem;
+  }
+}
+
+/* App Store Buttons Container */
+.appButtons {
+  position: absolute;
+  top: calc(50% + 40px); /* Position below the subtitle */
+  right: 3.8rem;
+  z-index: 15;
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  max-width: 320px;
+}
+
+/* Individual App Button */
+.appButton {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: rgba(74, 58, 90, 0.9);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  min-width: 140px;
+  
+  /* Subtle shadow */
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.appButton:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.appButton:active {
+  transform: translateY(0);
+  transition: all 0.1s ease;
+}
+
+/* App Button Content Layout */
+.appButtonContent {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+/* App Icons */
+.appIcon {
+  width: 20px;
+  height: 20px;
+  color: rgba(74, 58, 90, 0.8);
+  flex-shrink: 0;
+}
+
+/* App Button Text */
+.appButtonText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1;
+}
+
+.downloadText {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: rgba(74, 58, 90, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: -2px;
+}
+
+.storeText {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(74, 58, 90, 0.9);
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+
+/* Mobile styles for app buttons */
+.appButtons.mobile {
+  position: absolute;
+  top: auto;
+  bottom: max(6rem, env(safe-area-inset-bottom, 6rem));
+  right: 1.5rem;
+  left: auto;
+  flex-direction: row;
+  gap: 0.5rem;
+  max-width: calc(100% - 3rem);
+  justify-content: flex-end;
+}
+
+.appButtons.mobile .appButton {
+  min-width: 120px;
+  padding: 0.6rem 0.8rem;
+}
+
+.appButtons.mobile .appIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.appButtons.mobile .downloadText {
+  font-size: 0.6rem;
+}
+
+.appButtons.mobile .storeText {
+  font-size: 0.8rem;
+}
+
+/* Tablet and small desktop adjustments */
+@media (max-width: 1024px) {
+  .appButtons {
+    right: 2rem;
+    top: calc(50% + 80px);
+  }
+  
+  .appButton {
+    min-width: 130px;
+    padding: 0.65rem 0.9rem;
+  }
+  
+  .appIcon {
+    width: 19px;
+    height: 19px;
+  }
+  
+  .downloadText {
+    font-size: 0.62rem;
+  }
+  
+  .storeText {
+    font-size: 0.85rem;
+  }
+}
+
+/* Mobile responsive breakpoint */
+@media (max-width: 768px) {
+  .appButtons:not(.mobile) {
+    display: none; /* Hide non-mobile version on mobile */
+  }
+  
+  /* Ensure mobile version is visible */
+  .appButtons.mobile {
+    display: flex;
+  }
+}
+
+/* Large mobile/small tablet adjustments */
+@media (max-width: 480px) {
+  .appButtons.mobile {
+    flex-direction: column;
+    gap: 0.4rem;
+    bottom: max(4rem, env(safe-area-inset-bottom, 4rem));
+    right: 1rem;
+  }
+  
+  .appButtons.mobile .appButton {
+    min-width: 110px;
+    padding: 0.5rem 0.7rem;
+  }
+  
+  .appButtons.mobile .appIcon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .appButtons.mobile .downloadText {
+    font-size: 0.55rem;
+  }
+  
+  .appButtons.mobile .storeText {
+    font-size: 0.75rem;
+  }
+}
+
+/* Floating Lilac Particles Animation */
+@keyframes floatingLilacParticles {
+  0%, 100% {
+    background-position: 
+      0% 0%,
+      0% 0%,
+      0% 0%,
+      100% 0%,
+      0% 100%,
+      100% 100%,
+      0% 0%;
+  }
+  33% {
+    background-position: 
+      100% 100%,
+      30% 30%,
+      70% 20%,
+      20% 70%,
+      80% 80%,
+      10% 30%,
+      0% 0%;
+  }
+  66% {
+    background-position: 
+      50% 50%,
+      80% 70%,
+      20% 80%,
+      70% 30%,
+      30% 20%,
+      90% 70%,
+      0% 0%;
   }
 }
