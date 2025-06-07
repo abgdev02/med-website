@@ -304,3 +304,176 @@
   .lg\:text-2xl { font-size: var(--typography-fontSize-2xl); }
   .lg\:text-3xl { font-size: var(--typography-fontSize-3xl); }
 }
+
+/* ====================  12-COLUMN GRID SYSTEM  ==================== */
+/* Grid System Configuration */
+:root {
+  --grid-columns: 12;
+  --grid-gap: var(--spacing-8);
+  --grid-margin: var(--spacing-8);
+  
+  /* Container Max Widths */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1536px;
+}
+
+/* Grid Container */
+.grid-container {
+  width: 100%;
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  padding: 0 var(--grid-margin);
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: var(--grid-gap);
+}
+
+/* Column Spans (1-12) */
+.col-1 { grid-column: span 1; }
+.col-2 { grid-column: span 2; }
+.col-3 { grid-column: span 3; }
+.col-4 { grid-column: span 4; }
+.col-5 { grid-column: span 5; }
+.col-6 { grid-column: span 6; }
+.col-7 { grid-column: span 7; }
+.col-8 { grid-column: span 8; }
+.col-9 { grid-column: span 9; }
+.col-10 { grid-column: span 10; }
+.col-11 { grid-column: span 11; }
+.col-12 { grid-column: span 12; }
+
+/* Responsive Grid - Mobile First */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    --grid-gap: var(--spacing-6);
+    --grid-margin: var(--spacing-6);
+  }
+  
+  /* All columns go full width on mobile */
+  .col-1,
+  .col-2,
+  .col-3,
+  .col-4,
+  .col-5,
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10,
+  .col-11,
+  .col-12 {
+    grid-column: span 1;
+  }
+}
+
+/* Responsive Breakpoints for Grid */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .grid-container {
+    --grid-gap: var(--spacing-6);
+  }
+}
+
+@media (min-width: 1025px) {
+  .grid-container {
+    --grid-gap: var(--spacing-8);
+  }
+}
+
+/* ====================  GRID UTILITIES  ==================== */
+/* Grid Gap Variants */
+.grid-gap-sm { gap: var(--spacing-4) !important; }
+.grid-gap-md { gap: var(--spacing-6) !important; }
+.grid-gap-lg { gap: var(--spacing-8) !important; }
+.grid-gap-xl { gap: var(--spacing-12) !important; }
+.grid-gap-none { gap: 0 !important; }
+
+/* Grid Column Offsets (useful for asymmetric layouts) */
+.col-offset-1 { grid-column-start: 2; }
+.col-offset-2 { grid-column-start: 3; }
+.col-offset-3 { grid-column-start: 4; }
+.col-offset-4 { grid-column-start: 5; }
+.col-offset-5 { grid-column-start: 6; }
+.col-offset-6 { grid-column-start: 7; }
+
+/* Responsive Column Utilities */
+@media (min-width: 769px) {
+  .md\:col-1 { grid-column: span 1; }
+  .md\:col-2 { grid-column: span 2; }
+  .md\:col-3 { grid-column: span 3; }
+  .md\:col-4 { grid-column: span 4; }
+  .md\:col-5 { grid-column: span 5; }
+  .md\:col-6 { grid-column: span 6; }
+  .md\:col-7 { grid-column: span 7; }
+  .md\:col-8 { grid-column: span 8; }
+  .md\:col-9 { grid-column: span 9; }
+  .md\:col-10 { grid-column: span 10; }
+  .md\:col-11 { grid-column: span 11; }
+  .md\:col-12 { grid-column: span 12; }
+}
+
+@media (min-width: 1025px) {
+  .lg\:col-1 { grid-column: span 1; }
+  .lg\:col-2 { grid-column: span 2; }
+  .lg\:col-3 { grid-column: span 3; }
+  .lg\:col-4 { grid-column: span 4; }
+  .lg\:col-5 { grid-column: span 5; }
+  .lg\:col-6 { grid-column: span 6; }
+  .lg\:col-7 { grid-column: span 7; }
+  .lg\:col-8 { grid-column: span 8; }
+  .lg\:col-9 { grid-column: span 9; }
+  .lg\:col-10 { grid-column: span 10; }
+  .lg\:col-11 { grid-column: span 11; }
+  .lg\:col-12 { grid-column: span 12; }
+}
+
+/* ====================  UTILITY CLASSES  ==================== */
+/* Display utilities */
+.hidden { display: none !important; }
+.block { display: block !important; }
+.flex { display: flex !important; }
+.grid { display: grid !important; }
+
+/* Responsive display utilities */
+@media (min-width: 769px) {
+  .md\:hidden { display: none !important; }
+  .md\:block { display: block !important; }
+  .md\:flex { display: flex !important; }
+  .md\:grid { display: grid !important; }
+}
+
+@media (min-width: 1025px) {
+  .lg\:hidden { display: none !important; }
+  .lg\:block { display: block !important; }
+  .lg\:flex { display: flex !important; }
+  .lg\:grid { display: grid !important; }
+}
+
+/* ====================  DEVELOPMENT UTILITIES  ==================== */
+/* Grid debug mode - add this class to grid-container to visualize columns */
+.grid-debug .grid-container > * {
+  background-color: rgba(255, 0, 0, 0.1) !important;
+  border: 1px solid rgba(255, 0, 0, 0.3) !important;
+  min-height: 50px !important;
+}
+
+.grid-debug .grid-container::before {
+  content: "12-Column Grid Debug Mode";
+  position: absolute;
+  top: -30px;
+  left: 0;
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+  z-index: 9999;
+}
+
+/* Only show in development mode */
+@media (min-width: 1px) {
+  .grid-debug {
+    position: relative;
+  }
+}

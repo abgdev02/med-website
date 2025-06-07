@@ -21,22 +21,19 @@ export function HoldMeditateSection({ isMobile }: HoldMeditateSectionProps) {
         boxSizing: 'border-box',
         position: 'relative'
       }}
-    >
-      {/* Top Section - Header text positioned on right side (columns 6-12) */}
-      <div style={{
+    >      {/* Top Section - Header text positioned on right side (columns 7-12) */}
+      <div className={`grid-container ${isMobile ? '' : ''}`} style={{
         width: '100%',
-        display: 'flex',
-        justifyContent: isMobile ? 'flex-start' : 'flex-end',
-        alignItems: 'flex-start',
         marginBottom: isMobile ? 60 : 80
-      }}>
-        <div style={{
-          width: isMobile ? '100%' : '50%',
-          maxWidth: isMobile ? '100%' : 600,
+      }}>        {/* Empty left columns (1-6) on desktop */}
+        <div className="hidden md:block col-6"></div>
+        
+        {/* Header content on right columns (7-12) or full width on mobile */}
+        <div className="col-12 md:col-6" style={{
           display: 'flex',
           flexDirection: 'column',
           gap: 40
-        }}>          <div className="gradient-text-primary" style={{
+        }}><div className="gradient-text-primary" style={{
             fontSize: isMobile ? 32 : 48,
             fontFamily: 'Source Sans Pro',
             fontWeight: '300',
@@ -59,20 +56,11 @@ export function HoldMeditateSection({ isMobile }: HoldMeditateSectionProps) {
             Root responds to your presence with dynamic sensory feedback designed to calm the nervous system. It creates a meditative space that adapts to your body — no screens, just pure immersion.
           </div>
         </div>
-      </div>
-
-      {/* Bottom Section - Three columns full width */}
-      <div style={{
+      </div>      {/* Bottom Section - Three columns using 12-column grid */}
+      <div className={`grid-container ${isMobile ? '' : ''}`} style={{
         width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        gap: isMobile ? 30 : 60,
-        flexDirection: isMobile ? 'column' : 'row'
-      }}>
-        {/* Hold Column */}
-        <div style={{
-          width: isMobile ? '100%' : '33.33%',
+      }}>        {/* Hold Column - Columns 1-4 */}
+        <div className="col-12 md:col-4" style={{
           flexDirection: 'column',
           justifyContent: 'flex-start',
           alignItems: 'center',
@@ -109,11 +97,8 @@ export function HoldMeditateSection({ isMobile }: HoldMeditateSectionProps) {
           }}>
             Lights activate as it senses your touch
           </div>
-        </div>
-
-        {/* Breathe Column */}
-        <div style={{
-          width: isMobile ? '100%' : '33.33%',
+        </div>        {/* Breathe Column - Columns 5-8 */}
+        <div className="col-12 md:col-4" style={{
           flexDirection: 'column',
           justifyContent: 'flex-start',
           alignItems: 'center',
@@ -150,11 +135,8 @@ export function HoldMeditateSection({ isMobile }: HoldMeditateSectionProps) {
           }}>
             Gently vibrates in patterns inspired by your emotions
           </div>
-        </div>
-
-        {/* Connect Column */}
-        <div style={{
-          width: isMobile ? '100%' : '33.33%',
+        </div>        {/* Connect Column - Columns 9-12 */}
+        <div className="col-12 md:col-4" style={{
           flexDirection: 'column',
           justifyContent: 'flex-start',
           alignItems: 'center',

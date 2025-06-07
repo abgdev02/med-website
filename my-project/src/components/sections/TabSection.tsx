@@ -55,7 +55,7 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
             gap: 24,
             display: 'flex',
             cursor: 'pointer',
-            padding: '12px 0',
+            padding: '16px 0',
             transition: 'all 0.3s ease'
           }}
         >
@@ -67,7 +67,7 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
             color: isExpanded ? '#4A4A4A' : '#6A6A6A',
             fontSize: 14,
             fontFamily: '"Source Sans Pro", sans-serif',
-            fontWeight: isExpanded ? '700' : '400',
+            fontWeight: isExpanded ? '700' : '300',
             wordWrap: 'break-word',
             flex: 1,
             textAlign: 'left'
@@ -87,7 +87,7 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
             color: '#8a8a8a',
             fontSize: 14,
             fontFamily: '"Source Sans Pro", sans-serif',
-            fontWeight: '400',
+            fontWeight: '300',
             wordWrap: 'break-word',
             lineHeight: 1.5,
             textAlign: 'left'
@@ -122,16 +122,14 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
           color: '#8a8a8a',
           fontSize: isMobile ? 14 : 16,
           fontFamily: '"Source Sans Pro", sans-serif',
-          fontWeight: '400',
+          fontWeight: '300',
           lineHeight: 1.6,
           textAlign: 'left',
           marginTop: isMobile ? 16 : 24
         }}>
           Root captures your emotional and sensory engagement in real time combining audio, haptics, and AI-curated calm to give you a single, personalized Mental Immersion Score.
         </div>
-      </div>
-      
-      {/* Tab and Content Section */}
+      </div>      {/* Tab and Content Section */}
       <div style={{
         flexDirection: 'column', 
         justifyContent: 'flex-start', 
@@ -139,11 +137,9 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
         gap: 64, 
         display: 'flex',
         width: '100%'
-      }}>
-        {/* Tab Buttons */}
+      }}>        {/* Tab Buttons */}
         <div style={{
           width: '100%', 
-          maxWidth: '100%',
           justifyContent: 'flex-start', 
           alignItems: 'center', 
           gap: isMobile ? 12 : 16, 
@@ -161,30 +157,25 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
               onClick={handleTabClick}
             />
           ))}
-        </div>
-
-        {/* Content section with accordion */}
-        <div style={{
+        </div>        {/* Content section with 12-column grid */}
+        <div className={`grid-container ${isMobile ? '' : ''}`} style={{
           width: '100%',
-          maxWidth: 1212,
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          gap: isMobile ? 40 : 128,
-          display: 'flex',
-          flexDirection: isMobile ? 'column' : 'row'
-        }}>
-          {/* Left content with expandable items */}
-          <div style={{
-            width: isMobile ? '100%' : 484,
-            alignSelf: 'stretch',
-            paddingTop: 24,
-            paddingBottom: 24,
+          paddingTop: 24,
+          paddingBottom: 24,
+          justifyItems: 'stretch',
+          alignItems: 'start'
+        }}>{/* Left content with expandable items - Columns 1-6 */}
+          <div className="col-12 md:col-6" style={{
+            width: '100%',
             flexDirection: 'column',
             justifyContent: 'flex-start',
             alignItems: 'flex-start',
             gap: 24,
-            display: 'flex'
-          }}>            {/* Dynamic expandable content */}
+            display: 'flex',
+            paddingRight: isMobile ? 0 : 48,
+            justifySelf: 'start',
+            alignSelf: 'start'
+          }}>{/* Dynamic expandable content */}
             {renderExpandableItem(
               mindfulnessIcon,
               (tabContent as any)[activeTab].features[0],
@@ -205,19 +196,20 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
               "Advanced biometric sensors track your heart rate variability and breathing patterns to provide real-time feedback on your meditation depth and emotional state.",
               `${activeTab}-feature-3`
             )}
-          </div>
-
-          {/* Right image placeholder */}
-          <div style={{
-            width: isMobile ? '100%' : 600,
+          </div>          {/* Right image placeholder - Columns 7-12 */}
+          <div className="col-12 md:col-6" style={{
+            width: '100%',
             height: isMobile ? 250 : 400,
             borderRadius: 16,
             backgroundColor: '#f5f5f5',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',            color: '#999',
+            justifyContent: 'center',
+            color: '#999',
             fontSize: '14px',
-            fontFamily: '"Source Sans Pro", sans-serif'
+            fontFamily: '"Source Sans Pro", sans-serif',
+            marginTop: isMobile ? 24 : 0,
+            justifySelf: 'stretch'
           }}>
             [Image Placeholder 600x400]
           </div>
