@@ -27,13 +27,11 @@ async function registerServiceWorker() {
       })
       
       // Pre-cache critical 3D assets after app loads
-      if (registration.active) {
-        setTimeout(() => {
+      if (registration.active) {        setTimeout(() => {
           registration.active?.postMessage({
             type: 'CACHE_ASSETS',
             payload: {
               assets: [
-                '/src/BokehBubbles.tsx',
                 '/src/components/three-d/ProceduralPebble.tsx',
                 '/src/components/three-d/SceneManager.tsx',
                 '/src/utils/AnimationScheduler.ts',

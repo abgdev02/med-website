@@ -11,66 +11,36 @@
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: 1fr;
   align-items: center;
+  /* Apple-inspired minimal background - 95% white space with breathing animation */
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,           /* Pure white */
+    #fdfcff 25%,          /* Barely perceptible purple tint */
+    #fbfaff 50%,          /* Ultra light lavender */
+    #f9f7ff 75%,          /* Soft lavender white */
+    #f7f4ff 100%          /* Light lavender */
+  );
   
-  /* Beautiful bright lilac gradient background */
-  background:
-    /* Soft bright lilac overlay */
+  /* Breathing background animation */
+  animation: breatheBackground 19s ease-in-out infinite;
+  
+  /* Subtle overlay for depth - ultra minimal */
+  background-image: 
     radial-gradient(
-      ellipse 120% 80% at 50% -10%,
-      rgba(250, 248, 255, 0.3) 0%,
-      rgba(245, 242, 255, 0.2) 30%,
+      ellipse at top,
+      rgba(249, 247, 255, 0.5) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at center,
+      rgba(247, 244, 255, 0.3) 0%,
       transparent 60%
-    ),
-    /* Central soft lilac glow */
-    radial-gradient(
-      circle at 50% 40%,
-      rgba(240, 235, 255, 0.2) 0%,
-      rgba(245, 242, 255, 0.12) 30%,
-      transparent 70%
-    ),
-    /* Ambient floating soft lilac particles */
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(225, 214, 255, 0.15) 0%,
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 80% 30%,
-      rgba(235, 225, 255, 0.12) 0%,
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 30% 80%,
-      rgba(240, 235, 255, 0.1) 0%,
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 70% 75%,
-      rgba(230, 221, 255, 0.08) 0%,
-      transparent 30%
-    ),
-    /* Main soft, light lilac gradient */
-    linear-gradient(
-      135deg,
-      #faf8ff 0%,      /* Ultra light lilac */
-      #f5f2ff 20%,     /* Very light lilac */
-      #f0ebff 40%,     /* Soft light lilac */
-      #ebe4ff 60%,     /* Light lilac */
-      #e6ddff 80%,     /* Gentle lilac */
-      #e1d6ff 100%     /* Soft lilac */
-    );
+    );  
+  /* Remove floating particle animations for minimal design */
+  background-size: 100% 100%;
   
-  /* Animated floating particles overlay */
-  background-size: 
-    100% 100%,
-    500px 500px,
-    200px 200px,
-    300px 300px,
-    250px 250px,
-    180px 180px,
-    100% 100%;
-  
-  animation: floatingLilacParticles 25s ease-in-out infinite;
+  /* Remove floating animation for cleaner look */
+  animation: none;
 }
 
 .heroCanvas {
@@ -145,7 +115,7 @@
   font-weight: 100;
   margin: 0;
   line-height: var(--typography-lineHeight-tight);
-  color: rgba(59, 3, 116, 0.7);
+  color: #1d1d1f; /* Apple-style charcoal gray */
   text-transform: uppercase;
   cursor: text; /* Allow text selection */
   user-select: text; /* Explicitly allow text selection */
@@ -155,10 +125,8 @@
   border: none;
   padding: 0.5rem 1rem;
   
-  /* Minimal text shadow */
-  text-shadow: 
-    0 1px 5px rgba(0, 0, 0, 0.02),
-    0 0 10px rgba(240, 230, 255, 0.1);
+  /* Remove text shadow for clean minimal look */
+  text-shadow: none;
   
   /* Remove individual animations since we're sliding the container */
   transition: all 0.3s ease;
@@ -172,11 +140,11 @@
 /* Main Content Container - Transparent, no glass effect */
 .mainContent {
   position: absolute;
-  top: 60%; /* Positioned lower to be below the pebble */
+  top: 45%; /* Moved higher up from 60% */
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  z-index: 10;
+  z-index: 25; /* Increased z-index to appear above pebble */
   width: 100%;
   max-width: 600px;
   padding: 2rem; /* Reduced padding */
@@ -217,8 +185,8 @@
   cursor: text; /* Allow text selection */
   user-select: text; /* Explicitly allow text selection */
   
-  /* Subtle bright lilac glow */
-  text-shadow: 0 0 15px rgba(186, 148, 255, 0.1);
+  /* Remove text shadow for clean minimal look */
+  text-shadow: none;
 }
 
 /* Right side subtitle - for the longer descriptive text */
@@ -244,8 +212,8 @@
   cursor: text; /* Allow text selection */
   user-select: text; /* Explicitly allow text selection */
   
-  /* Subtle bright lilac glow */
-  text-shadow: 0 0 20px rgba(186, 148, 255, 0.15);
+  /* Remove text shadow for clean minimal look */
+  text-shadow: none;
 }
 
 /* Removed hover effect as subtitle should be static */
@@ -276,27 +244,22 @@
   line-height: 1.1;
 }
 
-/* New CTA Button with Rubbery Matte Purple and Glassmorphism */
+/* New CTA Button with Glass Morphism and Apple-style Purple Accent */
 .ctaButton {
   position: relative;
-  z-index: 25; /* Highest z-index to appear above everything including canvas and pebble */
+  z-index: 30; /* Increased z-index to appear above pebble */
   margin-top: 8rem;
   padding: 1.2rem 3rem;
   
-  /* Glassmorphism default state */
-  background: rgba(147, 51, 234, 0.12);
+  /* Glass morphism with minimal purple accent */
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   
-  /* Rubbery matte purple finish */
-  background-image: 
-    linear-gradient(
-      135deg, 
-      rgba(147, 51, 234, 0.12) 100%
-    );
-  
+  /* Subtle border with minimal purple */
+  border: 1px solid rgba(147, 51, 234, 0.15);
   border-radius: 20px;
-  color: rgba(74, 58, 90, 0.9);
+  color: #1d1d1f; /* Apple-style primary text */
   font-size: 1rem;
   font-weight: 600;
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -307,13 +270,13 @@
   align-items: center;
   justify-content: center;
   
-  /* Soft rubbery shadows */
+  /* Minimal Apple-style shadows */
   box-shadow: 
-    0 2px 4px rgba(147, 51, 234, 0.08),
-    0 2px 8px rgba(147, 51, 234, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    /* Rubbery transition with bounce */
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
+    
+  /* Smooth transitions */
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateY(0) scale(1);
 }
 
@@ -340,52 +303,44 @@
   pointer-events: none;
 }
 
-/* Hover state with solid rubbery matte purple */
+/* Hover state with subtle purple accent */
 .ctaButton:hover {
-  transform: translateY(-4px) scale(1.02);
+  transform: translateY(-2px) scale(1.01);
   
-  /* Direct solid purple background using the text color */
-  background: rgba(74, 58, 90, 0.95) !important; /* Same purple as "Companion for Emotional Embracing" */
-  background-image: none !important;
-  backdrop-filter: none !important;
-  
-  /* Force white text */
-  color: #ffffff !important;
-  border-color: rgba(74, 58, 90, 1) !important; /* Solid text purple border */
+  /* Subtle purple accent on hover */
+  background: rgba(147, 51, 234, 0.08);
+  border-color: rgba(147, 51, 234, 0.25);
+  color: #1d1d1f; /* Keep Apple-style text */
   letter-spacing: 0.035em;
   
-  /* Enhanced rubbery matte shadows using text purple */
+  /* Enhanced minimal shadows */
   box-shadow: 
-    0 8px 25px rgba(74, 58, 90, 0.4),
-    0 4px 15px rgba(74, 58, 90, 0.5),
-    0 2px 8px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(147, 51, 234, 0.1);
 }
 
 /* Focus state for accessibility */
 .ctaButton:focus {
   outline: none;
-  transform: translateY(-2px) scale(1.01);
+  transform: translateY(-1px) scale(1.005);
   
-  /* Accessible focus ring */
+  /* Accessible focus ring with purple accent */
   box-shadow: 
-    0 6px 20px rgba(147, 51, 234, 0.12),
-    0 3px 12px rgba(147, 51, 234, 0.16),
-    0 0 0 3px rgba(147, 51, 234, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 3px 6px rgba(0, 0, 0, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.16),
+    0 0 0 3px rgba(147, 51, 234, 0.2);
 }
 
 /* Active/pressed state */
 .ctaButton:active {
-  transform: translateY(-1px) scale(0.98);
+  transform: translateY(0) scale(0.98);
   transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   
-  /* Pressed rubbery feel */
+  /* Minimal pressed effect */
   box-shadow: 
-    0 2px 8px rgba(147, 51, 234, 0.2),
-    0 1px 4px rgba(147, 51, 234, 0.25),
-    inset 0 2px 4px rgba(147, 51, 234, 0.15);
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 1px 2px rgba(147, 51, 234, 0.1);
 }
 
 .ctaButton:active::before {
@@ -397,16 +352,14 @@
   0%, 100% { 
     transform: translateY(0) scale(1);
     box-shadow: 
-      0 4px 15px rgba(147, 51, 234, 0.08),
-      0 2px 8px rgba(147, 51, 234, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 1px 3px rgba(0, 0, 0, 0.12),
+      0 1px 2px rgba(0, 0, 0, 0.24);
   }
   50% { 
-    transform: translateY(-1px) scale(1.002);
+    transform: translateY(-1px) scale(1.001);
     box-shadow: 
-      0 5px 18px rgba(147, 51, 234, 0.1),
-      0 3px 10px rgba(147, 51, 234, 0.14),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      0 2px 4px rgba(0, 0, 0, 0.15),
+      0 1px 3px rgba(0, 0, 0, 0.25);
   }
 }
 
@@ -414,7 +367,7 @@
   animation: buttonBreath 4s ease-in-out infinite;
 }
 
-/* Enhanced Scroll Cue with Bright Lilac Theme */
+/* Enhanced Scroll Cue with Apple-inspired Minimal Design */
 .scrollCue {
   position: absolute;
   bottom: max(3rem, env(safe-area-inset-bottom, 3rem));
@@ -422,16 +375,16 @@
   transform: translateX(-50%);
   width: 32px;
   height: 56px;
-  opacity: 0.7;
+  opacity: 0.6;
   z-index: 15;
-  stroke: rgba(186, 148, 255, 0.8); /* Bright lilac */
+  stroke: #86868b; /* Apple secondary gray */
   stroke-width: 1.5;
   fill: none;
   
-  /* Bright lilac glassmorphism background */
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  /* Minimal background */
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(186, 148, 255, 0.25);
   border-radius: 16px;
   padding: 6px;
@@ -831,4 +784,116 @@
 /* Pause animation on hover for better interaction */
 .slidingRootContainer:hover .slidingRootTrack {
   animation-play-state: paused;
+}
+
+/* Breathing animation keyframes for calm color transitions */
+@keyframes breatheBackground {
+  0% { 
+    background: linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fdfcff 25%,
+      #fbfaff 50%,
+      #f9f7ff 75%,
+      #f7f4ff 100%
+    );
+  }
+  21% { 
+    /* Inhale complete - slightly more purple (2-5% bump) */
+    background: linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fcfaff 25%,
+      #f8f5ff 50%,
+      #f5f1ff 75%,
+      #f2edff 100%
+    );
+  }
+  58% { 
+    /* Hold phase - maintain deeper purple */
+    background: linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fcfaff 25%,
+      #f8f5ff 50%,
+      #f5f1ff 75%,
+      #f2edff 100%
+    );
+  }
+  100% { 
+    /* Exhale complete - return to original */
+    background: linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fdfcff 25%,
+      #fbfaff 50%,
+      #f9f7ff 75%,
+      #f7f4ff 100%
+    );
+  }
+}
+
+/* Enhanced subtle glow with breathing */
+.heroWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    ellipse at top center,
+    rgba(147, 51, 234, var(--breath-glow, 0.03)) 0%,
+    transparent 70%
+  );
+  animation: breatheGlow 19s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes breatheGlow {
+  0% { --breath-glow: 0.03; }
+  21% { --breath-glow: 0.06; }
+  58% { --breath-glow: 0.06; }
+  100% { --breath-glow: 0.03; }
+}
+
+/* New ROOT text for columns 1-4 section */
+.columnsRootText {
+  font-family: var(--typography-fontFamily-primary);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 300; /* Specified font weight */
+  text-transform: uppercase; /* Capital letters */
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-align: center;
+  
+  /* Dark purple to middle purple gradient */
+  background: linear-gradient(
+    135deg,
+    #4c1d95 0%,     /* Dark purple */
+    #7c3aed 50%,    /* Middle purple */
+    #8b5cf6 100%    /* Lighter middle purple */
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  /* 16-24% opacity range */
+  opacity: 0.20;
+  
+  /* Ensure it's properly positioned and doesn't interfere with interactions */
+  pointer-events: none;
+  user-select: none;
+  
+  /* Smooth transitions */
+  transition: opacity 0.3s ease;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .columnsRootText {
+    font-size: clamp(2rem, 6vw, 4rem);
+    opacity: 0.18; /* Slightly lower opacity on mobile for better readability */
+  }
 }

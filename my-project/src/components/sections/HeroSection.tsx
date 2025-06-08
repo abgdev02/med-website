@@ -3,6 +3,10 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Float } from '@react-three/drei'
 import { Group } from 'three'
 import { ProceduralPebble } from '../three-d/ProceduralPebble'
+import { WaterShaderBackground } from '../three-d/WaterShaderBackground'
+import { FloatingParticles } from '../three-d/FloatingParticles'
+import { BreathingGuide } from '../three-d/BreathingGuide'
+import { useMouseTracking } from '../../hooks/useMouseTracking'
 import ThreeDErrorBoundary from '../ui/ThreeDErrorBoundary'
 import styles from './HeroSection.module.css'
 
@@ -15,7 +19,7 @@ function RotatingPebble({ children, speed = 1 }: { children: React.ReactNode, sp
   const groupRef = useRef<Group>(null)
     useFrame((_, delta) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * speed * 0.5 // Slow rotation
+      groupRef.current.rotation.y += delta * speed * 0.8 // Slow rotation
       // groupRef.current.rotation.x += delta * speed * 0.05 // Very subtle wobble - removed for cleaner rotation
     }
   })
@@ -24,15 +28,28 @@ function RotatingPebble({ children, speed = 1 }: { children: React.ReactNode, sp
 }
 
 export function HeroSection({ isMobile }: HeroSectionProps) {
+  const mouse = useMouseTracking()
+  
   return (
-    <div className={`${styles.heroWrapper} ambient-glow`}>      {/* 3D Canvas Layer - positioned to center pebble above CTA button */}
-      <Canvas 
+    <div className={`${styles.heroWrapper} ambient-glow`}>      {/* 3D Canvas Layer - positioned to center pebble above CTA button */}      <Canvas 
         className={styles.heroCanvas} 
-        camera={{ position: [0, 0, 3.5], fov: 45 }}
-      >        <ambientLight intensity={0.8} />
-        <directionalLight position={[4, 6, 5]} intensity={0.6} />
-        <directionalLight position={[-3, 4, 3]} color="#f0f4f8" intensity={0.4} />
-        <directionalLight position={[0, -2, 2]} color="#e8f2ff" intensity={0.2} />
+        camera={{ position: [0, 0, 3.5], fov: 45, far: 100 }}
+      >
+        {/* Water shader background - same as reference code */}
+        <WaterShaderBackground />
+          {/* Floating particles - same as reference code */}
+        <FloatingParticles mouse={mouse} />
+        
+        {/* Breathing guide for meditation */}
+        <BreathingGuide intensity={0.8} />
+
+        {/* Enhanced lighting for clean Apple-inspired design */}
+        <pointLight color="#ffffff" intensity={2.5} distance={60} position={[0, 0, 20]} />
+        <pointLight color="#ffffff" intensity={2} distance={40} position={[10, 10, 15]} />
+        <pointLight color="#ffffff" intensity={2} distance={40} position={[-10, -10, 15]} />
+        <ambientLight color="#ffffff" intensity={0.8} />
+        <directionalLight position={[4, 6, 5]} intensity={1} color="#ffffff" />
+        <directionalLight position={[-3, 4, 3]} color="#ffffff" intensity={0.6} />
           <ThreeDErrorBoundary componentName="ProceduralPebble">
           {/* Main pebble with gentle float - centered horizontally, positioned above CTA */}
           <Suspense fallback={null}>            <Float floatIntensity={1.0} rotationIntensity={0.4} speed={0.6}>              <RotatingPebble speed={0.6}>                <group 
@@ -48,7 +65,7 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
             </Float>
           </Suspense>
         </ThreeDErrorBoundary>
-      </Canvas>      {/* Sliding ROOT text with meditation icons positioned above the pebble */}
+      </Canvas>{/* Sliding ROOT text with meditation icons positioned above the pebble */}
       <div className={styles.rootTextBackground}>
         <div className={styles.slidingRootContainer}>
           <div className={styles.slidingRootTrack}>            {/* First set of ROOT + icons */}
