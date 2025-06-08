@@ -9,28 +9,59 @@ export function Navigation({}: NavigationProps) {
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['home', 'about', 'how-it-works']
-      const scrollPosition = window.scrollY + 100 // Add offset for sticky nav
-
+      const scrollPosition = window.scrollY
+      const windowHeight = window.innerHeight
+      const threshold = windowHeight * 0.5 // 50% of viewport height as threshold
+      
+      let newActiveSection = 'home' // Default to home
+      
+      // Check each section to find which one is most prominently visible
       for (const section of sections) {
         const element = document.getElementById(section)
         if (element) {
-          const { offsetTop, offsetHeight } = element
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section)
+          const rect = element.getBoundingClientRect()
+          const elementTop = scrollPosition + rect.top
+          const elementBottom = elementTop + rect.height
+          
+          // If the section's top is above the threshold line (middle of screen)
+          // and the section's bottom is below the threshold line
+          if (elementTop <= scrollPosition + threshold && 
+              elementBottom > scrollPosition + threshold) {
+            newActiveSection = section
+            break
+          }
+          
+          // Special case for home section when at very top
+          if (section === 'home' && scrollPosition < threshold) {
+            newActiveSection = 'home'
             break
           }
         }
       }
+      
+      if (newActiveSection !== activeSection) {
+        setActiveSection(newActiveSection)
+      }
     }
 
-    // Set initial active section
-    if (window.scrollY < 100) {
-      setActiveSection('home')
+    // Set initial active section and call handleScroll immediately
+    handleScroll()
+
+    // Use throttling for better performance
+    let ticking = false
+    const throttledHandleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll()
+          ticking = false
+        })
+        ticking = true
+      }
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    window.addEventListener('scroll', throttledHandleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', throttledHandleScroll)
+  }, [activeSection])
 
   const isActive = (section: string) => activeSection === section
 

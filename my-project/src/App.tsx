@@ -1,6 +1,7 @@
 // src/App.tsx
 import { Suspense, useEffect } from 'react'
 import { Navigation } from './components/layout/Navigation'
+import { Footer } from './components/layout/Footer'
 import { HeroSection } from './components/sections/HeroSection'
 import { TabSection, HoldMeditateSection, ComponentLoadingFallback } from './components/LazyComponents'
 import { ParticleBackground } from './components/ui/ParticleBackground'
@@ -78,13 +79,14 @@ function App() {
             <TabSection isMobile={isMobile} tabContent={tabContent} />
           </Suspense>
         </section>
-        
-        <section id="how-it-works" aria-label="How it works - Hold and meditate practice">
+          <section id="how-it-works" aria-label="How it works - Hold and meditate practice">
           <Suspense fallback={<ComponentLoadingFallback />}>
             <HoldMeditateSection isMobile={isMobile} />
           </Suspense>
         </section>
       </main>
+      
+      <Footer />
     </>
   )
 }
