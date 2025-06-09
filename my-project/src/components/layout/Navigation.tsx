@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from './Navigation.module.css'
 
-interface NavigationProps {}
-
-export function Navigation({}: NavigationProps) {
+export function Navigation() {
   const [activeSection, setActiveSection] = useState('home')
   
   useEffect(() => {

@@ -8,7 +8,7 @@ interface FloatingParticlesProps {
 
 export function FloatingParticles({ mouse }: FloatingParticlesProps) {
   const pointsRef = useRef<THREE.Points>(null!)  // Reduced particle count for better performance and visibility
-  const particleCount = 16000
+  const particleCount = 12000
   
   // Store initial positions for wind reset boundaries
   const initialPositions = useRef<Float32Array | null>(null)
@@ -21,7 +21,7 @@ export function FloatingParticles({ mouse }: FloatingParticlesProps) {
     // Position particles behind the pebble (negative Z values)
     for(let i = 0; i < particleCount * 3; i += 3) {
       posArray[i] = (Math.random() - 0.5) * 8     // X position
-      posArray[i + 1] = (Math.random() - 0.5) * 24 // Y position  
+      posArray[i + 1] = (Math.random() - 0.5) * 8 // Y position  
       posArray[i + 2] = (Math.random() - 0.5) * 12 - 6 // Z position: behind pebble (-12 to 0)
     }
     
@@ -34,7 +34,7 @@ export function FloatingParticles({ mouse }: FloatingParticlesProps) {
   // Particle material using default circular points
   const particlesMaterial = useMemo(() => {
     return new THREE.PointsMaterial({
-      size: 0.012, // Larger for better visibility
+      size: 0.008, // Larger for better visibility
       color: 0x6b21a8, // Dark purple color directly
       transparent: true,
       opacity: 0.8, // Much higher opacity      blending: THREE.NormalBlending, // Normal blending instead of additive

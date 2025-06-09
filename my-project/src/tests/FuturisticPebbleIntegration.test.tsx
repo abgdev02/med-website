@@ -6,7 +6,6 @@ import '@testing-library/jest-dom';
 import App from '../App';
 import { Navigation } from '../components/layout/Navigation';
 import { HeroSection } from '../components/sections/HeroSection';
-import FuturisticPebbleDemo from '../pages/FuturisticPebbleDemo';
 
 // Mock Three.js and WebGL context
 vi.mock('three', () => ({
@@ -44,19 +43,21 @@ vi.mock('three', () => ({
   Vector3: vi.fn(() => ({ x: 0, y: 0, z: 0 }))
 }));
 
-// Mock performance monitoring
-vi.mock('../utils/FuturisticPebblePerformanceMonitor', () => ({
-  default: {
-    init: vi.fn(),
-    startFrame: vi.fn(),
-    endFrame: vi.fn(),
-    getStats: vi.fn(() => ({
-      averageFPS: 60,
-      minFPS: 58,
-      maxFPS: 62,
-      frameCount: 1000
-    })),
-    cleanup: vi.fn()
+// Mock performance monitoring - using existing PerformanceMonitor
+vi.mock('../utils/PerformanceMonitor', () => ({
+  globalPerformanceMonitor: {
+    update: vi.fn(),
+    getFPS: vi.fn(() => 60),
+    getAverageFPS: vi.fn(() => 60),
+    getMinFPS: vi.fn(() => 58),
+    getMaxFPS: vi.fn(() => 62),
+    getPerformanceLevel: vi.fn(() => 'high'),
+    getFullReport: vi.fn(() => ({
+      fps: { current: 60, average: 60, min: 58, max: 62 },
+      memory: { used: 50, total: 100, limit: 500 },
+      performance: { level: 'high', stability: 0.95 },
+      recommendations: []
+    }))
   }
 }));
 

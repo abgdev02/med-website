@@ -19,12 +19,10 @@ export function BreathingGuide({ intensity = 1 }: BreathingGuideProps) {
       randomFactors: new Float32Array(count * 3), // For organic movement
       phases: new Float32Array(count) // Phase offset for each particle
     }
-    
-    // Create particles in radial waves
+      // Create particles in radial waves
     for (let i = 0; i < count; i++) {
       // Create multiple waves/layers
       const waveIndex = i % 16 // 8 waves
-      const particlesPerWave = count / 8
       const indexInWave = Math.floor(i / 8)
       
       // Spiral distribution
@@ -124,11 +122,12 @@ export function BreathingGuide({ intensity = 1 }: BreathingGuideProps) {
     let currentPhase = 'inhale'
     let breathProgress = 0
     
+    // BREATHING PHASES
     if (currentTime < 4) { 
       // Inhale phase
       breathProgress = currentTime / 4
-      scale = 0.7 + (breathProgress * 0.7)
-      opacity = (0.3 + breathProgress * 0.5) * intensity
+      scale = 0.24 + (breathProgress * 1.16)  // was: 0.7 + (breathProgress * 0.7)
+      opacity = (0.15 + breathProgress * 0.65) * intensity  // was: (0.3 + breathProgress * 0.5)
       currentPhase = 'inhale'
     } else if (currentTime < 11) { 
       // Hold phase
@@ -137,14 +136,13 @@ export function BreathingGuide({ intensity = 1 }: BreathingGuideProps) {
       opacity = 0.8 * intensity
       currentPhase = 'hold'
       
-      // Subtle pulse during hold
       const holdTime = (currentTime - 4) / 7
-      scale += Math.sin(holdTime * Math.PI * 6) * 0.03
+      scale += Math.sin(holdTime * Math.PI * 6) * 0.02  // reduce to 0.02 from 0.03
     } else { 
       // Exhale phase
       breathProgress = 1 - ((currentTime - 11) / 8)
-      scale = 0.7 + (breathProgress * 0.7)
-      opacity = (0.3 + breathProgress * 0.5) * intensity
+      scale = 0.24 + (breathProgress * 1.16)  // was: 0.7 + (breathProgress * 0.7)
+      opacity = (0.15 + breathProgress * 0.65) * intensity  // was: (0.3 + breathProgress * 0.5)
       currentPhase = 'exhale'
     }
     
@@ -170,14 +168,14 @@ export function BreathingGuide({ intensity = 1 }: BreathingGuideProps) {
         const distance = Math.sqrt(initX * initX + initY * initY)
         
         // Radial pulsation with wave delay based on distance
-        const waveDelay = distance * 2
-        const waveTime = time * 2 - waveDelay + particleData.phases[i]
-        const radialPulse = Math.sin(waveTime) * 0.1 * (1 - distance / 2)
+        const waveDelay = distance * 1.5  // was: distance * 2
+        const waveTime = time * 1.5 - waveDelay + particleData.phases[i]  // was: time * 2
+        const radialPulse = Math.sin(waveTime) * 0.06 * (1 - distance / 2.5)  // was: 0.1 * (1 - distance / 2)
         
         // Organic movement
-        const organicX = Math.sin(time * 0.7 + particleData.phases[i]) * 0.02 * particleData.randomFactors[i3]
-        const organicY = Math.cos(time * 0.7 + particleData.phases[i]) * 0.02 * particleData.randomFactors[i3 + 1]
-        const organicZ = Math.sin(time * 0.5 + particleData.phases[i]) * 0.05 * particleData.randomFactors[i3 + 2]
+        const organicX = Math.sin(time * 0.5 + particleData.phases[i]) * 0.015 * particleData.randomFactors[i3]  // was: time * 0.7, amplitude 0.02
+        const organicY = Math.cos(time * 0.5 + particleData.phases[i]) * 0.015 * particleData.randomFactors[i3 + 1]  // was: time * 0.7, amplitude 0.02
+        const organicZ = Math.sin(time * 0.4 + particleData.phases[i]) * 0.03 * particleData.randomFactors[i3 + 2]  // was: time * 0.5, amplitude 0.05
         
         // Breathing expansion
         const breathScale = scale + radialPulse
@@ -189,8 +187,8 @@ export function BreathingGuide({ intensity = 1 }: BreathingGuideProps) {
         
         // Animate size based on breathing phase and distance
         const baseSize = 0.08 * (1 - distance / 3)
-        const sizePulse = Math.sin(waveTime * 0.5) * 0.02
-        sizes.array[i] = baseSize * (0.8 + breathProgress * 0.4) + sizePulse
+        const sizePulse = Math.sin(waveTime * 0.3) * 0.015  // was: 0.5 * 0.02
+        sizes.array[i] = baseSize * (0.6 + breathProgress * 0.6) + sizePulse  // was: (0.8 + breathProgress * 0.4)
       }
       
       positions.needsUpdate = true
@@ -201,11 +199,10 @@ export function BreathingGuide({ intensity = 1 }: BreathingGuideProps) {
       material.opacity = opacity
       
       // Gentle rotation
-      breathingRingRef.current.rotation.z += 0.001
+      breathingRingRef.current.rotation.z += 0.0005  // was: 0.001
     }
-    
-    // Animate ripples
-    ripplesRef.current.children.forEach((child, index) => {
+      // Animate ripples
+    ripplesRef.current.children.forEach((child) => {
       const ripple = child as THREE.Points
       const age = (time * 2) % 12
       const scale = 1 + age * 0.3
@@ -227,44 +224,13 @@ export function BreathingGuide({ intensity = 1 }: BreathingGuideProps) {
       }
     })
   })
-  
   return (
-    <group position={[0, 0, -3]}>
+    <group position={[0, 0.8, -3]}>
       {/* Main breathing particles */}
       <points ref={breathingRingRef} geometry={ringGeometry} material={ringMaterial} />
       
       {/* Relaxation ripples */}
       <group ref={ripplesRef} />
-      
-      {/* Phase indicator particles */}
-      <points position={[0, -2, 0]}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={40}
-            array={(() => {
-              const positions = new Float32Array(40 * 3)
-              for (let i = 0; i < 40; i++) {
-                const angle = (i / 40) * Math.PI * 2
-                const radius = 0.15
-                positions[i * 3] = Math.cos(angle) * radius
-                positions[i * 3 + 1] = Math.sin(angle) * radius
-                positions[i * 3 + 2] = 0
-              }
-              return positions
-            })()}
-            itemSize={3}
-          />
-        </bufferGeometry>
-        <pointsMaterial 
-          size={0.03}
-          color={breathPhase === 'hold' ? 0x7c3aed : 0x9333ea}
-          transparent 
-          opacity={0.8}
-          blending={THREE.NormalBlending}
-          depthWrite={false}
-        />
-      </points>
     </group>
   )
 }
