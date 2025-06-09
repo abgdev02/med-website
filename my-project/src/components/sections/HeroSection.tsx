@@ -6,6 +6,7 @@ import { ProceduralPebble } from '../three-d/ProceduralPebble'
 import { WaterShaderBackground } from '../three-d/WaterShaderBackground'
 import { FloatingParticles } from '../three-d/FloatingParticles'
 import { BreathingGuide } from '../three-d/BreathingGuide'
+import { MindfulnessPrompt } from '../ui/MindfulnessPrompt'
 import { useMouseTracking } from '../../hooks/useMouseTracking'
 import ThreeDErrorBoundary from '../ui/ThreeDErrorBoundary'
 import styles from './HeroSection.module.css'
@@ -191,8 +192,10 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
               <span className={styles.storeText}>Google Play</span>
             </div>
           </div>
-        </a>
-      </div>
+        </a>      </div>
+
+      {/* Mindfulness prompts for meditation guidance */}
+      <MindfulnessPrompt />
 
       {/* Scroll indicator */}
       <svg className={styles.scrollCue} viewBox="0 0 24 36" role="img" aria-label="Scroll down">

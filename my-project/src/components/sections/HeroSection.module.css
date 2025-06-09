@@ -21,7 +21,7 @@
     #f7f4ff 100%          /* Light lavender */
   );
   
-  /* Breathing background animation */
+  /* Breathing color animation */
   animation: breatheBackground 19s ease-in-out infinite;
   
   /* Subtle overlay for depth - ultra minimal */
@@ -140,11 +140,11 @@
 /* Main Content Container - Transparent, no glass effect */
 .mainContent {
   position: absolute;
-  top: 45%; /* Moved higher up from 60% */
+  top: 60%; /* Positioned lower to be below the pebble */
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  z-index: 25; /* Increased z-index to appear above pebble */
+  z-index: 10;
   width: 100%;
   max-width: 600px;
   padding: 2rem; /* Reduced padding */
@@ -247,7 +247,7 @@
 /* New CTA Button with Glass Morphism and Apple-style Purple Accent */
 .ctaButton {
   position: relative;
-  z-index: 30; /* Increased z-index to appear above pebble */
+  z-index: 25; /* Highest z-index to appear above everything including canvas and pebble */
   margin-top: 8rem;
   padding: 1.2rem 3rem;
   
@@ -786,7 +786,7 @@
   animation-play-state: paused;
 }
 
-/* Breathing animation keyframes for calm color transitions */
+/* Breathing animation keyframes for calming color transitions */
 @keyframes breatheBackground {
   0% { 
     background: linear-gradient(
@@ -799,7 +799,6 @@
     );
   }
   21% { 
-    /* Inhale complete - slightly more purple (2-5% bump) */
     background: linear-gradient(
       180deg,
       #ffffff 0%,
@@ -810,7 +809,6 @@
     );
   }
   58% { 
-    /* Hold phase - maintain deeper purple */
     background: linear-gradient(
       180deg,
       #ffffff 0%,
@@ -821,7 +819,6 @@
     );
   }
   100% { 
-    /* Exhale complete - return to original */
     background: linear-gradient(
       180deg,
       #ffffff 0%,
@@ -833,7 +830,7 @@
   }
 }
 
-/* Enhanced subtle glow with breathing */
+/* Enhance the subtle glow with breathing */
 .heroWrapper::before {
   content: '';
   position: absolute;
@@ -856,44 +853,4 @@
   21% { --breath-glow: 0.06; }
   58% { --breath-glow: 0.06; }
   100% { --breath-glow: 0.03; }
-}
-
-/* New ROOT text for columns 1-4 section */
-.columnsRootText {
-  font-family: var(--typography-fontFamily-primary);
-  font-size: clamp(3rem, 8vw, 6rem);
-  font-weight: 300; /* Specified font weight */
-  text-transform: uppercase; /* Capital letters */
-  letter-spacing: 0.1em;
-  line-height: 1;
-  text-align: center;
-  
-  /* Dark purple to middle purple gradient */
-  background: linear-gradient(
-    135deg,
-    #4c1d95 0%,     /* Dark purple */
-    #7c3aed 50%,    /* Middle purple */
-    #8b5cf6 100%    /* Lighter middle purple */
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  
-  /* 16-24% opacity range */
-  opacity: 0.20;
-  
-  /* Ensure it's properly positioned and doesn't interfere with interactions */
-  pointer-events: none;
-  user-select: none;
-  
-  /* Smooth transitions */
-  transition: opacity 0.3s ease;
-}
-
-/* Responsive adjustments for mobile */
-@media (max-width: 768px) {
-  .columnsRootText {
-    font-size: clamp(2rem, 6vw, 4rem);
-    opacity: 0.18; /* Slightly lower opacity on mobile for better readability */
-  }
 }

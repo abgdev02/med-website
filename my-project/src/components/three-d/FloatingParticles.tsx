@@ -27,62 +27,23 @@ export function FloatingParticles({ mouse }: FloatingParticlesProps) {
     
     // Store initial positions for boundary checking
     initialPositions.current = new Float32Array(posArray)
-    
-    geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3))
+      geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3))
     return geometry
-  }, [])  // Create rounded square texture for particles with dark purple color
-  const roundedSquareTexture = useMemo(() => {
-    const canvas = document.createElement('canvas')
-    canvas.width = 64
-    canvas.height = 64
-    const context = canvas.getContext('2d')!
-    
-    // Clear canvas
-    context.clearRect(0, 0, 64, 64)
-    
-    // Create rounded square with dark purple
-    const size = 48 // Size of the square
-    const x = (64 - size) / 2 // Center horizontally
-    const y = (64 - size) / 2 // Center vertically
-    const radius = 8 // Border radius
-    
-    // Create gradient for smooth edges
-    const gradient = context.createRadialGradient(32, 32, 0, 32, 32, 24)
-    gradient.addColorStop(0, 'rgba(107, 33, 168, 1)') // Dark purple center
-    gradient.addColorStop(0.8, 'rgba(107, 33, 168, 0.8)') // Fade to edges
-    gradient.addColorStop(1, 'rgba(107, 33, 168, 0)') // Transparent edge
-    
-    // Draw rounded rectangle
-    context.beginPath()
-    context.moveTo(x + radius, y)
-    context.lineTo(x + size - radius, y)
-    context.quadraticCurveTo(x + size, y, x + size, y + radius)
-    context.lineTo(x + size, y + size - radius)
-    context.quadraticCurveTo(x + size, y + size, x + size - radius, y + size)
-    context.lineTo(x + radius, y + size)
-    context.quadraticCurveTo(x, y + size, x, y + size - radius)
-    context.lineTo(x, y + radius)
-    context.quadraticCurveTo(x, y, x + radius, y)
-    context.closePath()
-    
-    context.fillStyle = gradient
-    context.fill()
-    
-    const texture = new THREE.CanvasTexture(canvas)
-    return texture
-  }, [])// Dark purple material with enhanced visibility
+  }, [])
+
+  // Particle material using default circular points
   const particlesMaterial = useMemo(() => {
     return new THREE.PointsMaterial({
       size: 0.012, // Larger for better visibility
       color: 0x6b21a8, // Dark purple color directly
       transparent: true,
-      opacity: 0.8, // Much higher opacity
-      blending: THREE.NormalBlending, // Normal blending instead of additive
+      opacity: 0.8, // Much higher opacity      blending: THREE.NormalBlending, // Normal blending instead of additive
       sizeAttenuation: true, // Makes particles smaller with distance
       vertexColors: false, // Ensures consistent color
-      // Remove texture to see if that's causing the issue
     })
-  }, [])  // Realistic wind simulation with accurate mathematical models
+  }, [])
+
+  // Realistic wind simulation with accurate mathematical models
   useFrame((state) => {
     if (!pointsRef.current) return
     
@@ -171,11 +132,11 @@ export function FloatingParticles({ mouse }: FloatingParticlesProps) {
     pointsRef.current.rotation.y += 0.0005 // Slower rotation
     pointsRef.current.rotation.x = mouse.y * 0.1 // Reduced mouse influence
   })
-
   return (
     <points
       ref={pointsRef}
-      geometry={particlesGeometry}      material={particlesMaterial}
+      geometry={particlesGeometry}
+      material={particlesMaterial}
     />
   )
 }
