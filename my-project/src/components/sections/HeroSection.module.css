@@ -200,10 +200,12 @@
 }
 
 .rootTitleCenter.mobile {
-  top: 22%; /* Moved further up on mobile from 32% to 22% */
-  left: 2.7rem; /* Account for mobile subtitleBottomLeft padding (1.5rem + 1.2rem padding) */
+  top: 25%; /* Positioned above the pebble */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Perfect centering */
   font-size: clamp(1.8rem, 4vw, 2.5rem); /* Proportionally smaller on mobile */
   letter-spacing: 4px; /* Slightly less spacing on mobile */
+  text-align: center; /* Center the text */
   
   /* Improved mobile gradient to match website design */
   background: linear-gradient(135deg, 
@@ -242,10 +244,12 @@
 }
 
 .rootSubtitle.mobile {
-  top: 30%; /* Slightly lower on mobile */
-  left: 2.7rem; /* Account for mobile subtitleBottomLeft padding (1.5rem + 1.2rem padding) */
+  top: 32%; /* Positioned below the ROOT title */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Center the text */
   font-size: clamp(0.8rem, 2vw, 1rem);
-  max-width: calc(70% - 2.7rem); /* Adjust max-width for new left position */
+  text-align: center; /* Center the text */
+  max-width: 80%; /* Allow more width on mobile */
 }
 
 .mainContent:hover {
@@ -752,18 +756,21 @@
 .appButtons.mobile {
   position: absolute;
   top: auto;
-  bottom: max(6rem, env(safe-area-inset-bottom, 6rem));
-  right: 1.5rem;
-  left: auto;
-  flex-direction: row;
-  gap: 0.5rem;
-  max-width: calc(100% - 3rem);
-  justify-content: flex-end;
+  bottom: max(8rem, env(safe-area-inset-bottom, 8rem)); /* More bottom spacing */
+  left: 50%; /* Center horizontally */
+  right: auto;
+  transform: translateX(-50%); /* Perfect horizontal centering */
+  flex-direction: column; /* Stack vertically instead of horizontal */
+  gap: 1.25rem; /* Much larger gap between buttons - increased from 0.75rem */
+  max-width: 240px; /* Slightly smaller container for cleaner look */
+  justify-content: center;
+  align-items: center; /* Center-align the buttons */
 }
 
 .appButtons.mobile .appButton {
-  min-width: 120px;
-  padding: 0.6rem 0.8rem;
+  min-width: 160px; /* Wider buttons for better mobile experience */
+  padding: 0.8rem 1rem; /* More padding for easier touch targets */
+  width: 100%; /* Full width within the container */
 }
 
 .appButtons.mobile .appIcon {
@@ -807,28 +814,252 @@
 
 /* Mobile responsive breakpoint */
 @media (max-width: 768px) {
+  /* Hero wrapper mobile improvements */
+  .heroWrapper {
+    height: 100vh;
+    height: 100dvh; /* Use dynamic viewport height on mobile */
+    padding: 0 1rem;
+  }
+    /* ROOT title mobile positioning - perfectly centered and stacked */
+  .rootTitleCenter.mobile {
+    left: 50% !important; /* Perfect horizontal center with important to override base styles */
+    top: 15% !important; /* Much higher - closer to navbar to reduce gap */
+    transform: translate(-50%, -50%) !important; /* Perfect centering with important */
+    font-size: clamp(1.8rem, 7vw, 2.8rem) !important;
+    text-align: center !important; /* Center the text */
+    width: 100% !important; /* Full width for perfect centering */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  /* ROOT subtitle mobile positioning - centered and below title */
+  .rootSubtitle.mobile {
+    left: 50% !important; /* Perfect horizontal center with important to override base styles */
+    top: 22% !important; /* Positioned directly below the ROOT title - closer spacing */
+    transform: translate(-50%, -50%) !important; /* Perfect centering for both axes with important */
+    text-align: center !important; /* Center the text */
+    max-width: 90% !important; /* Allow more width on mobile */
+    width: 90% !important; /* Ensure consistent width */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    opacity: 100%;
+    font-size: clamp(0.8rem, 2.5vw, 1.1rem) !important; /* Slightly larger for better readability */
+  }
+  
+  /* Main content mobile adjustments */
+  .mainContent {
+    top: 45%; /* Move up to accommodate mobile layout */
+    padding: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+  /* CTA button mobile */
+  .ctaButton {
+    margin-top: 6rem; /* Increased from 4rem to move button down */
+    padding: 1rem 2.5rem;
+    font-size: 0.9rem;
+  }
+    /* Mobile hover effects - ensuring consistency */
+  .ctaButton:hover {
+    transform: translateY(-2px) scale(1.01);
+    
+    /* Subtle purple accent on hover - same as desktop */
+    background: rgba(147, 51, 234, 0.04) !important;
+    border-color: rgba(147, 51, 234, 0.25) !important;
+    color: #3b0764 !important; /* Keep Apple-style text */
+    letter-spacing: 0.064em;
+    
+    /* Enhanced minimal shadows - same as desktop */
+    box-shadow: 
+      0 4px 8px rgba(0, 0, 0, 0.15),
+      0 2px 4px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(147, 51, 234, 0.1) !important;
+  }
+  
+  /* Mobile focus and active states for consistency */
+  .ctaButton:focus {
+    outline: none;
+    transform: translateY(-1px) scale(1.005);
+    
+    /* Accessible focus ring with purple accent */
+    box-shadow: 
+      0 3px 6px rgba(0, 0, 0, 0.12),
+      0 2px 4px rgba(0, 0, 0, 0.16),
+      0 0 0 3px rgba(147, 51, 234, 0.2) !important;
+  }
+  
+  .ctaButton:active {
+    transform: translateY(0) scale(0.98);
+    transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    /* Minimal pressed effect */
+    box-shadow: 
+      0 1px 2px rgba(0, 0, 0, 0.2),
+      inset 0 1px 2px rgba(147, 51, 234, 0.1) !important;
+  }
+  
+  /* Subtitle mobile improvements */
+  .subtitleBottomLeft {
+    bottom: max(2rem, env(safe-area-inset-bottom, 2rem));
+    left: 1rem;
+    padding: 1rem 1.5rem;
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+    max-width: calc(65% - 1rem);
+  }
+  
+  .subtitleRightSide {
+    top: 55%;
+    right: 1rem;
+    font-size: clamp(0.7rem, 3.5vw, 1rem);
+    max-width: calc(55% - 1rem);
+  }
+  
+  /* Root text mobile */
+  .rootText {
+    font-size: clamp(1.2rem, 5vw, 2rem);
+  }
+  
+  /* Scroll cue mobile */
+  .scrollCue {
+    bottom: max(1.5rem, env(safe-area-inset-bottom, 1.5rem));
+    width: 28px;
+    height: 48px;
+  }
   .appButtons:not(.mobile) {
     display: none; /* Hide non-mobile version on mobile */
   }
   
-  /* Ensure mobile version is visible */
+  /* Ensure mobile version is visible and properly centered */
   .appButtons.mobile {
     display: flex;
+    left: 50% !important; /* Override any conflicting styles */
+    transform: translateX(-50%) !important; /* Ensure perfect centering */
+    flex-direction: column !important; /* Stack vertically */
+    align-items: center !important; /* Center-align buttons */
   }
 }
 
 /* Large mobile/small tablet adjustments */
 @media (max-width: 480px) {
+  /* Hero layout for small screens */
+  .heroWrapper {
+    padding: 0 0.5rem;
+  }
+    /* ROOT positioning for small screens - perfectly centered and stacked */
+  .rootTitleCenter.mobile {
+    left: 50% !important; /* Perfect horizontal center with important to override base styles */
+    top: 12% !important; /* Even higher on very small screens - closer to navbar */
+    transform: translate(-50%, -50%) !important; /* Perfect centering with important */
+    font-size: clamp(1.5rem, 8vw, 2.2rem) !important;
+    text-align: center !important; /* Center the text */
+    width: 100% !important; /* Full width for perfect centering */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  .rootSubtitle.mobile {
+    left: 50% !important; /* Perfect horizontal center with important to override base styles */
+    top: 19% !important; /* Positioned directly below the ROOT title - closer spacing */
+    transform: translate(-50%, -50%) !important; /* Perfect centering for both axes with important */
+    text-align: center !important; /* Center the text */
+    max-width: 95% !important; /* Allow more width on small mobile */
+    width: 95% !important; /* Ensure consistent width */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    font-size: clamp(0.7rem, 3vw, 1rem) !important; /* Appropriate size for small screens */
+  }
+  
+  /* Main content for small screens */
+  .mainContent {
+    top: 40%;
+    padding: 0.5rem;
+  }
+  /* CTA button for small screens */
+  .ctaButton {
+    margin-top: 5rem; /* Increased from 3rem to move button down */
+    padding: 0.8rem 2rem;
+    font-size: 0.85rem;
+  }
+    /* Small mobile hover effects - ensuring consistency */
+  .ctaButton:hover {
+    transform: translateY(-2px) scale(1.01);
+    
+    /* Subtle purple accent on hover - same as desktop */
+    background: rgba(147, 51, 234, 0.04) !important;
+    border-color: rgba(147, 51, 234, 0.25) !important;
+    color: #3b0764 !important; /* Keep Apple-style text */
+    letter-spacing: 0.064em;
+    
+    /* Enhanced minimal shadows - same as desktop */
+    box-shadow: 
+      0 4px 8px rgba(0, 0, 0, 0.15),
+      0 2px 4px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(147, 51, 234, 0.1) !important;
+  }
+  
+  /* Small mobile focus and active states for consistency */
+  .ctaButton:focus {
+    outline: none;
+    transform: translateY(-1px) scale(1.005);
+    
+    /* Accessible focus ring with purple accent */
+    box-shadow: 
+      0 3px 6px rgba(0, 0, 0, 0.12),
+      0 2px 4px rgba(0, 0, 0, 0.16),
+      0 0 0 3px rgba(147, 51, 234, 0.2) !important;
+  }
+  
+  .ctaButton:active {
+    transform: translateY(0) scale(0.98);
+    transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    /* Minimal pressed effect */
+    box-shadow: 
+      0 1px 2px rgba(0, 0, 0, 0.2),
+      inset 0 1px 2px rgba(147, 51, 234, 0.1) !important;
+  }
+  
+  /* Subtitles for small screens */
+  .subtitleBottomLeft {
+    bottom: max(1.5rem, env(safe-area-inset-bottom, 1.5rem));
+    left: 0.5rem;
+    padding: 0.8rem 1rem;
+    font-size: clamp(1rem, 6vw, 1.3rem);
+    max-width: calc(70% - 0.5rem);
+    line-height: 1.1;
+  }
+  
+  .subtitleRightSide {
+    top: 50%;
+    right: 0.5rem;
+    font-size: clamp(0.65rem, 4vw, 0.85rem);
+    max-width: calc(60% - 0.5rem);
+    line-height: 1.05;
+  }
+  
+  /* Root text for small screens */
+  .rootText {
+    font-size: clamp(1rem, 6vw, 1.8rem);
+  }
+  /* Mobile menu improvements for small screens */
   .appButtons.mobile {
-    flex-direction: column;
-    gap: 0.4rem;
-    bottom: max(4rem, env(safe-area-inset-bottom, 4rem));
-    right: 1rem;
+    flex-direction: column !important;
+    gap: 1rem; /* Larger gap for better touch targets and less clutter */
+    bottom: max(6rem, env(safe-area-inset-bottom, 6rem)); /* More spacing from bottom */
+    left: 50% !important; /* Center horizontally */
+    right: auto !important;
+    transform: translateX(-50%) !important; /* Perfect horizontal centering */
+    align-items: center !important; /* Center-align buttons */
+    max-width: 220px; /* Smaller container for cleaner mobile layout */
   }
   
   .appButtons.mobile .appButton {
-    min-width: 110px;
-    padding: 0.5rem 0.7rem;
+    min-width: 140px; /* Wider for better mobile experience */
+    padding: 0.6rem 0.8rem; /* Better touch targets */
+    width: 100%; /* Full width within container */
   }
   
   .appButtons.mobile .appIcon {

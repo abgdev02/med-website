@@ -37,7 +37,7 @@ export function FloatingParticles({ mouse }: FloatingParticlesProps) {
       size: 0.008, // Larger for better visibility
       color: 0x6b21a8, // Dark purple color directly
       transparent: true,
-      opacity: 0.8, // Much higher opacity      blending: THREE.NormalBlending, // Normal blending instead of additive
+      opacity: 0.64, // Much higher opacity      blending: THREE.NormalBlending, // Normal blending instead of additive
       sizeAttenuation: true, // Makes particles smaller with distance
       vertexColors: false, // Ensures consistent color
     })

@@ -3,6 +3,7 @@ import styles from './Navigation.module.css'
 
 export function Navigation() {
   const [activeSection, setActiveSection] = useState('home')
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   
   useEffect(() => {
     const handleScroll = () => {
@@ -63,17 +64,27 @@ export function Navigation() {
 
   const isActive = (section: string) => activeSection === section
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false)
+  }
+
   return (
     <>
       {/* Skip to main content for accessibility */}
       <a href="#main-content" className={styles.skipToMain}>
         Skip to main content
       </a>
-      
-      <nav className={styles.nav} role="navigation" aria-label="Main navigation">
+        <nav className={styles.nav} role="navigation" aria-label="Main navigation">
         <a href="#home" className={styles.logo} aria-label="iembraceland home">
           iembraceland
-        </a>        <ul className={styles.links} role="list">
+        </a>
+        
+        {/* Desktop Navigation */}
+        <ul className={styles.links} role="list">
           <li>
             <a 
               href="#home" 
@@ -102,6 +113,65 @@ export function Navigation() {
             </a>
           </li>
         </ul>
+
+        {/* Mobile Menu Button */}
+        <button 
+          className={styles.mobileMenuButton}
+          onClick={toggleMobileMenu}
+          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMobileMenuOpen}
+        >
+          <div className={`${styles.hamburger} ${isMobileMenuOpen ? styles.hamburgerOpen : ''}`}>
+            <span className={styles.hamburgerLine}></span>
+            <span className={styles.hamburgerLine}></span>
+            <span className={styles.hamburgerLine}></span>
+          </div>
+        </button>
+
+        {/* Mobile Navigation Menu */}
+        <div className={`${styles.mobileMenu} ${isMobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
+          <ul className={styles.mobileLinks} role="list">
+            <li>
+              <a 
+                href="#home" 
+                className={`${styles.mobileNavLink} ${isActive('home') ? styles.active : ''}`}
+                aria-current={isActive('home') ? 'page' : undefined}
+                onClick={closeMobileMenu}
+              >
+                Home
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#about" 
+                className={`${styles.mobileNavLink} ${isActive('about') ? styles.active : ''}`}
+                aria-current={isActive('about') ? 'page' : undefined}
+                onClick={closeMobileMenu}
+              >
+                About
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#how-it-works" 
+                className={`${styles.mobileNavLink} ${isActive('how-it-works') ? styles.active : ''}`}
+                aria-current={isActive('how-it-works') ? 'page' : undefined}
+                onClick={closeMobileMenu}
+              >
+                How it works
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div 
+            className={styles.mobileMenuOverlay}
+            onClick={closeMobileMenu}
+            aria-hidden="true"
+          />
+        )}
       </nav>
     </>
   )
