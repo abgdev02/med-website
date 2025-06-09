@@ -23,7 +23,7 @@ export function BreathingGuide({ intensity = 1 }: BreathingGuideProps) {
     // Create particles in radial waves
     for (let i = 0; i < count; i++) {
       // Create multiple waves/layers
-      const waveIndex = i % 8 // 8 waves
+      const waveIndex = i % 16 // 8 waves
       const particlesPerWave = count / 8
       const indexInWave = Math.floor(i / 8)
       
@@ -32,7 +32,7 @@ export function BreathingGuide({ intensity = 1 }: BreathingGuideProps) {
       const angle = indexInWave * goldenAngle + (waveIndex * Math.PI / 4)
       
       // Varying radius for each wave
-      const baseRadius = 0.2 + (waveIndex * 0.15)
+      const baseRadius = 0.2 + (waveIndex * 0.16)
       const radiusVariation = Math.random() * 0.3
       const radius = baseRadius + radiusVariation
       
@@ -96,7 +96,7 @@ export function BreathingGuide({ intensity = 1 }: BreathingGuideProps) {
     gradient.addColorStop(1, 'rgba(76, 29, 149, 0)')      // Fade to transparent
     
     context.fillStyle = gradient
-    context.fillRect(0, 0, 32, 32)
+    context.fillRect(0, 0, 16, 16)
     
     const texture = new THREE.CanvasTexture(canvas)
     
@@ -202,48 +202,6 @@ export function BreathingGuide({ intensity = 1 }: BreathingGuideProps) {
       
       // Gentle rotation
       breathingRingRef.current.rotation.z += 0.001
-    }
-    
-    // Create ripples occasionally
-    if (Math.floor(time * 2) % 12 === 0 && (time * 2) % 1 < 0.1) {
-      const rippleGeometry = new THREE.BufferGeometry()
-      const rippleCount = 100
-      const positions = new Float32Array(rippleCount * 3)
-      
-      // Create ripple in a circle
-      for (let i = 0; i < rippleCount; i++) {
-        const angle = (i / rippleCount) * Math.PI * 2
-        const radius = 0.3 + Math.random() * 0.1
-        
-        positions[i * 3] = Math.cos(angle) * radius
-        positions[i * 3 + 1] = Math.sin(angle) * radius
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 0.05
-      }
-      
-      rippleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-      
-      const ripple = new THREE.Points(
-        rippleGeometry,
-        new THREE.PointsMaterial({
-          size: 0.04,
-          color: new THREE.Color(0x6b21a8), // Darker purple for ripples
-          transparent: true,
-          opacity: 0.7,
-          blending: THREE.NormalBlending,
-          depthWrite: false
-        })
-      )
-      
-      // Random position around the center
-      const angle = Math.random() * Math.PI * 2
-      const dist = Math.random() * 2
-      ripple.position.set(
-        Math.cos(angle) * dist,
-        Math.sin(angle) * dist,
-        -0.5
-      )
-      
-      ripplesRef.current.add(ripple)
     }
     
     // Animate ripples
