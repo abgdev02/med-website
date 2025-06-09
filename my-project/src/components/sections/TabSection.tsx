@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { TabKey, TabContentData } from '../../types'
 import { TabButton } from '../ui/TabButton'
 import mindfulnessIcon from '../../assets/icons/mindfulness 1.svg'
@@ -22,21 +22,42 @@ const TAB_CONFIG = [
 export function TabSection({ isMobile, tabContent }: TabSectionProps) {
   const [activeTab, setActiveTab] = useState<TabKey>('anchor-focus')
   const [expandedItem, setExpandedItem] = useState<string | null>(null)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   // Reset expanded item when tab changes
   useEffect(() => {
     setExpandedItem(null)
   }, [activeTab])
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false)
+      }
+    }
+
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isDropdownOpen])
+
   const handleTabClick = (tabKey: TabKey) => {
     setActiveTab(tabKey)
+    if (isMobile) {
+      setIsDropdownOpen(false) // Close dropdown when tab is selected on mobile
+    }
     // Remove the immediate setExpandedItem(null) since useEffect handles it
   }
   
   const toggleExpanded = (itemKey: string) => {
     setExpandedItem(prev => prev === itemKey ? null : itemKey)
   }
-
   const renderExpandableItem = (
     iconSrc: string,
     title: string,
@@ -46,136 +67,102 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
     const isExpanded = expandedItem === itemKey
     
     return (
-      <div key={itemKey} style={{ width: '100%' }}>
+      <div key={itemKey} className={styles.expandableItemWrapper}>
         <div 
           onClick={() => toggleExpanded(itemKey)}
-          style={{
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            gap: 24,
-            display: 'flex',
-            cursor: 'pointer',
-            padding: '16px 0',
-            transition: 'all 0.3s ease'
-          }}
+          className={styles.expandableItemHeader}
         >
-          <img src={iconSrc} alt="" style={{ width: 24, height: 24 }} />
-          <div style={{
-            justifyContent: 'flex-start',
-            display: 'flex',
-            flexDirection: 'column',
-            color: isExpanded ? '#4A4A4A' : '#6A6A6A',
-            fontSize: 14,
-            fontFamily: '"Source Sans Pro", sans-serif',
-            fontWeight: isExpanded ? '700' : '300',
-            wordWrap: 'break-word',
-            flex: 1,
-            textAlign: 'left'
-          }}>
+          <img src={iconSrc} alt="" className={styles.expandableItemIcon} />
+          <div className={`${styles.expandableItemTitle} ${isExpanded ? styles.expanded : ''}`}>
             {title}
           </div>
         </div>
         
-        <div style={{
-          maxHeight: isExpanded ? '200px' : '0',
-          overflow: 'hidden',
-          transition: 'max-height 0.3s ease-out',
-          paddingLeft: 48
-        }}>
-          <div style={{
-            padding: '12px 0 24px 0',
-            color: '#8a8a8a',
-            fontSize: 14,
-            fontFamily: '"Source Sans Pro", sans-serif',
-            fontWeight: '300',
-            wordWrap: 'break-word',
-            lineHeight: 1.5,
-            textAlign: 'left'
-          }}>
+        <div className={`${styles.expandableItemDescription} ${isExpanded ? styles.expanded : ''}`}>
+          <div className={styles.expandableItemContent}>
             {description}
           </div>
         </div>
         
-        <div style={{
-          width: '100%',
-          height: 0,
-          outline: '0.50px #f2f2f2 solid',
-          outlineOffset: '-0.25px',
-          margin: '12px 0'
-        }}></div>
+        <div className={styles.expandableItemSeparator}></div>
       </div>
     )
   }
-  
-  return (    <div className={`${styles.section} ${isMobile ? styles.mobile : ''}`}>      {/* Header Section */}
-      <div className={styles.headerSection} style={{ marginTop: isMobile ? 80 : 120 }}>            <div className="gradient-text-primary" style={{
-            color: '#2A2A2A',
-            fontSize: isMobile ? 32 : 48,
-            fontFamily: 'Source Sans Pro',
-            fontWeight: '300',
-            lineHeight: isMobile ? 1.2 : 1.2,
-            wordWrap: 'break-word',
-            textAlign: 'left'
-          }}>
+    return (
+    <div className={`${styles.section} ${isMobile ? styles.mobile : ''}`}>      
+      {/* Header Section */}
+      <div className={`${styles.headerSection} ${styles.headerSectionWithMargin} ${isMobile ? styles.mobile : ''}`}>            
+        <div className={`gradient-text-primary ${styles.gradientTextPrimary} ${isMobile ? styles.mobile : ''}`}>
           Measure how deeply you're grounding
-        </div>        <div className={`${styles.description} ${isMobile ? styles.mobile : ''}`} style={{
-          color: '#8a8a8a',
-          fontSize: isMobile ? 14 : 16,
-          fontFamily: '"Source Sans Pro", sans-serif',
-          fontWeight: '300',
-          lineHeight: 1.6,
-          textAlign: 'left',
-          marginTop: isMobile ? 16 : 24
-        }}>
+        </div>        
+        <div className={`${styles.description} ${styles.descriptionWithMargin} ${isMobile ? styles.mobile : ''}`}>
           Root captures your emotional and sensory engagement in real time combining audio, haptics, and AI-curated calm to give you a single, personalized Mental Immersion Score.
         </div>
-      </div>      {/* Tab and Content Section */}
-      <div style={{
-        flexDirection: 'column', 
-        justifyContent: 'flex-start', 
-        alignItems: 'flex-start', 
-        gap: 64, 
-        display: 'flex',
-        width: '100%'
-      }}>        {/* Tab Buttons */}
-        <div style={{
-          width: '100%', 
-          justifyContent: 'flex-start', 
-          alignItems: 'center', 
-          gap: isMobile ? 12 : 16, 
-          display: 'flex',
-          flexWrap: 'wrap',
-          padding: isMobile ? '0 10px' : '0'
-        }}>
-          {TAB_CONFIG.map(({ key, label }) => (
-            <TabButton
-              key={key}
-              tabKey={key}
-              label={label}
-              isActive={activeTab === key}
-              isMobile={isMobile}
-              onClick={handleTabClick}
-            />
-          ))}
-        </div>        {/* Content section with 12-column grid */}
-        <div className={`grid-container ${isMobile ? '' : ''}`} style={{
-          width: '100%',
-          paddingTop: 24,
-          paddingBottom: 24,
-          justifyItems: 'stretch',
-          alignItems: 'start'
-        }}>{/* Left content with expandable items - Columns 1-6 */}
-          <div className="col-12 md:col-6" style={{
-            width: '100%',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-            gap: 24,
-            display: 'flex',
-            paddingRight: isMobile ? 0 : 48,
-            justifySelf: 'start',
-            alignSelf: 'start'
-          }}>{/* Dynamic expandable content */}
+      </div>        {/* Tab and Content Section */}
+      <div className={styles.tabContentWrapper}>          {/* Tab Buttons - Desktop horizontal layout, Mobile dropdown */}
+        {isMobile ? (
+          <div className={`${styles.dropdownWrapper} ${styles.mobile}`} ref={dropdownRef}>
+            <button 
+              className={`${styles.dropdownButton} ${isDropdownOpen ? styles.open : ''}`}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              aria-expanded={isDropdownOpen}
+              aria-haspopup="listbox"
+            >
+              <span className={styles.dropdownButtonText}>
+                {TAB_CONFIG.find(tab => tab.key === activeTab)?.label}
+              </span>
+              <svg 
+                className={`${styles.dropdownChevron} ${isDropdownOpen ? styles.rotated : ''}`}
+                width="16" 
+                height="16" 
+                viewBox="0 0 16 16" 
+                fill="none"
+                aria-hidden="true"
+              >
+                <path 
+                  d="M4 6L8 10L12 6" 
+                  stroke="currentColor" 
+                  strokeWidth="1.5" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            {isDropdownOpen && (
+              <div className={styles.dropdownMenu} role="listbox">
+                {TAB_CONFIG.map(({ key, label }) => (
+                  <button
+                    key={key}
+                    className={`${styles.dropdownOption} ${activeTab === key ? styles.active : ''}`}
+                    onClick={() => handleTabClick(key)}
+                    role="option"
+                    aria-selected={activeTab === key}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className={`${styles.tabButtonsWrapper}`}>
+            {TAB_CONFIG.map(({ key, label }) => (
+              <TabButton
+                key={key}
+                tabKey={key}
+                label={label}
+                isActive={activeTab === key}
+                isMobile={isMobile}
+                onClick={handleTabClick}
+              />
+            ))}
+          </div>
+        )}
+        {/* Content section with 12-column grid */}
+        <div className={`grid-container ${styles.gridContainer} ${isMobile ? '' : ''}`}>
+          {/* Left content with expandable items - Columns 1-6 */}
+          <div className={`col-12 md:col-6 ${styles.leftContentColumn} ${isMobile ? styles.mobile : ''}`}>
+            {/* Dynamic expandable content */}
             {renderExpandableItem(
               mindfulnessIcon,
               (tabContent as any)[activeTab].features[0],
@@ -196,21 +183,9 @@ export function TabSection({ isMobile, tabContent }: TabSectionProps) {
               "Advanced biometric sensors track your heart rate variability and breathing patterns to provide real-time feedback on your meditation depth and emotional state.",
               `${activeTab}-feature-3`
             )}
-          </div>          {/* Right image placeholder - Columns 7-12 */}
-          <div className="col-12 md:col-6" style={{
-            width: '100%',
-            height: isMobile ? 250 : 400,
-            borderRadius: 16,
-            backgroundColor: '#f5f5f5',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#999',
-            fontSize: '14px',
-            fontFamily: '"Source Sans Pro", sans-serif',
-            marginTop: isMobile ? 24 : 0,
-            justifySelf: 'stretch'
-          }}>
+          </div>          
+          {/* Right image placeholder - Columns 7-12 */}
+          <div className={`col-12 md:col-6 ${styles.rightImageColumn} ${isMobile ? styles.mobile : ''}`}>
             [Image Placeholder 600x400]
           </div>
         </div>

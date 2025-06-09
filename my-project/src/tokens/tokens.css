@@ -1,54 +1,44 @@
 /* Design Tokens CSS Custom Properties */
-/* Auto-generated from designTokens.ts - Lavender Theme */
+/* Apple-inspired Wellness Color System with 95% White Space */
 
 :root {
-  /* Colors - Primary - Lavender Purple Scale */
-  --colors-primary-50: #F2E4EE;
-  --colors-primary-100: #F2D8EE;
-  --colors-primary-200: #E6CAE6;
-  --colors-primary-300: #D3BDF2;
-  --colors-primary-400: #C1A8E8;
-  --colors-primary-500: #A496D9;
-  --colors-primary-600: #8B7BC7;
-  --colors-primary-700: #7669B5;
-  --colors-primary-800: #6865BF;
-  --colors-primary-900: #5A4FA3;
-  --colors-primary-950: #4A4191;
+  /* Colors - Primary - Apple-inspired Purple Scale */
+  --colors-primary-50: #ffffff;    /* Pure white */
+  --colors-primary-100: #fdfcff;   /* Barely perceptible purple */
+  --colors-primary-200: #fbfaff;   /* Ultra light lavender */
+  --colors-primary-300: #f9f7ff;   /* Soft lavender white */
+  --colors-primary-400: #f7f4ff;   /* Light lavender */
+  --colors-primary-500: #9333ea;   /* Purple accent (minimal use) */
+  --colors-primary-600: #7e22ce;   /* Deep purple (very minimal) */
+  --colors-primary-700: #6b21a8;   /* Darker purple (rare) */
+  --colors-primary-800: #581c87;   /* Very dark purple (rare) */
+  --colors-primary-900: #3b0764;   /* Ultra dark purple (rare) */
+  --colors-primary-950: #1d1d1f;   /* Apple charcoal (text only) */
   
-  /* Colors - Wellness - Lavender Theme */
-  --colors-wellness-lavender-light: #F2E4EE;
-  --colors-wellness-lavender-soft: #F2D8EE;
-  --colors-wellness-lavender-medium: #D3BDF2;
-  --colors-wellness-lavender-vibrant: #A496D9;
-  --colors-wellness-lavender-deep: #6865BF;
-  --colors-wellness-accent-pink: #E6CAE6;
-  --colors-wellness-accent-purple: #C1A8E8;
+  /* Colors - Apple Text System */
+  --colors-text-primary: #1d1d1f;     /* Apple primary text */
+  --colors-text-secondary: #86868b;   /* Apple secondary text */
+  --colors-text-tertiary: #c7c7cc;    /* Apple tertiary text */
+  --colors-text-inverse: #ffffff;     /* White text */
+  --colors-text-accent: #9333ea;      /* Purple accent text */
   
   /* Colors - Semantic */
-  --colors-semantic-success: #10b981;
-  --colors-semantic-warning: #f59e0b;
-  --colors-semantic-error: #ef4444;
-  --colors-semantic-info: #3b82f6;
+  --colors-semantic-success: #30d158;  /* Apple green */
+  --colors-semantic-warning: #ff9f0a;  /* Apple orange */
+  --colors-semantic-error: #ff453a;    /* Apple red */
+  --colors-semantic-info: #007aff;     /* Apple blue */
+    /* Colors - Background - Apple-inspired Minimal */
+  --colors-background-primary: #ffffff;          /* Pure white */
+  --colors-background-secondary: #fdfcff;        /* Barely perceptible purple */
+  --colors-background-tertiary: #fbfaff;         /* Ultra light lavender */
+  --colors-background-overlay: rgba(255, 255, 255, 0.8);   /* Clean overlay */
+  --colors-background-glass: rgba(255, 255, 255, 0.85);    /* Glass morphism */
+  --colors-background-gradient: linear-gradient(180deg, #ffffff 0%, #fdfcff 25%, #fbfaff 50%, #f9f7ff 75%, #f7f4ff 100%);
   
-  /* Colors - Text - Lavender Theme */
-  --colors-text-primary: #6865BF;
-  --colors-text-secondary: #8B7BC7;
-  --colors-text-tertiary: #A496D9;
-  --colors-text-inverse: #ffffff;
-  --colors-text-muted: #C1A8E8;
-  --colors-text-accent: #D3BDF2;
-  
-  /* Colors - Background - Lavender Theme */
-  --colors-background-primary: #ffffff;
-  --colors-background-secondary: #F2E4EE;
-  --colors-background-tertiary: #F2D8EE;
-  --colors-background-overlay: rgba(242, 228, 238, 0.15);
-  --colors-background-glass: rgba(242, 216, 238, 0.25);
-  --colors-background-gradient: linear-gradient(135deg, #F2E4EE 0%, #F2D8EE 50%, #D3BDF2 100%);
-  
-  /* Colors - Border - Lavender Theme */
-  --colors-border-light: #F2D8EE;
-  --colors-border-medium: #D3BDF2;
+  /* Colors - Border - Apple-inspired Minimal */
+  --colors-border-light: rgba(147, 51, 234, 0.1);   /* Ultra light purple */
+  --colors-border-medium: rgba(147, 51, 234, 0.15); /* Light purple */
+  --colors-border-strong: rgba(147, 51, 234, 0.25); /* Medium purple */
   --colors-border-dark: #A496D9;
   --colors-border-focus: #6865BF;
   --colors-border-gradient: linear-gradient(135deg, #D3BDF2, #A496D9, #6865BF);
@@ -138,12 +128,14 @@
   --animation-easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   
   /* Shadow System */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  /* Replace shadows with more subtle Apple-style shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
+  --shadow-wellness: 0 4px 30px rgba(147, 51, 234, 0.04);  /* New wellness shadow */
   --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
   
   /* Z-Index */
@@ -172,36 +164,42 @@
 
 /* Component Token Classes */
 .btn-primary {
-  background-color: var(--colors-text-primary);
-  color: var(--colors-text-inverse);
-  border: 1px solid transparent;
+  background: rgba(147, 51, 234, 0.08);  /* Very light purple glass */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(147, 51, 234, 0.12);
+  color: #9333ea;  /* Purple text */
   padding: var(--spacing-3) var(--spacing-6);
-  border-radius: var(--borderRadius-lg);
+  border-radius: var(--borderRadius-xl);
   font-size: var(--typography-fontSize-base);
   font-weight: var(--typography-fontWeight-medium);
-  transition: all var(--animation-duration-normal) var(--animation-easing-easeInOut);
+  transition: all var(--animation-duration-normal) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-primary:hover {
-  background-color: var(--colors-primary-700);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  background: #9333ea;  /* Solid purple on hover */
+  border-color: #9333ea;
+  color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 30px rgba(147, 51, 234, 0.15);
 }
 
 .btn-secondary {
-  background-color: transparent;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: var(--colors-text-primary);
-  border: 1px solid var(--colors-border-medium);
   padding: var(--spacing-3) var(--spacing-6);
-  border-radius: var(--borderRadius-lg);
+  border-radius: var(--borderRadius-xl);
   font-size: var(--typography-fontSize-base);
   font-weight: var(--typography-fontWeight-medium);
-  transition: all var(--animation-duration-normal) var(--animation-easing-easeInOut);
+  transition: all var(--animation-duration-normal) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-secondary:hover {
-  background-color: var(--colors-background-secondary);
-  border-color: var(--colors-border-dark);
+  background: rgba(147, 51, 234, 0.04);
+  border-color: rgba(147, 51, 234, 0.08);
 }
 
 .card {
@@ -219,11 +217,13 @@
 }
 
 .glass-card {
-  background: var(--colors-background-glass);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--colors-background-overlay);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--borderRadius-2xl);
   padding: var(--spacing-6);
+  box-shadow: 0 4px 30px rgba(147, 51, 234, 0.04);
 }
 
 /* Typography Classes */

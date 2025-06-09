@@ -6,7 +6,6 @@ import { lazy } from 'react'
  */
 
 // 3D Components - Heavy dependencies
-export const BokehBubbles = lazy(() => import('../BokehBubbles'))
 export const ProceduralPebble = lazy(() => import('./three-d/ProceduralPebble').then(module => ({ default: module.ProceduralPebble })))
 export const SceneManager = lazy(() => import('./three-d/SceneManager').then(module => ({ default: module.SceneManager })))
 

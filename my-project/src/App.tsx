@@ -25,20 +25,10 @@ function App() {
     if (import.meta.env.DEV) {
       console.log('🧪 Wellness App Testing Suite initialized')
       console.log('Use window.runTests() to manually run the full test suite')
-      
-      // Initialize testing suite globally for manual testing
+        // Initialize testing suite globally for manual testing
       import('./utils/TestSuite').then(({ testSuite }) => {
         (window as any).runTests = () => testSuite.runFullSuite()
       })
-        // Add A11y testing helpers - commented out until files are created
-      // import('./utils/a11y-test').catch(err => {
-      //   console.warn('Failed to load A11y test script:', err)
-      // })
-      
-      // Add comprehensive A11y test suite - commented out until files are created
-      // import('./utils/a11y-test-suite').catch(err => {
-      //   console.warn('Failed to load A11y test suite:', err)
-      // })
     }
   }, [])
   return (

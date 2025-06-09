@@ -3,6 +3,10 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Float } from '@react-three/drei'
 import { Group } from 'three'
 import { ProceduralPebble } from '../three-d/ProceduralPebble'
+import { WaterShaderBackground } from '../three-d/WaterShaderBackground'
+import { FloatingParticles } from '../three-d/FloatingParticles'
+import { BreathingGuide } from '../three-d/BreathingGuide'
+import { useMouseTracking } from '../../hooks/useMouseTracking'
 import ThreeDErrorBoundary from '../ui/ThreeDErrorBoundary'
 import styles from './HeroSection.module.css'
 
@@ -15,7 +19,7 @@ function RotatingPebble({ children, speed = 1 }: { children: React.ReactNode, sp
   const groupRef = useRef<Group>(null)
     useFrame((_, delta) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * speed * 0.5 // Slow rotation
+      groupRef.current.rotation.y += delta * speed * 0.8 // Slow rotation
       // groupRef.current.rotation.x += delta * speed * 0.05 // Very subtle wobble - removed for cleaner rotation
     }
   })
@@ -24,21 +28,34 @@ function RotatingPebble({ children, speed = 1 }: { children: React.ReactNode, sp
 }
 
 export function HeroSection({ isMobile }: HeroSectionProps) {
+  const mouse = useMouseTracking()
+  
   return (
-    <div className={`${styles.heroWrapper} ambient-glow`}>      {/* 3D Canvas Layer - positioned to center pebble above CTA button */}
-      <Canvas 
+    <div className={`${styles.heroWrapper} ambient-glow`}>      {/* 3D Canvas Layer - positioned to center pebble above CTA button */}      <Canvas 
         className={styles.heroCanvas} 
-        camera={{ position: [0, 0, 3.5], fov: 45 }}
-      >        <ambientLight intensity={0.8} />
-        <directionalLight position={[4, 6, 5]} intensity={0.6} />
-        <directionalLight position={[-3, 4, 3]} color="#f0f4f8" intensity={0.4} />
-        <directionalLight position={[0, -2, 2]} color="#e8f2ff" intensity={0.2} />
+        camera={{ position: [0, 0, 3.5], fov: 45, far: 100 }}
+      >
+        {/* Water shader background - same as reference code */}
+        <WaterShaderBackground />
+          {/* Floating particles - same as reference code */}
+        <FloatingParticles mouse={mouse} />
+        
+        {/* Breathing guide for meditation */}
+        <BreathingGuide intensity={0.8} />
+
+        {/* Enhanced lighting for clean Apple-inspired design */}
+        <pointLight color="#ffffff" intensity={2.5} distance={60} position={[0, 0, 20]} />
+        <pointLight color="#ffffff" intensity={2} distance={40} position={[10, 10, 15]} />
+        <pointLight color="#ffffff" intensity={2} distance={40} position={[-10, -10, 15]} />
+        <ambientLight color="#ffffff" intensity={0.8} />
+        <directionalLight position={[4, 6, 5]} intensity={1} color="#ffffff" />
+        <directionalLight position={[-3, 4, 3]} color="#ffffff" intensity={0.6} />
           <ThreeDErrorBoundary componentName="ProceduralPebble">
           {/* Main pebble with gentle float - centered horizontally, positioned above CTA */}
           <Suspense fallback={null}>            <Float floatIntensity={1.0} rotationIntensity={0.4} speed={0.6}>              <RotatingPebble speed={0.6}>                <group 
                   scale={isMobile ? [0.496, 0.248, 0.496] : [0.868, 0.434, 0.868]} /* Increased by 24% */
-                  position={[0, 0.1, 0]} /* Moved up and centered */
-                >                  <ProceduralPebble 
+                  position={[0, 0.4, 0]} /* Moved up significantly - from 0.1 to 1.1 */
+                ><ProceduralPebble 
                     distance={5} 
                     quality="high" 
                     enableTextures={true}
@@ -47,95 +64,25 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
               </RotatingPebble>
             </Float>
           </Suspense>
-        </ThreeDErrorBoundary>
-      </Canvas>      {/* Sliding ROOT text with meditation icons positioned above the pebble */}
-      <div className={styles.rootTextBackground}>
-        <div className={styles.slidingRootContainer}>
-          <div className={styles.slidingRootTrack}>            {/* First set of ROOT + icons */}
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-              </svg>
-            </div>
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-            </div>
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
-            </div>
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.06 7 9.54 0 4.48-2.94 8.27-7 9.54.95.3 1.95.46 3 .46 5.52 0 10-4.48 10-10S14.52 2 9 2z"/>
-              </svg>
-            </div>
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17c0 .5.4 1 1 1h6c.6 0 1-.5 1-1v-2.3c1.8-1.3 3-3.4 3-5.7 0-3.9-3.1-7-7-7z"/>
-              </svg>
-            </div>
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
-              </svg>
-            </div>
-            {/* Duplicate set for seamless loop */}
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-              </svg>
-            </div>
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-            </div>
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
-            </div>
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.06 7 9.54 0 4.48-2.94 8.27-7 9.54.95.3 1.95.46 3 .46 5.52 0 10-4.48 10-10S14.52 2 9 2z"/>
-              </svg>
-            </div>
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17c0 .5.4 1 1 1h6c.6 0 1-.5 1-1v-2.3c1.8-1.3 3-3.4 3-5.7 0-3.9-3.1-7-7-7z"/>
-              </svg>
-            </div>
-            <div className={styles.rootWithIcon}>
-              <span className={styles.rootText}>ROOT</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ margin: '0 1rem', opacity: 0.7 }}>
-                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>{/* Main Content with CTA button */}
+        </ThreeDErrorBoundary>      </Canvas>      {/* ROOT Title - positioned on the left side */}
+      <h1 className={`${styles.rootTitleCenter} ${isMobile ? styles.mobile : ''}`}>
+        ROOT
+      </h1>
+
+      {/* Subtitle below ROOT title */}
+      <p className={`${styles.rootSubtitle} ${isMobile ? styles.mobile : ''}`}>
+        Its all about compassionate presence.
+      </p>
+
+      {/* Main Content with CTA button only */}
       <div className={styles.mainContent}>
         <button 
-          className={`${styles.ctaButton} btn-futuristic focus-ring`}
+          className={`${styles.ctaButton}`}
           aria-label="Start your wellness journey"
         >
           Buy Me :)
         </button>
-      </div>      {/* Bottom-left positioned text where ROOT was */}
+      </div>{/* Bottom-left positioned text where ROOT was */}
       <p className={`${styles.subtitleBottomLeft} ${isMobile ? styles.mobile : ''}`}>
         Companion for Emotional Embracing
       </p>      {/* Right side subtitle - updated text */}
@@ -174,7 +121,7 @@ export function HeroSection({ isMobile }: HeroSectionProps) {
               <span className={styles.storeText}>Google Play</span>
             </div>
           </div>
-        </a>
+        </a>      
       </div>
 
       {/* Scroll indicator */}

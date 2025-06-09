@@ -30,10 +30,8 @@ async function registerServiceWorker() {
       if (registration.active) {
         setTimeout(() => {
           registration.active?.postMessage({
-            type: 'CACHE_ASSETS',
-            payload: {
+            type: 'CACHE_ASSETS',            payload: {
               assets: [
-                '/src/BokehBubbles.tsx',
                 '/src/components/three-d/ProceduralPebble.tsx',
                 '/src/components/three-d/SceneManager.tsx',
                 '/src/utils/AnimationScheduler.ts',
